@@ -1,0 +1,114 @@
+# ---------- Python / FastAPI ----------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Conda — you're on a base env by default, so a local one lands here
+.conda/
+conda-meta/
+
+# Testing / coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.hypothesis/
+
+# Type checkers / linters
+.mypy_cache/
+.dmypy.json
+.ruff_cache/
+.pyre/
+
+# ---------- Secrets and local config ----------
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets.json
+
+# ---------- Database ----------
+*.db
+*.sqlite
+*.sqlite3
+*.dump
+*.sql.gz
+pgdata/
+postgres-data/
+
+# Alembic: versions/ IS tracked — migrations are source.
+# Only ignore a local override if you add one.
+alembic.ini.local
+
+# ---------- Node / Vite (web/ when you get there) ----------
+node_modules/
+dist/
+dist-ssr/
+.vite/
+*.local
+.eslintcache
+.parcel-cache/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+*.log
+
+# ---------- Compass Planner: generated artifacts ----------
+# rebuild.py extracts the app source out of Compass_Planner.html into here,
+# edits happen, then it re-embeds. The .html is the source of truth; this
+# directory is scratch and is regenerated on every extract.
+build/template.html
+build/*.tmp
+
+# Response captures used to diff endpoints across stages 3-4
+snapshots/
+*.response.json
+
+# ---------- macOS ----------
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# ---------- Editors ----------
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*~
+
+# ---------- Claude Code ----------
+.claude/settings.local.json
