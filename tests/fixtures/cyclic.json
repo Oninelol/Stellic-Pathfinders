@@ -1,0 +1,12 @@
+{
+  "terms": [
+    {"k": "F24", "l": "Fall 2024"},
+    {"k": "S25", "l": "Spring 2025"}
+  ],
+  "courses": [
+    {"c": "AAA 100", "n": "Alpha", "cr": 3, "t": 0, "s": "plan", "tier": 0, "req": ["CCC 300"], "anti": []},
+    {"c": "BBB 200", "n": "Beta", "cr": 3, "t": 0, "s": "plan", "tier": 1, "req": ["AAA 100"], "anti": []},
+    {"c": "CCC 300", "n": "Gamma", "cr": 3, "t": 1, "s": "plan", "tier": 2, "req": ["BBB 200"], "anti": []}
+  ],
+  "total": 9
+}

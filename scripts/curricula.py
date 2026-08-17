@@ -466,7 +466,7 @@ def build(key, P):
     L.append("  COURSES: [\n")
     for code, title, cr, t, g, tier, req, anti, flag in cs:
         st = status(t, flag)
-        row = f"    {{c:'{code}', n:{js_str(title)}, cr:{cr}, t:{t}, s:'{st}'"
+        row = f"    {{c:'{code}', n:{js_str(title)}, cr:{cr}, t:{t}, s:'{st}', g:'{g}'"
         if flag == 'ghost':
             row += f", ghost:1, note:'DEFERRED — NEEDS {P['key']} FIRST'"
         else:

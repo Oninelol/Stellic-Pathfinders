@@ -1,0 +1,480 @@
+{
+  "terms": [
+    {
+      "k": "F24",
+      "l": "Fall 2024",
+      "short": "F24",
+      "tag": "FRESHMAN",
+      "st": "done"
+    },
+    {
+      "k": "S25",
+      "l": "Spring 2025",
+      "short": "S25",
+      "tag": "FRESHMAN",
+      "st": "done"
+    },
+    {
+      "k": "F25",
+      "l": "Fall 2025",
+      "short": "F25",
+      "tag": "SOPHOMORE",
+      "st": "done"
+    },
+    {
+      "k": "S26",
+      "l": "Spring 2026",
+      "short": "S26",
+      "tag": "IN PROGRESS",
+      "st": "current"
+    },
+    {
+      "k": "F26",
+      "l": "Fall 2026",
+      "short": "F26",
+      "tag": "JUNIOR · DRAFT",
+      "st": "plan"
+    },
+    {
+      "k": "S27",
+      "l": "Spring 2027",
+      "short": "S27",
+      "tag": "JUNIOR · DRAFT",
+      "st": "plan"
+    },
+    {
+      "k": "F27",
+      "l": "Fall 2027",
+      "short": "F27",
+      "tag": "SENIOR · DRAFT",
+      "st": "plan"
+    },
+    {
+      "k": "S28",
+      "l": "Spring 2028",
+      "short": "S28",
+      "tag": "SENIOR · DRAFT",
+      "st": "plan"
+    }
+  ],
+  "courses": [
+    {
+      "c": "CS 110",
+      "n": "Intro to Programming",
+      "cr": 4,
+      "t": 0,
+      "s": "done",
+      "tier": 0,
+      "req": [],
+      "anti": []
+    },
+    {
+      "c": "MATH 151",
+      "n": "Calculus I",
+      "cr": 4,
+      "t": 0,
+      "s": "done",
+      "tier": 0,
+      "req": [],
+      "anti": []
+    },
+    {
+      "c": "ENGL 101",
+      "n": "Writing & Rhetoric",
+      "cr": 3,
+      "t": 0,
+      "s": "done",
+      "gen": 1
+    },
+    {
+      "c": "HIST 120",
+      "n": "World History",
+      "cr": 3,
+      "t": 0,
+      "s": "done",
+      "gen": 1
+    },
+    {
+      "c": "CS 120",
+      "n": "Object-Oriented Design",
+      "cr": 4,
+      "t": 1,
+      "s": "done",
+      "tier": 1,
+      "req": [
+        "CS 110"
+      ],
+      "anti": []
+    },
+    {
+      "c": "PHYS 141",
+      "n": "Mechanics",
+      "cr": 4,
+      "t": 1,
+      "s": "done",
+      "gen": 1
+    },
+    {
+      "c": "COMM 110",
+      "n": "Public Speaking",
+      "cr": 3,
+      "t": 1,
+      "s": "done",
+      "gen": 1
+    },
+    {
+      "c": "ART 105",
+      "n": "Visual Culture",
+      "cr": 3,
+      "t": 1,
+      "s": "done",
+      "gen": 1
+    },
+    {
+      "c": "CS 230",
+      "n": "Computer Systems",
+      "cr": 4,
+      "t": 2,
+      "s": "done",
+      "tier": 2,
+      "req": [
+        "CS 120"
+      ],
+      "anti": []
+    },
+    {
+      "c": "PHIL 210",
+      "n": "Ethics & Technology",
+      "cr": 3,
+      "t": 2,
+      "s": "done",
+      "gen": 1
+    },
+    {
+      "c": "ECON 101",
+      "n": "Microeconomics",
+      "cr": 3,
+      "t": 2,
+      "s": "done",
+      "gen": 1
+    },
+    {
+      "c": "SPAN 101",
+      "n": "Elementary Spanish",
+      "cr": 4,
+      "t": 2,
+      "s": "done",
+      "gen": 1
+    },
+    {
+      "c": "CS 235",
+      "n": "Intro to Data Science",
+      "cr": 3,
+      "t": 3,
+      "s": "current",
+      "tier": 2,
+      "req": [
+        "CS 120"
+      ],
+      "anti": []
+    },
+    {
+      "c": "STAT 210",
+      "n": "Introductory Statistics",
+      "cr": 3,
+      "t": 3,
+      "s": "current",
+      "tier": 2,
+      "req": [],
+      "anti": [
+        "STAT 250"
+      ],
+      "alt": 1
+    },
+    {
+      "c": "PSYC 101",
+      "n": "General Psychology",
+      "cr": 3,
+      "t": 3,
+      "s": "current",
+      "gen": 1
+    },
+    {
+      "c": "MUS 120",
+      "n": "Music Theory",
+      "cr": 2,
+      "t": 3,
+      "s": "current",
+      "gen": 1
+    },
+    {
+      "c": "MATH 152",
+      "n": "Calculus II",
+      "cr": 4,
+      "t": 4,
+      "s": "todo",
+      "tier": 1,
+      "req": [
+        "MATH 151"
+      ],
+      "anti": [],
+      "key": 1
+    },
+    {
+      "c": "CS 245",
+      "n": "Human–Computer Interaction",
+      "cr": 3,
+      "t": 4,
+      "s": "plan",
+      "tier": 2,
+      "req": [
+        "CS 120"
+      ],
+      "anti": []
+    },
+    {
+      "c": "WRIT 200",
+      "n": "Technical Writing",
+      "cr": 3,
+      "t": 4,
+      "s": "plan",
+      "gen": 1
+    },
+    {
+      "c": "SOC 101",
+      "n": "Sociology",
+      "cr": 3,
+      "t": 4,
+      "s": "plan",
+      "gen": 1
+    },
+    {
+      "c": "ANTH 210",
+      "n": "Cultural Anthropology",
+      "cr": 3,
+      "t": 4,
+      "s": "plan",
+      "gen": 1
+    },
+    {
+      "c": "CS 210",
+      "n": "Data Structures & Algorithms",
+      "cr": 4,
+      "t": 5,
+      "s": "plan",
+      "tier": 2,
+      "req": [
+        "CS 120",
+        "MATH 152"
+      ],
+      "anti": []
+    },
+    {
+      "c": "MATH 240",
+      "n": "Discrete Mathematics",
+      "cr": 3,
+      "t": 5,
+      "s": "plan",
+      "tier": 2,
+      "req": [
+        "MATH 152"
+      ],
+      "anti": []
+    },
+    {
+      "c": "MATH 260",
+      "n": "Linear Algebra",
+      "cr": 3,
+      "t": 5,
+      "s": "plan",
+      "tier": 2,
+      "req": [
+        "MATH 152"
+      ],
+      "anti": [
+        "MATH 265"
+      ]
+    },
+    {
+      "c": "STAT 250",
+      "n": "Probability & Statistics",
+      "cr": 3,
+      "t": 5,
+      "s": "plan",
+      "tier": 2,
+      "req": [
+        "MATH 152"
+      ],
+      "anti": [
+        "STAT 210"
+      ]
+    },
+    {
+      "c": "LING 200",
+      "n": "Language & Mind",
+      "cr": 3,
+      "t": 5,
+      "s": "plan",
+      "gen": 1
+    },
+    {
+      "c": "CS 210",
+      "n": "Data Structures & Algorithms",
+      "cr": 4,
+      "t": 4,
+      "s": "blocked",
+      "ghost": 1,
+      "note": "DEFERRED — NEEDS MATH 152 FIRST"
+    },
+    {
+      "c": "CS 310",
+      "n": "Algorithms",
+      "cr": 4,
+      "t": 6,
+      "s": "plan",
+      "tier": 3,
+      "req": [
+        "CS 210",
+        "MATH 240"
+      ],
+      "anti": []
+    },
+    {
+      "c": "CS 320",
+      "n": "Databases",
+      "cr": 3,
+      "t": 6,
+      "s": "plan",
+      "tier": 3,
+      "req": [
+        "CS 210"
+      ],
+      "anti": []
+    },
+    {
+      "c": "CS 330",
+      "n": "Operating Systems",
+      "cr": 4,
+      "t": 6,
+      "s": "plan",
+      "tier": 3,
+      "req": [
+        "CS 210",
+        "CS 230"
+      ],
+      "anti": []
+    },
+    {
+      "c": "CS 340",
+      "n": "Software Engineering",
+      "cr": 3,
+      "t": 6,
+      "s": "plan",
+      "tier": 3,
+      "req": [
+        "CS 210"
+      ],
+      "anti": []
+    },
+    {
+      "c": "BIOL 105",
+      "n": "Human Biology & Lab",
+      "cr": 4,
+      "t": 6,
+      "s": "plan",
+      "gen": 1
+    },
+    {
+      "c": "CS 360",
+      "n": "Machine Learning",
+      "cr": 3,
+      "t": 7,
+      "s": "plan",
+      "tier": 4,
+      "req": [
+        "CS 310",
+        "MATH 260",
+        "STAT 250"
+      ],
+      "anti": [
+        "DATA 340"
+      ]
+    },
+    {
+      "c": "CS 425",
+      "n": "Distributed Systems",
+      "cr": 3,
+      "t": 7,
+      "s": "plan",
+      "tier": 4,
+      "req": [
+        "CS 330"
+      ],
+      "anti": []
+    },
+    {
+      "c": "CS 450",
+      "n": "Senior Capstone",
+      "cr": 4,
+      "t": 7,
+      "s": "plan",
+      "tier": 4,
+      "req": [
+        "CS 340"
+      ],
+      "anti": []
+    },
+    {
+      "c": "CS 380",
+      "n": "Deep Learning Lab",
+      "cr": 3,
+      "t": 7,
+      "s": "plan",
+      "tier": 4,
+      "req": [
+        "CS 360"
+      ],
+      "anti": []
+    },
+    {
+      "c": "ASTR 110",
+      "n": "Astronomy & Lab",
+      "cr": 4,
+      "t": 7,
+      "s": "plan",
+      "gen": 1
+    },
+    {
+      "c": "MATH 265",
+      "n": "Linear Algebra w/ Applications",
+      "cr": 3,
+      "t": -1,
+      "s": "alt",
+      "tier": 2,
+      "req": [
+        "MATH 152"
+      ],
+      "anti": [
+        "MATH 260"
+      ],
+      "alt": 1
+    },
+    {
+      "c": "DATA 340",
+      "n": "Applied Machine Learning",
+      "cr": 3,
+      "t": -1,
+      "s": "alt",
+      "tier": 4,
+      "req": [
+        "CS 235",
+        "STAT 250"
+      ],
+      "anti": [
+        "CS 360"
+      ],
+      "alt": 1
+    }
+  ],
+  "total": 120
+}

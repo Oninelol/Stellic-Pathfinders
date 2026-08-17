@@ -399,11 +399,20 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 <div data-screen-label="Planner" style="padding:22px 24px 80px">
 
 <div id="search-row" style="display:flex;gap:18px;row-gap:12px;flex-wrap:wrap;align-items:flex-start;margin-bottom:16px">
+<div style="flex:none;height:46px;display:flex;align-items:center"><select value="{{ state.school }}" sc-camel-on-change="{{ onSchool }}" style="background:#FDFBF6;border:1px solid #E4DED0;border-radius:8px;padding:8px 15px;color:#1B1916;font-family:'Instrument Sans',system-ui,sans-serif;font-size:12.5px;font-weight:600;cursor:pointer;appearance:none;max-width:260px;text-overflow:ellipsis">
+<sc-for list="{{ schoolGroups }}" as="g" hint-placeholder-count="2">
+<optgroup label="{{ g.label }}">
+<sc-for list="{{ g.opts }}" as="o" hint-placeholder-count="4">
+<option value="{{ o.k }}">{{ o.label }}</option>
+</sc-for>
+</optgroup>
+</sc-for>
+</select></div>
 <div id="search-shell" style="{{ searchShellStyle }}">
 <div style="{{ searchBoxStyle }}" data-search="1">
 <div sc-camel-on-click="{{ openSearch }}" style="display:flex;align-items:center;gap:11px;padding:12px 15px;height:46px;flex:none">
 <svg width="15" height="15" sc-camel-view-box="0 0 15 15" fill="none" style="flex:none"><circle cx="6.5" cy="6.5" r="4.6" stroke="#A9A192" stroke-width="1.3"></circle><path d="M10 10L13.5 13.5" stroke="#A9A192" stroke-width="1.3" stroke-linecap="round"></path></svg>
-<span style="font-size:13.5px;color:#8F8779;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Search courses, codes, or requirements — try “machine learning”</span>
+<span style="font-size:13.5px;color:#8F8779;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ searchPlaceholder }}</span>
 <span style="font-family:'JetBrains Mono',monospace;font-size:9.5px;color:#B4AC9C;border:1px solid #E4DED0;border-radius:4px;padding:2px 6px">⌘K</span>
 </div>
 <sc-if value="{{ searchOpen }}" hint-placeholder-val="{{ false }}">
@@ -411,6 +420,7 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 <div style="display:flex;align-items:center;gap:11px;padding:12px 15px 0;flex:none">
 <span style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:0.13em;color:#A2593A;white-space:nowrap">COURSE FINDER</span>
 <span style="font-size:11.5px;color:#8F8779">{{ finderCount }}</span>
+<input value="{{ q }}" sc-camel-on-change="{{ onQ }}" sc-camel-on-input="{{ onQ }}" placeholder="Type to filter…" style="flex:1;min-width:120px;max-width:320px;background:#FDFBF6;border:1px solid #E4DED0;border-radius:6px;padding:5px 9px;font-family:'Instrument Sans',system-ui,sans-serif;font-size:12px;color:#1B1916">
 <button sc-camel-on-click="{{ clearFilters }}" style="margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;color:#A9A192;padding:3px 5px">RESET</button>
 <button sc-camel-on-click="{{ closeSearch }}" style="display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;color:#7E3F22;background:#F1E3D8;border:1px solid #DFC2AC;border-radius:5px;padding:4px 8px" style-hover="background:#E9D6C6"><span>CLOSE</span><span style="font-size:11px;line-height:1">✕</span></button>
 </div>
@@ -454,6 +464,7 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 </sc-if>
 </span>
 <span style="display:block;font-size:11.5px;color:#8F8779;margin-top:3px;text-align:left">{{ r.m }}</span>
+<span style="display:block;font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:0.05em;color:#A9A192;margin-top:3px;text-align:left">{{ r.offeredLabel }}</span>
 </span>
 <span style="{{ r.openStyle }}">{{ r.openLabel }}</span>
 </button>
@@ -549,6 +560,11 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 </div>
 </div>
 
+<div style="display:flex;align-items:center;gap:8px;margin:-2px 0 12px">
+<span style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:0.12em;color:#8F8779;border:1px solid #E4DED0;border-radius:5px;padding:3px 8px">READ ONLY</span>
+<span style="font-size:12.5px;color:#8F8779">This board mirrors your <button sc-camel-on-click="{{ goTimeline }}" style="color:#A2593A;font-weight:500">Semester plan</button> — drag, add, or remove courses there.</span>
+</div>
+
 <div style="{{ boardRowStyle }}">
 
 <div id="board-stack-wrap" style="flex:1;min-width:0;overflow-x:auto;padding-bottom:4px">
@@ -589,7 +605,7 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 </div>
 </sc-for>
 <sc-for list="{{ bPills }}" as="c" hint-placeholder-count="34">
-<button sc-camel-on-click="{{ c.click }}" sc-camel-on-mouse-enter="{{ c.enter }}" sc-camel-on-mouse-leave="{{ c.leave }}" style="{{ c.style }}">
+<button sc-camel-on-click="{{ c.click }}" sc-camel-on-mouse-enter="{{ c.enter }}" sc-camel-on-mouse-leave="{{ c.leave }}" title="Click for details · edit this course in the Semester plan" style="{{ c.style }}">
 <div style="display:flex;align-items:center;gap:7px;width:100%;flex:none;height:16px">
 <span style="{{ c.dotStyle }}"></span>
 <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:500;white-space:nowrap">{{ c.c }}</span>
@@ -600,9 +616,6 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 </div>
 <div style="font-size:11.5px;line-height:1.3;opacity:0.85;text-align:left;width:100%;flex:none;height:31px;overflow:hidden">{{ c.n }}</div>
 </button>
-</sc-for>
-<sc-for list="{{ bInserts }}" as="g" hint-placeholder-count="7">
-<div style="{{ g.style }}"><button style="{{ g.btnStyle }}">{{ g.label }}</button></div>
 </sc-for>
 </div>
 <button style="{{ addRowStyle }}">+ Add a term after {{ META.gradTerm }} (summer, study abroad, or a fifth year)</button>
@@ -1000,15 +1013,29 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 <div data-screen-label="Timeline" style="max-width:1180px;margin:0 auto;padding:34px 30px 90px">
 <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:30px;margin-bottom:24px">
 <div>
-<div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.13em;color:#8F8779;margin-bottom:11px">EIGHT TERMS · 120 CREDITS</div>
+<div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.13em;color:#8F8779;margin-bottom:11px">{{ termCountLabel }}</div>
 <h1 style="font-family:Newsreader,serif;font-size:34px;line-height:1.15;font-weight:400;margin:0 0 8px;letter-spacing:-0.015em">Your plan, term by term</h1>
-<p style="margin:0;font-size:14.5px;color:#5C554A;max-width:600px">Everything after Spring 2026 is a draft. Fall 2026 is where the missed prerequisite shows up — Data Structures has to wait a term.</p>
+<p style="margin:0;font-size:14.5px;color:#5C554A;max-width:600px">{{ planIntro }}</p>
 </div>
 <div style="flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:12px">
+<select value="{{ state.school }}" sc-camel-on-change="{{ onSchool }}" style="background:#FDFBF6;border:1px solid #E4DED0;border-radius:8px;padding:8px 15px;color:#1B1916;font-family:'Instrument Sans',system-ui,sans-serif;font-size:12.5px;font-weight:600;cursor:pointer;appearance:none;max-width:260px;text-overflow:ellipsis">
+<sc-for list="{{ schoolGroups }}" as="g" hint-placeholder-count="2">
+<optgroup label="{{ g.label }}">
+<sc-for list="{{ g.opts }}" as="o" hint-placeholder-count="4">
+<option value="{{ o.k }}">{{ o.label }}</option>
+</sc-for>
+</optgroup>
+</sc-for>
+</select>
+<div style="display:flex;align-items:center;gap:8px">
+<sc-if value="{{ hasEdits }}" hint-placeholder-val="{{ false }}">
+<button sc-camel-on-click="{{ resetEdits }}" style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;color:#7E3F22;background:#FAF0E7;border:1px solid #E6CDB8;border-radius:7px;padding:7px 11px">RESET PLAN</button>
+</sc-if>
 <div style="display:flex;gap:3px;background:#EDE7DA;border-radius:8px;padding:3px">
 <sc-for list="{{ tlTabs }}" as="t" hint-placeholder-count="3">
 <button sc-camel-on-click="{{ t.go }}" style="{{ t.style }}">{{ t.label }}</button>
 </sc-for>
+</div>
 </div>
 <div style="display:flex;gap:14px">
 <sc-for list="{{ legend }}" as="l" hint-placeholder-count="4">
@@ -1021,7 +1048,7 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 <sc-if value="{{ tlGrid }}" hint-placeholder-val="{{ true }}">
 <div style="display:flex;gap:12px;overflow-x:auto;padding-bottom:10px">
 <sc-for list="{{ terms }}" as="tm" hint-placeholder-count="8">
-<div style="{{ tm.colStyle }}">
+<div sc-camel-on-drag-over="{{ tm.dragOver }}" sc-camel-on-drop="{{ tm.drop }}" style="{{ tm.colStyle }}">
 <div style="padding:13px 14px 11px;border-bottom:1px solid #EFEADD">
 <div style="display:flex;align-items:baseline;justify-content:space-between">
 <span style="font-size:13px;font-weight:600">{{ tm.l }}</span>
@@ -1031,7 +1058,7 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 </div>
 <div style="padding:11px 11px 14px;display:flex;flex-direction:column;gap:7px">
 <sc-for list="{{ tm.courses }}" as="c" hint-placeholder-count="4">
-<div style="{{ c.chipStyle }}">
+<div draggable="true" sc-camel-on-drag-start="{{ c.dragStart }}" sc-camel-on-drag-end="{{ c.dragEnd }}" sc-camel-on-click="{{ c.swap }}" title="Drag to another term · click to replace" style="{{ c.chipStyle }}">
 <div style="display:flex;align-items:baseline;justify-content:space-between;gap:6px">
 <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:500">{{ c.c }}</span>
 <span style="font-family:'JetBrains Mono',monospace;font-size:9px;opacity:0.65">{{ c.cr }}</span>
@@ -1040,8 +1067,12 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 <sc-if value="{{ c.showNote }}" hint-placeholder-val="{{ false }}">
 <div style="font-family:'JetBrains Mono',monospace;font-size:9px;margin-top:5px;letter-spacing:0.04em">{{ c.note }}</div>
 </sc-if>
+<sc-if value="{{ c.showBad }}" hint-placeholder-val="{{ false }}">
+<div style="font-family:'JetBrains Mono',monospace;font-size:8.5px;margin-top:5px;letter-spacing:0.04em;color:#8C3A1E">NEEDS {{ c.badLabel }}</div>
+</sc-if>
 </div>
 </sc-for>
+<button sc-camel-on-click="{{ tm.addClick }}" style="{{ tm.addStyle }}">+ ADD COURSE</button>
 </div>
 </div>
 </sc-for>
@@ -1101,7 +1132,7 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 </sc-if>
 
 <div style="margin-top:26px;background:#FAF0E7;border:1px solid #E6CDB8;border-radius:10px;padding:18px 22px;display:flex;align-items:center;gap:20px">
-<div style="flex:1"><span style="font-size:14px;font-weight:500">Fall 2027 is an 18-credit term with four 300-level CS courses.</span> <span style="font-size:13.5px;color:#5C554A">That's the pressure point in this draft — a consequence of Data Structures starting a year late. Two of the three catch-up paths remove it.</span></div>
+<div style="flex:1"><span style="font-size:14px;font-weight:500">{{ pressureHead }}</span> <span style="font-size:13.5px;color:#5C554A">{{ pressureBody }}</span></div>
 <button sc-camel-on-click="{{ goPaths }}" style="flex:none;font-size:12.5px;color:#A2593A;font-weight:500">See alternatives →</button>
 </div>
 </div>
@@ -1300,6 +1331,50 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
 </div>
 </div>
 
+<sc-if value="{{ dragging }}" hint-placeholder-val="{{ false }}">
+<div style="position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:130;display:flex;align-items:center;gap:9px;background:#1B1916;color:#FDFBF6;border-radius:9px;padding:9px 15px;box-shadow:0 6px 20px rgba(27,25,22,0.28);pointer-events:none">
+<span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;color:#DFC2AC">DRAG</span>
+<span style="font-size:12.5px">Drop on a term to move it · drop anywhere else to remove it</span>
+</div>
+</sc-if>
+
+<sc-if value="{{ pickerOpen }}" hint-placeholder-val="{{ false }}">
+<div style="position:fixed;inset:0;background:rgba(27,25,22,0.28);z-index:120;display:flex;align-items:flex-start;justify-content:center;padding:64px 20px">
+<div style="width:100%;max-width:560px;max-height:calc(100vh - 128px);background:#FDFBF6;border:1px solid #E4DED0;border-radius:12px;box-shadow:0 18px 48px rgba(27,25,22,0.18);display:flex;flex-direction:column;overflow:hidden">
+<div style="padding:16px 18px 12px;border-bottom:1px solid #EFEADD;flex:none">
+<div style="display:flex;align-items:baseline;gap:10px">
+<span style="font-family:Newsreader,serif;font-size:19px;line-height:1.2">{{ pickerTitle }}</span>
+<span style="margin-left:auto;font-size:11.5px;color:#8F8779">{{ pickerCount }}</span>
+<button sc-camel-on-click="{{ closePicker }}" style="font-size:12px;color:#A9A192;border:1px solid #E4DED0;border-radius:5px;width:22px;height:22px">✕</button>
+</div>
+<div style="font-size:12.5px;color:#5C554A;margin-top:5px">{{ pickerSub }}</div>
+<input value="{{ pq }}" sc-camel-on-change="{{ onPq }}" sc-camel-on-input="{{ onPq }}" placeholder="Search by code, title, or requirement…" style="width:100%;margin-top:11px;background:#FFFFFF;border:1px solid #E4DED0;border-radius:7px;padding:9px 11px;font-family:'Instrument Sans',system-ui,sans-serif;font-size:13px;color:#1B1916">
+</div>
+<div style="flex:1;overflow-y:auto;padding:8px 10px 12px">
+<sc-for list="{{ pickerRows }}" as="r" hint-placeholder-count="8">
+<button sc-camel-on-click="{{ r.click }}" style="{{ r.rowStyle }}" style-hover="background:#F3EEE2">
+<span style="{{ r.dotStyle }}"></span>
+<span style="flex:1;min-width:0">
+<span style="display:flex;align-items:baseline;gap:9px;flex-wrap:wrap">
+<span style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;white-space:nowrap">{{ r.c }}</span>
+<span style="font-size:12.5px">{{ r.n }}</span>
+<span style="{{ r.availStyle }}">{{ r.availLabel }}</span>
+</span>
+<span style="display:block;font-family:'JetBrains Mono',monospace;font-size:9px;color:#8F8779;letter-spacing:0.06em;margin-top:3px">{{ r.metaLabel }}</span>
+<span style="display:block;font-size:11px;color:#8F8779;line-height:1.35;margin-top:3px">{{ r.m }}</span>
+</span>
+</button>
+</sc-for>
+</div>
+<sc-if value="{{ canRemove }}" hint-placeholder-val="{{ false }}">
+<div style="flex:none;border-top:1px solid #EFEADD;padding:10px 14px">
+<button sc-camel-on-click="{{ removePicked }}" style="font-size:12px;color:#8C3A1E">Remove this course from the term instead</button>
+</div>
+</sc-if>
+</div>
+</div>
+</sc-if>
+
 </x-dc>
 <script type="text/x-dc" data-dc-script="" data-props="{&quot;$preview&quot;:{&quot;width&quot;:1300,&quot;height&quot;:1000},&quot;defaultView&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;board&quot;,&quot;dashboard&quot;,&quot;timeline&quot;,&quot;map&quot;,&quot;paths&quot;],&quot;default&quot;:&quot;board&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Behavior&quot;},&quot;panelState&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;course&quot;,&quot;overview&quot;],&quot;default&quot;:&quot;course&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Behavior&quot;},&quot;detailLevel&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;calm&quot;,&quot;detailed&quot;],&quot;default&quot;:&quot;calm&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Behavior&quot;},&quot;showAdvisorNotes&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Behavior&quot;},&quot;timelineLayout&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;grid&quot;,&quot;river&quot;,&quot;gantt&quot;],&quot;default&quot;:&quot;grid&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Explorations&quot;},&quot;mapMode&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;graph&quot;,&quot;list&quot;],&quot;default&quot;:&quot;graph&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Explorations&quot;}}">
 class Component extends DCLogic {
@@ -1342,36 +1417,36 @@ class Component extends DCLogic {
   ],
 
   COURSES: [
-    {c:'CSCI-UA 2', n:'Intro to Computer Programming', cr:4, t:0, s:'done', tier:0, req:[], anti:[]},
-    {c:'MATH-UA 121', n:'Calculus I', cr:4, t:0, s:'done', tier:0, req:[], anti:['MATH-UA 131']},
-    {c:'EXPOS-UA 1', n:'Writing as Inquiry', cr:4, t:0, s:'done', gen:1},
-    {c:'FYSEM-UA 1', n:'First-Year Seminar', cr:4, t:0, s:'done', gen:1},
-    {c:'CSCI-UA 101', n:'Intro to Computer Science', cr:4, t:1, s:'done', tier:1, req:['CSCI-UA 2'], anti:[]},
-    {c:'CORE-UA 401', n:'Texts and Ideas', cr:4, t:1, s:'done', gen:1},
-    {c:'CORE-UA 550', n:'Cultures and Contexts', cr:4, t:1, s:'done', gen:1},
-    {c:'FREN-UA 1', n:'Elementary French I', cr:4, t:1, s:'done', gen:1},
-    {c:'CSCI-UA 102', n:'Data Structures', cr:4, t:2, s:'done', tier:2, req:['CSCI-UA 101'], anti:[]},
-    {c:'CORE-UA 201', n:'Physical Science', cr:4, t:2, s:'done', gen:1},
-    {c:'FREN-UA 2', n:'Elementary French II', cr:4, t:2, s:'done', gen:1},
-    {c:'CORE-UA 710', n:'Expressive Culture', cr:4, t:2, s:'done', gen:1},
-    {c:'CSCI-UA 201', n:'Computer Systems Organization', cr:4, t:3, s:'current', tier:3, req:['CSCI-UA 102'], anti:[]},
-    {c:'CORE-UA 301', n:'Life Science', cr:4, t:3, s:'current', gen:1},
-    {c:'FREN-UA 11', n:'Intermediate French I', cr:4, t:3, s:'current', gen:1},
-    {c:'CORE-UA 610', n:'Societies and the Social Sciences', cr:4, t:3, s:'current', gen:1},
-    {c:'MATH-UA 120', n:'Discrete Mathematics', cr:4, t:4, s:'todo', tier:1, req:[], anti:[], key:1},
-    {c:'CSCI-UA 202', n:'Operating Systems', cr:4, t:4, s:'plan', tier:4, req:['CSCI-UA 201'], anti:[]},
-    {c:'MATH-UA 140', n:'Linear Algebra', cr:4, t:4, s:'plan', tier:2, req:['MATH-UA 121'], anti:[]},
-    {c:'CSCI-UA 310', n:'Basic Algorithms', cr:4, t:4, s:'blocked', ghost:1, note:'DEFERRED — NEEDS MATH-UA 120 FIRST'},
-    {c:'CSCI-UA 310', n:'Basic Algorithms', cr:4, t:5, s:'plan', tier:3, req:['CSCI-UA 102','MATH-UA 120','MATH-UA 121'], anti:[]},
-    {c:'CSCI-UA 453', n:'Theory of Computation', cr:4, t:5, s:'plan', tier:4, req:['CSCI-UA 102','MATH-UA 120'], anti:[]},
-    {c:'CSCI-UA 479', n:'Data Management and Analysis', cr:4, t:5, s:'plan', tier:4, req:['CSCI-UA 102'], anti:[]},
-    {c:'CSCI-UA 473', n:'Fundamentals of Machine Learning', cr:4, t:6, s:'plan', tier:4, req:['CSCI-UA 310','MATH-UA 140'], anti:[]},
-    {c:'CSCI-UA 467', n:'Applied Internet Technology', cr:4, t:6, s:'plan', tier:4, req:['CSCI-UA 201'], anti:[]},
-    {c:'ELEC-UA 1', n:'Free Elective', cr:4, t:6, s:'plan', gen:1},
-    {c:'CSCI-UA 421', n:'Numerical Computing', cr:4, t:7, s:'plan', tier:4, req:['CSCI-UA 102','MATH-UA 140'], anti:[]},
-    {c:'CSCI-UA 480', n:'Special Topics: Computer Vision', cr:4, t:7, s:'plan', tier:4, req:['CSCI-UA 310'], anti:[]},
-    {c:'ELEC-UA 2', n:'Free Elective', cr:4, t:7, s:'plan', gen:1},
-    {c:'MATH-UA 131', n:'Mathematics for Economics I', cr:4, t:-1, s:'alt', tier:0, req:[], anti:['MATH-UA 121'], alt:1}
+    {c:'CSCI-UA 2', n:'Intro to Computer Programming', cr:4, t:0, s:'done', g:'major', tier:0, req:[], anti:[]},
+    {c:'MATH-UA 121', n:'Calculus I', cr:4, t:0, s:'done', g:'math', tier:0, req:[], anti:['MATH-UA 131']},
+    {c:'EXPOS-UA 1', n:'Writing as Inquiry', cr:4, t:0, s:'done', g:'huss', gen:1},
+    {c:'FYSEM-UA 1', n:'First-Year Seminar', cr:4, t:0, s:'done', g:'huss', gen:1},
+    {c:'CSCI-UA 101', n:'Intro to Computer Science', cr:4, t:1, s:'done', g:'major', tier:1, req:['CSCI-UA 2'], anti:[]},
+    {c:'CORE-UA 401', n:'Texts and Ideas', cr:4, t:1, s:'done', g:'huss', gen:1},
+    {c:'CORE-UA 550', n:'Cultures and Contexts', cr:4, t:1, s:'done', g:'huss', gen:1},
+    {c:'FREN-UA 1', n:'Elementary French I', cr:4, t:1, s:'done', g:'huss', gen:1},
+    {c:'CSCI-UA 102', n:'Data Structures', cr:4, t:2, s:'done', g:'major', tier:2, req:['CSCI-UA 101'], anti:[]},
+    {c:'CORE-UA 201', n:'Physical Science', cr:4, t:2, s:'done', g:'sci', gen:1},
+    {c:'FREN-UA 2', n:'Elementary French II', cr:4, t:2, s:'done', g:'huss', gen:1},
+    {c:'CORE-UA 710', n:'Expressive Culture', cr:4, t:2, s:'done', g:'huss', gen:1},
+    {c:'CSCI-UA 201', n:'Computer Systems Organization', cr:4, t:3, s:'current', g:'major', tier:3, req:['CSCI-UA 102'], anti:[]},
+    {c:'CORE-UA 301', n:'Life Science', cr:4, t:3, s:'current', g:'sci', gen:1},
+    {c:'FREN-UA 11', n:'Intermediate French I', cr:4, t:3, s:'current', g:'huss', gen:1},
+    {c:'CORE-UA 610', n:'Societies and the Social Sciences', cr:4, t:3, s:'current', g:'huss', gen:1},
+    {c:'MATH-UA 120', n:'Discrete Mathematics', cr:4, t:4, s:'todo', g:'math', tier:1, req:[], anti:[], key:1},
+    {c:'CSCI-UA 202', n:'Operating Systems', cr:4, t:4, s:'plan', g:'major', tier:4, req:['CSCI-UA 201'], anti:[]},
+    {c:'MATH-UA 140', n:'Linear Algebra', cr:4, t:4, s:'plan', g:'math', tier:2, req:['MATH-UA 121'], anti:[]},
+    {c:'CSCI-UA 310', n:'Basic Algorithms', cr:4, t:4, s:'blocked', g:'major', ghost:1, note:'DEFERRED — NEEDS MATH-UA 120 FIRST'},
+    {c:'CSCI-UA 310', n:'Basic Algorithms', cr:4, t:5, s:'plan', g:'major', tier:3, req:['CSCI-UA 102','MATH-UA 120','MATH-UA 121'], anti:[]},
+    {c:'CSCI-UA 453', n:'Theory of Computation', cr:4, t:5, s:'plan', g:'major', tier:4, req:['CSCI-UA 102','MATH-UA 120'], anti:[]},
+    {c:'CSCI-UA 479', n:'Data Management and Analysis', cr:4, t:5, s:'plan', g:'major', tier:4, req:['CSCI-UA 102'], anti:[]},
+    {c:'CSCI-UA 473', n:'Fundamentals of Machine Learning', cr:4, t:6, s:'plan', g:'major', tier:4, req:['CSCI-UA 310','MATH-UA 140'], anti:[]},
+    {c:'CSCI-UA 467', n:'Applied Internet Technology', cr:4, t:6, s:'plan', g:'major', tier:4, req:['CSCI-UA 201'], anti:[]},
+    {c:'ELEC-UA 1', n:'Free Elective', cr:4, t:6, s:'plan', g:'free', gen:1},
+    {c:'CSCI-UA 421', n:'Numerical Computing', cr:4, t:7, s:'plan', g:'major', tier:4, req:['CSCI-UA 102','MATH-UA 140'], anti:[]},
+    {c:'CSCI-UA 480', n:'Special Topics: Computer Vision', cr:4, t:7, s:'plan', g:'major', tier:4, req:['CSCI-UA 310'], anti:[]},
+    {c:'ELEC-UA 2', n:'Free Elective', cr:4, t:7, s:'plan', g:'free', gen:1},
+    {c:'MATH-UA 131', n:'Mathematics for Economics I', cr:4, t:-1, s:'alt', g:'math', tier:0, req:[], anti:['MATH-UA 121'], alt:1}
   ]
 
   },
@@ -1409,38 +1484,38 @@ class Component extends DCLogic {
   ],
 
   COURSES: [
-    {c:'MA-UY 1024', n:'Calculus I for Engineers', cr:4, t:0, s:'done', tier:0, req:[], anti:[]},
-    {c:'EG-UY 1004', n:'Introduction to Engineering and Design', cr:4, t:0, s:'done', tier:0, req:[], anti:[]},
-    {c:'EXPOS-UA 1', n:'Writing as Inquiry', cr:4, t:0, s:'done', gen:1},
-    {c:'MA-UY 1124', n:'Calculus II for Engineers', cr:4, t:1, s:'done', tier:1, req:['MA-UY 1024'], anti:[]},
-    {c:'PH-UY 1013', n:'Mechanics', cr:3, t:1, s:'done', tier:1, req:['MA-UY 1024'], anti:[]},
-    {c:'EXPOS-UA 22', n:'Advanced Writing for Engineers', cr:4, t:1, s:'done', gen:1},
-    {c:'ME-UY 1012', n:'Introduction to Mechanical Engineering', cr:2, t:1, s:'done', tier:1, req:[], anti:[]},
-    {c:'CM-UY 1003', n:'General Chemistry for Engineers', cr:3, t:0, s:'done', gen:1},
-    {c:'CS-UY 1113', n:'Problem Solving and Programming I', cr:3, t:1, s:'done', tier:1, req:[], anti:[]},
-    {c:'MA-UY 2034', n:'Linear Algebra and Differential Equations', cr:4, t:2, s:'done', tier:2, req:['MA-UY 1124'], anti:[]},
-    {c:'PH-UY 2023', n:'Electricity, Magnetism, & Fluids', cr:3, t:2, s:'done', tier:2, req:['PH-UY 1013'], anti:[]},
-    {c:'HUSS-UY 1', n:'Humanities & Social Sciences Elective', cr:4, t:2, s:'done', gen:1},
-    {c:'MA-UY 2114', n:'Calculus III: Multi-Dimensional Calculus', cr:4, t:3, s:'current', tier:2, req:['MA-UY 1124'], anti:[]},
-    {c:'ME-UY 2123', n:'Engineering Design Methods', cr:3, t:3, s:'current', tier:2, req:['EG-UY 1004'], anti:[]},
-    {c:'ME-UY 2813', n:'Introduction to Materials Science', cr:3, t:3, s:'current', tier:2, req:['CM-UY 1003'], anti:[]},
-    {c:'HUSS-UY 2', n:'Humanities & Social Sciences Elective', cr:4, t:3, s:'current', gen:1},
-    {c:'ME-UY 2213', n:'Statics', cr:3, t:4, s:'todo', tier:2, req:['PH-UY 1013','MA-UY 1124'], anti:[], key:1},
-    {c:'ME-UY 2223', n:'Dynamics', cr:3, t:4, s:'plan', tier:3, req:['ME-UY 2213'], anti:[]},
-    {c:'ME-UY 3333', n:'Thermodynamics', cr:3, t:4, s:'plan', tier:3, req:['PH-UY 1013','MA-UY 2034'], anti:[]},
-    {c:'ME-UY 3213', n:'Mechanics of Materials', cr:3, t:4, s:'blocked', ghost:1, note:'DEFERRED — NEEDS ME-UY 2213 FIRST'},
-    {c:'ME-UY 3213', n:'Mechanics of Materials', cr:3, t:5, s:'plan', tier:3, req:['ME-UY 2213'], anti:[]},
-    {c:'ME-UY 3313', n:'Fluid Mechanics', cr:3, t:5, s:'plan', tier:3, req:['ME-UY 2213','MA-UY 2114'], anti:[]},
-    {c:'ME-UY 3513', n:'Measurement Systems', cr:3, t:5, s:'plan', tier:3, req:['PH-UY 2023'], anti:[]},
-    {c:'ME-UY 3811', n:'Materials Science Laboratory', cr:1, t:5, s:'plan', gen:1},
-    {c:'ME-UY 3233', n:'Machine Design', cr:3, t:6, s:'plan', tier:4, req:['ME-UY 3213'], anti:[]},
-    {c:'ME-UY 3413', n:'Automatic Control', cr:3, t:6, s:'plan', tier:4, req:['ME-UY 2223','MA-UY 2034'], anti:[]},
-    {c:'ME-UY 4313', n:'Heat Transfer', cr:3, t:6, s:'plan', tier:4, req:['ME-UY 3313','ME-UY 3333'], anti:[]},
-    {c:'ME-UY 4103', n:'Senior Design I', cr:3, t:6, s:'plan', tier:4, req:['ME-UY 2123','ME-UY 3213'], anti:[]},
-    {c:'ME-UY 4214', n:'Finite Element Modeling, Design and Analysis', cr:4, t:7, s:'plan', tier:4, req:['ME-UY 3213'], anti:[]},
-    {c:'ME-UY 4113', n:'Senior Design II', cr:3, t:7, s:'plan', tier:4, req:['ME-UY 4103'], anti:[]},
-    {c:'HUSS-UY 3', n:'Humanities & Social Sciences Elective', cr:4, t:7, s:'plan', gen:1},
-    {c:'FREE-UY 1', n:'Free Elective', cr:3, t:7, s:'plan', gen:1}
+    {c:'MA-UY 1024', n:'Calculus I for Engineers', cr:4, t:0, s:'done', g:'math', tier:0, req:[], anti:[]},
+    {c:'EG-UY 1004', n:'Introduction to Engineering and Design', cr:4, t:0, s:'done', g:'major', tier:0, req:[], anti:[]},
+    {c:'EXPOS-UA 1', n:'Writing as Inquiry', cr:4, t:0, s:'done', g:'huss', gen:1},
+    {c:'MA-UY 1124', n:'Calculus II for Engineers', cr:4, t:1, s:'done', g:'math', tier:1, req:['MA-UY 1024'], anti:[]},
+    {c:'PH-UY 1013', n:'Mechanics', cr:3, t:1, s:'done', g:'sci', tier:1, req:['MA-UY 1024'], anti:[]},
+    {c:'EXPOS-UA 22', n:'Advanced Writing for Engineers', cr:4, t:1, s:'done', g:'huss', gen:1},
+    {c:'ME-UY 1012', n:'Introduction to Mechanical Engineering', cr:2, t:1, s:'done', g:'major', tier:1, req:[], anti:[]},
+    {c:'CM-UY 1003', n:'General Chemistry for Engineers', cr:3, t:0, s:'done', g:'sci', gen:1},
+    {c:'CS-UY 1113', n:'Problem Solving and Programming I', cr:3, t:1, s:'done', g:'major', tier:1, req:[], anti:[]},
+    {c:'MA-UY 2034', n:'Linear Algebra and Differential Equations', cr:4, t:2, s:'done', g:'math', tier:2, req:['MA-UY 1124'], anti:[]},
+    {c:'PH-UY 2023', n:'Electricity, Magnetism, & Fluids', cr:3, t:2, s:'done', g:'sci', tier:2, req:['PH-UY 1013'], anti:[]},
+    {c:'HUSS-UY 1', n:'Humanities & Social Sciences Elective', cr:4, t:2, s:'done', g:'huss', gen:1},
+    {c:'MA-UY 2114', n:'Calculus III: Multi-Dimensional Calculus', cr:4, t:3, s:'current', g:'math', tier:2, req:['MA-UY 1124'], anti:[]},
+    {c:'ME-UY 2123', n:'Engineering Design Methods', cr:3, t:3, s:'current', g:'major', tier:2, req:['EG-UY 1004'], anti:[]},
+    {c:'ME-UY 2813', n:'Introduction to Materials Science', cr:3, t:3, s:'current', g:'major', tier:2, req:['CM-UY 1003'], anti:[]},
+    {c:'HUSS-UY 2', n:'Humanities & Social Sciences Elective', cr:4, t:3, s:'current', g:'huss', gen:1},
+    {c:'ME-UY 2213', n:'Statics', cr:3, t:4, s:'todo', g:'major', tier:2, req:['PH-UY 1013','MA-UY 1124'], anti:[], key:1},
+    {c:'ME-UY 2223', n:'Dynamics', cr:3, t:4, s:'plan', g:'major', tier:3, req:['ME-UY 2213'], anti:[]},
+    {c:'ME-UY 3333', n:'Thermodynamics', cr:3, t:4, s:'plan', g:'major', tier:3, req:['PH-UY 1013','MA-UY 2034'], anti:[]},
+    {c:'ME-UY 3213', n:'Mechanics of Materials', cr:3, t:4, s:'blocked', g:'major', ghost:1, note:'DEFERRED — NEEDS ME-UY 2213 FIRST'},
+    {c:'ME-UY 3213', n:'Mechanics of Materials', cr:3, t:5, s:'plan', g:'major', tier:3, req:['ME-UY 2213'], anti:[]},
+    {c:'ME-UY 3313', n:'Fluid Mechanics', cr:3, t:5, s:'plan', g:'major', tier:3, req:['ME-UY 2213','MA-UY 2114'], anti:[]},
+    {c:'ME-UY 3513', n:'Measurement Systems', cr:3, t:5, s:'plan', g:'major', tier:3, req:['PH-UY 2023'], anti:[]},
+    {c:'ME-UY 3811', n:'Materials Science Laboratory', cr:1, t:5, s:'plan', g:'major', gen:1},
+    {c:'ME-UY 3233', n:'Machine Design', cr:3, t:6, s:'plan', g:'major', tier:4, req:['ME-UY 3213'], anti:[]},
+    {c:'ME-UY 3413', n:'Automatic Control', cr:3, t:6, s:'plan', g:'major', tier:4, req:['ME-UY 2223','MA-UY 2034'], anti:[]},
+    {c:'ME-UY 4313', n:'Heat Transfer', cr:3, t:6, s:'plan', g:'major', tier:4, req:['ME-UY 3313','ME-UY 3333'], anti:[]},
+    {c:'ME-UY 4103', n:'Senior Design I', cr:3, t:6, s:'plan', g:'major', tier:4, req:['ME-UY 2123','ME-UY 3213'], anti:[]},
+    {c:'ME-UY 4214', n:'Finite Element Modeling, Design and Analysis', cr:4, t:7, s:'plan', g:'major', tier:4, req:['ME-UY 3213'], anti:[]},
+    {c:'ME-UY 4113', n:'Senior Design II', cr:3, t:7, s:'plan', g:'major', tier:4, req:['ME-UY 4103'], anti:[]},
+    {c:'HUSS-UY 3', n:'Humanities & Social Sciences Elective', cr:4, t:7, s:'plan', g:'huss', gen:1},
+    {c:'FREE-UY 1', n:'Free Elective', cr:3, t:7, s:'plan', g:'free', gen:1}
   ]
 
   },
@@ -1478,37 +1553,37 @@ class Component extends DCLogic {
   ],
 
   COURSES: [
-    {c:'MA-UY 1024', n:'Calculus I for Engineers', cr:4, t:0, s:'done', tier:0, req:[], anti:[]},
-    {c:'EG-UY 1004', n:'Introduction to Engineering and Design', cr:4, t:0, s:'done', tier:0, req:[], anti:[]},
-    {c:'EXPOS-UA 1', n:'Writing as Inquiry', cr:4, t:0, s:'done', gen:1},
-    {c:'MA-UY 1124', n:'Calculus II for Engineers', cr:4, t:1, s:'done', tier:1, req:['MA-UY 1024'], anti:[]},
-    {c:'PH-UY 1013', n:'Mechanics', cr:3, t:1, s:'done', tier:1, req:['MA-UY 1024'], anti:[]},
-    {c:'EXPOS-UA 22', n:'Advanced Writing for Engineers', cr:4, t:1, s:'done', gen:1},
-    {c:'CE-UY 1002', n:'Intro to Civil and Environmental Engineering', cr:2, t:1, s:'done', tier:1, req:[], anti:[]},
-    {c:'CM-UY 1003', n:'General Chemistry for Engineers', cr:3, t:0, s:'done', gen:1},
-    {c:'CS-UY 1113', n:'Problem Solving and Programming I', cr:3, t:1, s:'done', tier:1, req:[], anti:[]},
-    {c:'MA-UY 2034', n:'Linear Algebra and Differential Equations', cr:4, t:2, s:'done', tier:2, req:['MA-UY 1124'], anti:[]},
-    {c:'PH-UY 2023', n:'Electricity, Magnetism, & Fluids', cr:3, t:2, s:'done', tier:2, req:['PH-UY 1013'], anti:[]},
-    {c:'CE-UY 2533', n:'Construction Project Management', cr:3, t:2, s:'done', tier:2, req:[], anti:[]},
-    {c:'HUSS-UY 1', n:'Humanities & Social Sciences Elective', cr:4, t:2, s:'done', gen:1},
-    {c:'MA-UY 2224', n:'Probability and Statistics for Engineers', cr:4, t:3, s:'current', tier:2, req:['MA-UY 1124'], anti:[]},
-    {c:'CE-UY 2213', n:'Fluid Mechanics and Hydraulics', cr:3, t:3, s:'current', tier:3, req:['PH-UY 1013'], anti:[]},
-    {c:'CE-UY 2343', n:'Transportation Engineering', cr:3, t:3, s:'current', tier:3, req:[], anti:[]},
-    {c:'HUSS-UY 2', n:'Humanities & Social Sciences Elective', cr:4, t:3, s:'current', gen:1},
-    {c:'CE-UY 2112', n:'Structural Statics', cr:2, t:4, s:'todo', tier:2, req:['PH-UY 1013','MA-UY 1124'], anti:[], key:1},
-    {c:'CE-UY 3223', n:'Fundamentals of Environmental Engineering', cr:3, t:4, s:'plan', tier:3, req:['CM-UY 1003'], anti:[]},
-    {c:'CE-UY 3013', n:'Computing in Civil Engineering', cr:3, t:4, s:'plan', tier:3, req:['CS-UY 1113'], anti:[]},
-    {c:'CE-UY 2143', n:'Analysis of Determinate Structures', cr:3, t:4, s:'blocked', ghost:1, note:'DEFERRED — NEEDS CE-UY 2112 FIRST'},
-    {c:'CE-UY 2122', n:'Strength of Materials', cr:2, t:5, s:'plan', tier:3, req:['CE-UY 2112'], anti:[]},
-    {c:'CE-UY 2143', n:'Analysis of Determinate Structures', cr:3, t:5, s:'plan', tier:3, req:['CE-UY 2112'], anti:[]},
-    {c:'CE-UY 3243', n:'Water Resources Engineering', cr:3, t:5, s:'plan', tier:3, req:['CE-UY 2213'], anti:[]},
-    {c:'CE-UY 3183', n:'Structural Engineering', cr:3, t:6, s:'plan', tier:4, req:['CE-UY 2143','CE-UY 2122'], anti:[]},
-    {c:'CE-UY 3153', n:'Geotechnical Engineering', cr:3, t:6, s:'plan', tier:4, req:['CE-UY 2122'], anti:[]},
-    {c:'CE-UY 3163', n:'Materials for Built Environment', cr:3, t:6, s:'plan', tier:4, req:['CE-UY 2122'], anti:[]},
-    {c:'CE-UY 4092', n:'Leadership, Business, Policy & Ethics', cr:2, t:7, s:'plan', tier:4, req:[], anti:[]},
-    {c:'CE-UY 4803', n:'Civil Engineering Capstone', cr:3, t:7, s:'plan', tier:4, req:['CE-UY 3183','CE-UY 3153'], anti:[]},
-    {c:'HUSS-UY 3', n:'Humanities & Social Sciences Elective', cr:4, t:7, s:'plan', gen:1},
-    {c:'FREE-UY 1', n:'Free Elective', cr:3, t:7, s:'plan', gen:1}
+    {c:'MA-UY 1024', n:'Calculus I for Engineers', cr:4, t:0, s:'done', g:'math', tier:0, req:[], anti:[]},
+    {c:'EG-UY 1004', n:'Introduction to Engineering and Design', cr:4, t:0, s:'done', g:'major', tier:0, req:[], anti:[]},
+    {c:'EXPOS-UA 1', n:'Writing as Inquiry', cr:4, t:0, s:'done', g:'huss', gen:1},
+    {c:'MA-UY 1124', n:'Calculus II for Engineers', cr:4, t:1, s:'done', g:'math', tier:1, req:['MA-UY 1024'], anti:[]},
+    {c:'PH-UY 1013', n:'Mechanics', cr:3, t:1, s:'done', g:'sci', tier:1, req:['MA-UY 1024'], anti:[]},
+    {c:'EXPOS-UA 22', n:'Advanced Writing for Engineers', cr:4, t:1, s:'done', g:'huss', gen:1},
+    {c:'CE-UY 1002', n:'Intro to Civil and Environmental Engineering', cr:2, t:1, s:'done', g:'major', tier:1, req:[], anti:[]},
+    {c:'CM-UY 1003', n:'General Chemistry for Engineers', cr:3, t:0, s:'done', g:'sci', gen:1},
+    {c:'CS-UY 1113', n:'Problem Solving and Programming I', cr:3, t:1, s:'done', g:'major', tier:1, req:[], anti:[]},
+    {c:'MA-UY 2034', n:'Linear Algebra and Differential Equations', cr:4, t:2, s:'done', g:'math', tier:2, req:['MA-UY 1124'], anti:[]},
+    {c:'PH-UY 2023', n:'Electricity, Magnetism, & Fluids', cr:3, t:2, s:'done', g:'sci', tier:2, req:['PH-UY 1013'], anti:[]},
+    {c:'CE-UY 2533', n:'Construction Project Management', cr:3, t:2, s:'done', g:'major', tier:2, req:[], anti:[]},
+    {c:'HUSS-UY 1', n:'Humanities & Social Sciences Elective', cr:4, t:2, s:'done', g:'huss', gen:1},
+    {c:'MA-UY 2224', n:'Probability and Statistics for Engineers', cr:4, t:3, s:'current', g:'math', tier:2, req:['MA-UY 1124'], anti:[]},
+    {c:'CE-UY 2213', n:'Fluid Mechanics and Hydraulics', cr:3, t:3, s:'current', g:'major', tier:3, req:['PH-UY 1013'], anti:[]},
+    {c:'CE-UY 2343', n:'Transportation Engineering', cr:3, t:3, s:'current', g:'major', tier:3, req:[], anti:[]},
+    {c:'HUSS-UY 2', n:'Humanities & Social Sciences Elective', cr:4, t:3, s:'current', g:'huss', gen:1},
+    {c:'CE-UY 2112', n:'Structural Statics', cr:2, t:4, s:'todo', g:'major', tier:2, req:['PH-UY 1013','MA-UY 1124'], anti:[], key:1},
+    {c:'CE-UY 3223', n:'Fundamentals of Environmental Engineering', cr:3, t:4, s:'plan', g:'major', tier:3, req:['CM-UY 1003'], anti:[]},
+    {c:'CE-UY 3013', n:'Computing in Civil Engineering', cr:3, t:4, s:'plan', g:'major', tier:3, req:['CS-UY 1113'], anti:[]},
+    {c:'CE-UY 2143', n:'Analysis of Determinate Structures', cr:3, t:4, s:'blocked', g:'major', ghost:1, note:'DEFERRED — NEEDS CE-UY 2112 FIRST'},
+    {c:'CE-UY 2122', n:'Strength of Materials', cr:2, t:5, s:'plan', g:'major', tier:3, req:['CE-UY 2112'], anti:[]},
+    {c:'CE-UY 2143', n:'Analysis of Determinate Structures', cr:3, t:5, s:'plan', g:'major', tier:3, req:['CE-UY 2112'], anti:[]},
+    {c:'CE-UY 3243', n:'Water Resources Engineering', cr:3, t:5, s:'plan', g:'major', tier:3, req:['CE-UY 2213'], anti:[]},
+    {c:'CE-UY 3183', n:'Structural Engineering', cr:3, t:6, s:'plan', g:'major', tier:4, req:['CE-UY 2143','CE-UY 2122'], anti:[]},
+    {c:'CE-UY 3153', n:'Geotechnical Engineering', cr:3, t:6, s:'plan', g:'major', tier:4, req:['CE-UY 2122'], anti:[]},
+    {c:'CE-UY 3163', n:'Materials for Built Environment', cr:3, t:6, s:'plan', g:'major', tier:4, req:['CE-UY 2122'], anti:[]},
+    {c:'CE-UY 4092', n:'Leadership, Business, Policy & Ethics', cr:2, t:7, s:'plan', g:'major', tier:4, req:[], anti:[]},
+    {c:'CE-UY 4803', n:'Civil Engineering Capstone', cr:3, t:7, s:'plan', g:'major', tier:4, req:['CE-UY 3183','CE-UY 3153'], anti:[]},
+    {c:'HUSS-UY 3', n:'Humanities & Social Sciences Elective', cr:4, t:7, s:'plan', g:'huss', gen:1},
+    {c:'FREE-UY 1', n:'Free Elective', cr:3, t:7, s:'plan', g:'free', gen:1}
   ]
 
   },
@@ -1546,34 +1621,34 @@ class Component extends DCLogic {
   ],
 
   COURSES: [
-    {c:'MA-UY 1024', n:'Calculus I for Engineers', cr:4, t:0, s:'done', tier:0, req:[], anti:[]},
-    {c:'CS-UY 1114', n:'Intro to Programming & Problem Solving', cr:4, t:0, s:'done', tier:0, req:[], anti:[]},
-    {c:'EG-UY 1004', n:'Introduction to Engineering and Design', cr:4, t:0, s:'done', tier:0, req:[], anti:[]},
-    {c:'EXPOS-UY 1', n:'Writing as Inquiry', cr:4, t:0, s:'done', gen:1},
-    {c:'MA-UY 1124', n:'Calculus II for Engineers', cr:4, t:1, s:'done', tier:1, req:['MA-UY 1024'], anti:[]},
-    {c:'PH-UY 1013', n:'Mechanics', cr:3, t:1, s:'done', tier:1, req:['MA-UY 1024'], anti:[]},
-    {c:'CS-UY 1134', n:'Data Structures and Algorithms', cr:4, t:1, s:'done', tier:1, req:['CS-UY 1114'], anti:[]},
-    {c:'ECE-UY 1002', n:'Intro to Electrical and Computer Engineering', cr:2, t:1, s:'done', tier:1, req:[], anti:[]},
-    {c:'MA-UY 2034', n:'Linear Algebra and Differential Equations', cr:4, t:2, s:'done', tier:2, req:['MA-UY 1124'], anti:[]},
-    {c:'PH-UY 2023', n:'Electricity, Magnetism, & Fluids', cr:3, t:2, s:'done', tier:2, req:['PH-UY 1013'], anti:[]},
-    {c:'CS-UY 2124', n:'Object Oriented Programming', cr:4, t:2, s:'done', tier:2, req:['CS-UY 1134'], anti:[]},
-    {c:'EXPOS-UY 22', n:'Advanced Writing for Engineers', cr:4, t:2, s:'done', gen:1},
-    {c:'MA-UY 2314', n:'Discrete Mathematics', cr:4, t:3, s:'current', tier:2, req:['MA-UY 1124'], anti:[]},
-    {c:'ECE-UY 2204', n:'Digital Logic and State Machine Design', cr:4, t:3, s:'current', tier:2, req:['ECE-UY 1002'], anti:[]},
-    {c:'MA-UY 2114', n:'Calculus III', cr:4, t:3, s:'current', tier:2, req:['MA-UY 1124'], anti:[]},
-    {c:'ECE-UY 2004', n:'Fundamentals of Electric Circuits', cr:4, t:4, s:'todo', tier:2, req:['PH-UY 2023','MA-UY 2034'], anti:[], key:1},
-    {c:'CS-UY 2214', n:'Computer Architecture and Organization', cr:4, t:4, s:'plan', tier:3, req:['CS-UY 2124','ECE-UY 2204'], anti:[]},
-    {c:'MA-UY 2224', n:'Probability and Statistics for Engineers', cr:4, t:4, s:'plan', tier:3, req:['MA-UY 1124'], anti:[]},
-    {c:'ECE-UY 3114', n:'Fundamentals of Electronics I', cr:4, t:4, s:'blocked', ghost:1, note:'DEFERRED — NEEDS ECE-UY 2004 FIRST'},
-    {c:'ECE-UY 3114', n:'Fundamentals of Electronics I', cr:4, t:5, s:'plan', tier:3, req:['ECE-UY 2004'], anti:[]},
-    {c:'ECE-UY 4144', n:'Intro to Embedded Systems Design', cr:4, t:5, s:'plan', tier:4, req:['ECE-UY 2204','CS-UY 2214'], anti:[]},
-    {c:'ECE-UY 4001', n:'ECE Professional Development & Presentation', cr:1, t:5, s:'plan', gen:1},
-    {c:'ECE-UY 4913', n:'Design Project I', cr:3, t:6, s:'plan', tier:4, req:['ECE-UY 4144','ECE-UY 3114'], anti:[]},
-    {c:'HUSS-UY 1', n:'Humanities & Social Sciences Elective', cr:4, t:6, s:'plan', gen:1},
-    {c:'FREE-UY 1', n:'Free Elective', cr:4, t:6, s:'plan', gen:1},
-    {c:'ECE-UY 4923', n:'Design Project II', cr:3, t:7, s:'plan', tier:4, req:['ECE-UY 4913'], anti:[]},
-    {c:'HUSS-UY 2', n:'Humanities & Social Sciences Elective', cr:4, t:7, s:'plan', gen:1},
-    {c:'FREE-UY 2', n:'Free Elective', cr:4, t:7, s:'plan', gen:1}
+    {c:'MA-UY 1024', n:'Calculus I for Engineers', cr:4, t:0, s:'done', g:'math', tier:0, req:[], anti:[]},
+    {c:'CS-UY 1114', n:'Intro to Programming & Problem Solving', cr:4, t:0, s:'done', g:'major', tier:0, req:[], anti:[]},
+    {c:'EG-UY 1004', n:'Introduction to Engineering and Design', cr:4, t:0, s:'done', g:'major', tier:0, req:[], anti:[]},
+    {c:'EXPOS-UY 1', n:'Writing as Inquiry', cr:4, t:0, s:'done', g:'huss', gen:1},
+    {c:'MA-UY 1124', n:'Calculus II for Engineers', cr:4, t:1, s:'done', g:'math', tier:1, req:['MA-UY 1024'], anti:[]},
+    {c:'PH-UY 1013', n:'Mechanics', cr:3, t:1, s:'done', g:'sci', tier:1, req:['MA-UY 1024'], anti:[]},
+    {c:'CS-UY 1134', n:'Data Structures and Algorithms', cr:4, t:1, s:'done', g:'major', tier:1, req:['CS-UY 1114'], anti:[]},
+    {c:'ECE-UY 1002', n:'Intro to Electrical and Computer Engineering', cr:2, t:1, s:'done', g:'major', tier:1, req:[], anti:[]},
+    {c:'MA-UY 2034', n:'Linear Algebra and Differential Equations', cr:4, t:2, s:'done', g:'math', tier:2, req:['MA-UY 1124'], anti:[]},
+    {c:'PH-UY 2023', n:'Electricity, Magnetism, & Fluids', cr:3, t:2, s:'done', g:'sci', tier:2, req:['PH-UY 1013'], anti:[]},
+    {c:'CS-UY 2124', n:'Object Oriented Programming', cr:4, t:2, s:'done', g:'major', tier:2, req:['CS-UY 1134'], anti:[]},
+    {c:'EXPOS-UY 22', n:'Advanced Writing for Engineers', cr:4, t:2, s:'done', g:'huss', gen:1},
+    {c:'MA-UY 2314', n:'Discrete Mathematics', cr:4, t:3, s:'current', g:'math', tier:2, req:['MA-UY 1124'], anti:[]},
+    {c:'ECE-UY 2204', n:'Digital Logic and State Machine Design', cr:4, t:3, s:'current', g:'major', tier:2, req:['ECE-UY 1002'], anti:[]},
+    {c:'MA-UY 2114', n:'Calculus III', cr:4, t:3, s:'current', g:'math', tier:2, req:['MA-UY 1124'], anti:[]},
+    {c:'ECE-UY 2004', n:'Fundamentals of Electric Circuits', cr:4, t:4, s:'todo', g:'major', tier:2, req:['PH-UY 2023','MA-UY 2034'], anti:[], key:1},
+    {c:'CS-UY 2214', n:'Computer Architecture and Organization', cr:4, t:4, s:'plan', g:'major', tier:3, req:['CS-UY 2124','ECE-UY 2204'], anti:[]},
+    {c:'MA-UY 2224', n:'Probability and Statistics for Engineers', cr:4, t:4, s:'plan', g:'math', tier:3, req:['MA-UY 1124'], anti:[]},
+    {c:'ECE-UY 3114', n:'Fundamentals of Electronics I', cr:4, t:4, s:'blocked', g:'major', ghost:1, note:'DEFERRED — NEEDS ECE-UY 2004 FIRST'},
+    {c:'ECE-UY 3114', n:'Fundamentals of Electronics I', cr:4, t:5, s:'plan', g:'major', tier:3, req:['ECE-UY 2004'], anti:[]},
+    {c:'ECE-UY 4144', n:'Intro to Embedded Systems Design', cr:4, t:5, s:'plan', g:'major', tier:4, req:['ECE-UY 2204','CS-UY 2214'], anti:[]},
+    {c:'ECE-UY 4001', n:'ECE Professional Development & Presentation', cr:1, t:5, s:'plan', g:'major', gen:1},
+    {c:'ECE-UY 4913', n:'Design Project I', cr:3, t:6, s:'plan', g:'major', tier:4, req:['ECE-UY 4144','ECE-UY 3114'], anti:[]},
+    {c:'HUSS-UY 1', n:'Humanities & Social Sciences Elective', cr:4, t:6, s:'plan', g:'huss', gen:1},
+    {c:'FREE-UY 1', n:'Free Elective', cr:4, t:6, s:'plan', g:'free', gen:1},
+    {c:'ECE-UY 4923', n:'Design Project II', cr:3, t:7, s:'plan', g:'major', tier:4, req:['ECE-UY 4913'], anti:[]},
+    {c:'HUSS-UY 2', n:'Humanities & Social Sciences Elective', cr:4, t:7, s:'plan', g:'huss', gen:1},
+    {c:'FREE-UY 2', n:'Free Elective', cr:4, t:7, s:'plan', g:'free', gen:1}
   ]
 
   },
@@ -1611,34 +1686,34 @@ class Component extends DCLogic {
   ],
 
   COURSES: [
-    {c:'MA-UY 1024', n:'Calculus I for Engineers', cr:4, t:0, s:'done', tier:0, req:[], anti:[]},
-    {c:'CS-UY 1114', n:'Intro to Programming & Problem Solving', cr:4, t:0, s:'done', tier:0, req:[], anti:[]},
-    {c:'EG-UY 1004', n:'Introduction to Engineering and Design', cr:4, t:0, s:'done', tier:0, req:[], anti:[]},
-    {c:'EXPOS-UY 1', n:'Writing as Inquiry', cr:4, t:0, s:'done', gen:1},
-    {c:'MA-UY 1124', n:'Calculus II for Engineers', cr:4, t:1, s:'done', tier:1, req:['MA-UY 1024'], anti:[]},
-    {c:'PH-UY 1013', n:'Mechanics', cr:3, t:1, s:'done', tier:1, req:['MA-UY 1024'], anti:[]},
-    {c:'ECE-UY 1002', n:'Intro to Electrical and Computer Engineering', cr:2, t:1, s:'done', tier:1, req:[], anti:[]},
-    {c:'EXPOS-UY 22', n:'Advanced Writing for Engineers', cr:4, t:1, s:'done', gen:1},
-    {c:'PH-UY 2023', n:'Electricity, Magnetism, & Fluids', cr:3, t:2, s:'done', tier:2, req:['PH-UY 1013'], anti:[]},
-    {c:'ECE-UY 2204', n:'Digital Logic and State Machine Design', cr:4, t:2, s:'done', tier:2, req:['ECE-UY 1002'], anti:[]},
-    {c:'MA-UY 1044', n:'Linear Algebra', cr:4, t:2, s:'done', tier:2, req:['MA-UY 1124'], anti:[]},
-    {c:'HUSS-UY 1', n:'Humanities & Social Sciences Elective', cr:4, t:2, s:'done', gen:1},
-    {c:'MA-UY 2114', n:'Calculus III: Multi-Dimensional Calculus', cr:4, t:3, s:'current', tier:2, req:['MA-UY 1124'], anti:[]},
-    {c:'CS-UY 2163', n:'Introduction to Programming in C', cr:3, t:3, s:'current', tier:2, req:['CS-UY 1114'], anti:[]},
-    {c:'ECE-UY 2233', n:'Introduction to Probability', cr:3, t:3, s:'current', tier:3, req:['MA-UY 1124'], anti:[]},
-    {c:'HUSS-UY 2', n:'Humanities & Social Sciences Elective', cr:4, t:3, s:'current', gen:1},
-    {c:'ECE-UY 2004', n:'Fundamentals of Electric Circuits', cr:4, t:4, s:'todo', tier:2, req:['PH-UY 2023','MA-UY 1044'], anti:[], key:1},
-    {c:'MA-UY 4204', n:'Ordinary Differential Equations', cr:4, t:4, s:'plan', tier:3, req:['MA-UY 2114'], anti:[]},
-    {c:'ECE-UY 4001', n:'ECE Professional Development & Presentation', cr:1, t:4, s:'plan', gen:1},
-    {c:'ECE-UY 3114', n:'Fundamentals of Electronics I', cr:4, t:4, s:'blocked', ghost:1, note:'DEFERRED — NEEDS ECE-UY 2004 FIRST'},
-    {c:'ECE-UY 3114', n:'Fundamentals of Electronics I', cr:4, t:5, s:'plan', tier:3, req:['ECE-UY 2004'], anti:[]},
-    {c:'ECE-UY 3054', n:'Signals and Systems', cr:4, t:5, s:'plan', tier:3, req:['ECE-UY 2004','MA-UY 4204'], anti:[]},
-    {c:'ECE-UY 3604', n:'Electromagnetic Waves', cr:4, t:6, s:'plan', tier:4, req:['PH-UY 2023','MA-UY 2114'], anti:[]},
-    {c:'ECE-UY 4913', n:'Design Project I', cr:3, t:6, s:'plan', tier:4, req:['ECE-UY 3114','ECE-UY 3054'], anti:[]},
-    {c:'HUSS-UY 3', n:'Humanities & Social Sciences Elective', cr:4, t:6, s:'plan', gen:1},
-    {c:'ECE-UY 4923', n:'Design Project II', cr:3, t:7, s:'plan', tier:4, req:['ECE-UY 4913'], anti:[]},
-    {c:'HUSS-UY 4', n:'Humanities & Social Sciences Elective', cr:4, t:7, s:'plan', gen:1},
-    {c:'FREE-UY 1', n:'Free Elective', cr:4, t:7, s:'plan', gen:1}
+    {c:'MA-UY 1024', n:'Calculus I for Engineers', cr:4, t:0, s:'done', g:'math', tier:0, req:[], anti:[]},
+    {c:'CS-UY 1114', n:'Intro to Programming & Problem Solving', cr:4, t:0, s:'done', g:'major', tier:0, req:[], anti:[]},
+    {c:'EG-UY 1004', n:'Introduction to Engineering and Design', cr:4, t:0, s:'done', g:'major', tier:0, req:[], anti:[]},
+    {c:'EXPOS-UY 1', n:'Writing as Inquiry', cr:4, t:0, s:'done', g:'huss', gen:1},
+    {c:'MA-UY 1124', n:'Calculus II for Engineers', cr:4, t:1, s:'done', g:'math', tier:1, req:['MA-UY 1024'], anti:[]},
+    {c:'PH-UY 1013', n:'Mechanics', cr:3, t:1, s:'done', g:'sci', tier:1, req:['MA-UY 1024'], anti:[]},
+    {c:'ECE-UY 1002', n:'Intro to Electrical and Computer Engineering', cr:2, t:1, s:'done', g:'major', tier:1, req:[], anti:[]},
+    {c:'EXPOS-UY 22', n:'Advanced Writing for Engineers', cr:4, t:1, s:'done', g:'huss', gen:1},
+    {c:'PH-UY 2023', n:'Electricity, Magnetism, & Fluids', cr:3, t:2, s:'done', g:'sci', tier:2, req:['PH-UY 1013'], anti:[]},
+    {c:'ECE-UY 2204', n:'Digital Logic and State Machine Design', cr:4, t:2, s:'done', g:'major', tier:2, req:['ECE-UY 1002'], anti:[]},
+    {c:'MA-UY 1044', n:'Linear Algebra', cr:4, t:2, s:'done', g:'math', tier:2, req:['MA-UY 1124'], anti:[]},
+    {c:'HUSS-UY 1', n:'Humanities & Social Sciences Elective', cr:4, t:2, s:'done', g:'huss', gen:1},
+    {c:'MA-UY 2114', n:'Calculus III: Multi-Dimensional Calculus', cr:4, t:3, s:'current', g:'math', tier:2, req:['MA-UY 1124'], anti:[]},
+    {c:'CS-UY 2163', n:'Introduction to Programming in C', cr:3, t:3, s:'current', g:'major', tier:2, req:['CS-UY 1114'], anti:[]},
+    {c:'ECE-UY 2233', n:'Introduction to Probability', cr:3, t:3, s:'current', g:'math', tier:3, req:['MA-UY 1124'], anti:[]},
+    {c:'HUSS-UY 2', n:'Humanities & Social Sciences Elective', cr:4, t:3, s:'current', g:'huss', gen:1},
+    {c:'ECE-UY 2004', n:'Fundamentals of Electric Circuits', cr:4, t:4, s:'todo', g:'major', tier:2, req:['PH-UY 2023','MA-UY 1044'], anti:[], key:1},
+    {c:'MA-UY 4204', n:'Ordinary Differential Equations', cr:4, t:4, s:'plan', g:'math', tier:3, req:['MA-UY 2114'], anti:[]},
+    {c:'ECE-UY 4001', n:'ECE Professional Development & Presentation', cr:1, t:4, s:'plan', g:'major', gen:1},
+    {c:'ECE-UY 3114', n:'Fundamentals of Electronics I', cr:4, t:4, s:'blocked', g:'major', ghost:1, note:'DEFERRED — NEEDS ECE-UY 2004 FIRST'},
+    {c:'ECE-UY 3114', n:'Fundamentals of Electronics I', cr:4, t:5, s:'plan', g:'major', tier:3, req:['ECE-UY 2004'], anti:[]},
+    {c:'ECE-UY 3054', n:'Signals and Systems', cr:4, t:5, s:'plan', g:'major', tier:3, req:['ECE-UY 2004','MA-UY 4204'], anti:[]},
+    {c:'ECE-UY 3604', n:'Electromagnetic Waves', cr:4, t:6, s:'plan', g:'major', tier:4, req:['PH-UY 2023','MA-UY 2114'], anti:[]},
+    {c:'ECE-UY 4913', n:'Design Project I', cr:3, t:6, s:'plan', g:'major', tier:4, req:['ECE-UY 3114','ECE-UY 3054'], anti:[]},
+    {c:'HUSS-UY 3', n:'Humanities & Social Sciences Elective', cr:4, t:6, s:'plan', g:'huss', gen:1},
+    {c:'ECE-UY 4923', n:'Design Project II', cr:3, t:7, s:'plan', g:'major', tier:4, req:['ECE-UY 4913'], anti:[]},
+    {c:'HUSS-UY 4', n:'Humanities & Social Sciences Elective', cr:4, t:7, s:'plan', g:'huss', gen:1},
+    {c:'FREE-UY 1', n:'Free Elective', cr:4, t:7, s:'plan', g:'free', gen:1}
   ]
 
   },
@@ -1675,35 +1750,35 @@ class Component extends DCLogic {
   ],
 
   COURSES: [
-    {c:'MA-UY 1024', n:'Calculus I for Engineers', cr:4, t:0, s:'done', tier:0, req:[], anti:[]},
-    {c:'EG-UY 1004', n:'Introduction to Engineering and Design', cr:4, t:0, s:'done', tier:0, req:[], anti:[]},
-    {c:'EXPOS-UA 1', n:'Writing as Inquiry', cr:4, t:0, s:'done', gen:1},
-    {c:'MA-UY 1124', n:'Calculus II for Engineers', cr:4, t:1, s:'done', tier:1, req:['MA-UY 1024'], anti:[]},
-    {c:'PH-UY 1013', n:'Mechanics', cr:3, t:1, s:'done', tier:1, req:['MA-UY 1024'], anti:[]},
-    {c:'EXPOS-UA 22', n:'Advanced Writing for Engineers', cr:4, t:1, s:'done', gen:1},
-    {c:'CBE-UY 1002', n:'Introduction to CBE', cr:2, t:1, s:'done', tier:1, req:[], anti:[]},
-    {c:'CM-UY 1003', n:'General Chemistry for Engineers', cr:3, t:0, s:'done', tier:0, req:[], anti:[]},
-    {c:'BMS-UY 1003', n:'Introduction to Cell and Molecular Biology', cr:3, t:1, s:'done', tier:1, req:[], anti:[]},
-    {c:'CM-UY 2213', n:'Organic Chemistry I', cr:3, t:2, s:'done', tier:2, req:['CM-UY 1003'], anti:[]},
-    {c:'MA-UY 2034', n:'Linear Algebra and Differential Equations', cr:4, t:2, s:'done', tier:2, req:['MA-UY 1124'], anti:[]},
-    {c:'PH-UY 2023', n:'Electricity, Magnetism, & Fluids', cr:3, t:2, s:'done', tier:2, req:['PH-UY 1013'], anti:[]},
-    {c:'CM-UY 2223', n:'Organic Chemistry II', cr:3, t:3, s:'current', tier:3, req:['CM-UY 2213'], anti:[]},
-    {c:'CM-UY 3714', n:'Physical Chemistry I', cr:4, t:3, s:'current', tier:3, req:['CM-UY 1003','MA-UY 1124'], anti:[]},
-    {c:'MA-UY 2114', n:'Calculus III', cr:4, t:3, s:'current', tier:2, req:['MA-UY 1124'], anti:[]},
-    {c:'CBE-UY 2233', n:'Chemical Engineering Computation', cr:3, t:3, s:'current', tier:2, req:['MA-UY 2034'], anti:[]},
-    {c:'CBE-UY 2124', n:'Analysis of Chemical and Biomolecular Processes', cr:4, t:4, s:'todo', tier:2, req:['CM-UY 1003','MA-UY 1124'], anti:[], key:1},
-    {c:'CBE-UY 3173', n:'Polymeric Materials', cr:3, t:4, s:'plan', tier:3, req:['CM-UY 2213'], anti:[]},
-    {c:'HUSS-UY 1', n:'Humanities & Social Sciences Elective', cr:4, t:4, s:'plan', gen:1},
-    {c:'CBE-UY 3153', n:'Thermodynamics', cr:3, t:4, s:'blocked', ghost:1, note:'DEFERRED — NEEDS CBE-UY 2124 FIRST'},
-    {c:'CBE-UY 3153', n:'Thermodynamics', cr:3, t:5, s:'plan', tier:3, req:['CBE-UY 2124'], anti:[]},
-    {c:'CBE-UY 3313', n:'Heat and Mass Transport', cr:3, t:5, s:'plan', tier:3, req:['CBE-UY 2124','MA-UY 2114'], anti:[]},
-    {c:'CBE-UY 3323', n:'Fluid Mechanics', cr:3, t:5, s:'plan', tier:3, req:['CBE-UY 2124'], anti:[]},
-    {c:'CBE-UY 3233', n:'Separations', cr:3, t:6, s:'plan', tier:4, req:['CBE-UY 3153','CBE-UY 3313'], anti:[]},
-    {c:'CBE-UY 3223', n:'Kinetics and Reactor Design', cr:3, t:6, s:'plan', tier:4, req:['CBE-UY 3153'], anti:[]},
-    {c:'CBE-UY 4143', n:'Process Dynamics and Control', cr:3, t:6, s:'plan', tier:4, req:['CBE-UY 3313'], anti:[]},
-    {c:'CBE-UY 4113', n:'Engineering Laboratory I', cr:3, t:7, s:'plan', tier:4, req:['CBE-UY 3313'], anti:[]},
-    {c:'CBE-UY 4163', n:'Process Design I', cr:3, t:7, s:'plan', tier:4, req:['CBE-UY 3233','CBE-UY 3223'], anti:[]},
-    {c:'HUSS-UY 2', n:'Humanities & Social Sciences Elective', cr:4, t:7, s:'plan', gen:1}
+    {c:'MA-UY 1024', n:'Calculus I for Engineers', cr:4, t:0, s:'done', g:'math', tier:0, req:[], anti:[]},
+    {c:'EG-UY 1004', n:'Introduction to Engineering and Design', cr:4, t:0, s:'done', g:'major', tier:0, req:[], anti:[]},
+    {c:'EXPOS-UA 1', n:'Writing as Inquiry', cr:4, t:0, s:'done', g:'huss', gen:1},
+    {c:'MA-UY 1124', n:'Calculus II for Engineers', cr:4, t:1, s:'done', g:'math', tier:1, req:['MA-UY 1024'], anti:[]},
+    {c:'PH-UY 1013', n:'Mechanics', cr:3, t:1, s:'done', g:'sci', tier:1, req:['MA-UY 1024'], anti:[]},
+    {c:'EXPOS-UA 22', n:'Advanced Writing for Engineers', cr:4, t:1, s:'done', g:'huss', gen:1},
+    {c:'CBE-UY 1002', n:'Introduction to CBE', cr:2, t:1, s:'done', g:'major', tier:1, req:[], anti:[]},
+    {c:'CM-UY 1003', n:'General Chemistry for Engineers', cr:3, t:0, s:'done', g:'sci', tier:0, req:[], anti:[]},
+    {c:'BMS-UY 1003', n:'Introduction to Cell and Molecular Biology', cr:3, t:1, s:'done', g:'sci', tier:1, req:[], anti:[]},
+    {c:'CM-UY 2213', n:'Organic Chemistry I', cr:3, t:2, s:'done', g:'sci', tier:2, req:['CM-UY 1003'], anti:[]},
+    {c:'MA-UY 2034', n:'Linear Algebra and Differential Equations', cr:4, t:2, s:'done', g:'math', tier:2, req:['MA-UY 1124'], anti:[]},
+    {c:'PH-UY 2023', n:'Electricity, Magnetism, & Fluids', cr:3, t:2, s:'done', g:'sci', tier:2, req:['PH-UY 1013'], anti:[]},
+    {c:'CM-UY 2223', n:'Organic Chemistry II', cr:3, t:3, s:'current', g:'sci', tier:3, req:['CM-UY 2213'], anti:[]},
+    {c:'CM-UY 3714', n:'Physical Chemistry I', cr:4, t:3, s:'current', g:'sci', tier:3, req:['CM-UY 1003','MA-UY 1124'], anti:[]},
+    {c:'MA-UY 2114', n:'Calculus III', cr:4, t:3, s:'current', g:'math', tier:2, req:['MA-UY 1124'], anti:[]},
+    {c:'CBE-UY 2233', n:'Chemical Engineering Computation', cr:3, t:3, s:'current', g:'major', tier:2, req:['MA-UY 2034'], anti:[]},
+    {c:'CBE-UY 2124', n:'Analysis of Chemical and Biomolecular Processes', cr:4, t:4, s:'todo', g:'major', tier:2, req:['CM-UY 1003','MA-UY 1124'], anti:[], key:1},
+    {c:'CBE-UY 3173', n:'Polymeric Materials', cr:3, t:4, s:'plan', g:'major', tier:3, req:['CM-UY 2213'], anti:[]},
+    {c:'HUSS-UY 1', n:'Humanities & Social Sciences Elective', cr:4, t:4, s:'plan', g:'huss', gen:1},
+    {c:'CBE-UY 3153', n:'Thermodynamics', cr:3, t:4, s:'blocked', g:'major', ghost:1, note:'DEFERRED — NEEDS CBE-UY 2124 FIRST'},
+    {c:'CBE-UY 3153', n:'Thermodynamics', cr:3, t:5, s:'plan', g:'major', tier:3, req:['CBE-UY 2124'], anti:[]},
+    {c:'CBE-UY 3313', n:'Heat and Mass Transport', cr:3, t:5, s:'plan', g:'major', tier:3, req:['CBE-UY 2124','MA-UY 2114'], anti:[]},
+    {c:'CBE-UY 3323', n:'Fluid Mechanics', cr:3, t:5, s:'plan', g:'major', tier:3, req:['CBE-UY 2124'], anti:[]},
+    {c:'CBE-UY 3233', n:'Separations', cr:3, t:6, s:'plan', g:'major', tier:4, req:['CBE-UY 3153','CBE-UY 3313'], anti:[]},
+    {c:'CBE-UY 3223', n:'Kinetics and Reactor Design', cr:3, t:6, s:'plan', g:'major', tier:4, req:['CBE-UY 3153'], anti:[]},
+    {c:'CBE-UY 4143', n:'Process Dynamics and Control', cr:3, t:6, s:'plan', g:'major', tier:4, req:['CBE-UY 3313'], anti:[]},
+    {c:'CBE-UY 4113', n:'Engineering Laboratory I', cr:3, t:7, s:'plan', g:'major', tier:4, req:['CBE-UY 3313'], anti:[]},
+    {c:'CBE-UY 4163', n:'Process Design I', cr:3, t:7, s:'plan', g:'major', tier:4, req:['CBE-UY 3233','CBE-UY 3223'], anti:[]},
+    {c:'HUSS-UY 2', n:'Humanities & Social Sciences Elective', cr:4, t:7, s:'plan', g:'huss', gen:1}
   ]
 
   },
@@ -1741,36 +1816,36 @@ class Component extends DCLogic {
   ],
 
   COURSES: [
-    {c:'MA-UY 1024', n:'Calculus I for Engineers', cr:4, t:0, s:'done', tier:0, req:[], anti:[]},
-    {c:'EG-UY 1004', n:'Introduction to Engineering and Design', cr:4, t:0, s:'done', tier:0, req:[], anti:[]},
-    {c:'EXPOS-UA 1', n:'Writing as Inquiry', cr:4, t:0, s:'done', gen:1},
-    {c:'MA-UY 1124', n:'Calculus II for Engineers', cr:4, t:1, s:'done', tier:1, req:['MA-UY 1024'], anti:[]},
-    {c:'PH-UY 1013', n:'Mechanics', cr:3, t:1, s:'done', tier:1, req:['MA-UY 1024'], anti:[]},
-    {c:'EXPOS-UA 22', n:'Advanced Writing for Engineers', cr:4, t:1, s:'done', gen:1},
-    {c:'CE-UY 1002', n:'Intro to Civil and Environmental Engineering', cr:2, t:1, s:'done', tier:1, req:[], anti:[]},
-    {c:'CM-UY 1003', n:'General Chemistry for Engineers', cr:3, t:0, s:'done', tier:0, req:[], anti:[]},
-    {c:'CS-UY 1113', n:'Problem Solving and Programming I', cr:3, t:1, s:'done', tier:1, req:[], anti:[]},
-    {c:'MA-UY 2034', n:'Linear Algebra and Differential Equations', cr:4, t:2, s:'done', tier:2, req:['MA-UY 1124'], anti:[]},
-    {c:'PH-UY 2023', n:'Electricity, Magnetism, & Fluids', cr:3, t:2, s:'done', tier:2, req:['PH-UY 1013'], anti:[]},
-    {c:'BMS-UY 1003', n:'Introduction to Cell and Molecular Biology', cr:3, t:2, s:'done', tier:2, req:[], anti:[]},
-    {c:'URB-UY 2334', n:'Environmental Studies', cr:4, t:2, s:'done', gen:1},
-    {c:'MA-UY 2224', n:'Probability and Statistics for Engineers', cr:4, t:3, s:'current', tier:2, req:['MA-UY 1124'], anti:[]},
-    {c:'CE-UY 2112', n:'Structural Statics', cr:2, t:3, s:'current', tier:2, req:['PH-UY 1013'], anti:[]},
-    {c:'CE-UY 3223', n:'Fundamentals of Environmental Engineering', cr:3, t:3, s:'current', tier:3, req:['CM-UY 1003'], anti:[]},
-    {c:'URB-UY 3834', n:'Environmental Policy', cr:4, t:3, s:'current', gen:1},
-    {c:'CE-UY 2213', n:'Fluid Mechanics and Hydraulics', cr:3, t:4, s:'todo', tier:2, req:['PH-UY 1013','MA-UY 1124'], anti:[], key:1},
-    {c:'CE-UY 2253', n:'Hydrology', cr:3, t:4, s:'plan', tier:3, req:['CE-UY 2213'], anti:[]},
-    {c:'CE-UY 3013', n:'Computing in Civil Engineering', cr:3, t:4, s:'plan', tier:3, req:['CS-UY 1113'], anti:[]},
-    {c:'CE-UY 3243', n:'Water Resources Engineering', cr:3, t:4, s:'blocked', ghost:1, note:'DEFERRED — NEEDS CE-UY 2213 FIRST'},
-    {c:'CE-UY 3243', n:'Water Resources Engineering', cr:3, t:5, s:'plan', tier:3, req:['CE-UY 2213'], anti:[]},
-    {c:'CE-UY 3263', n:'Environmental Chemistry', cr:3, t:5, s:'plan', tier:3, req:['CE-UY 3223'], anti:[]},
-    {c:'CE-UY 3233', n:'Water and Wastewater Treatment', cr:3, t:5, s:'plan', tier:4, req:['CE-UY 3223'], anti:[]},
-    {c:'CE-UY 3273', n:'Air Pollution Control', cr:3, t:6, s:'plan', tier:4, req:['CE-UY 3223'], anti:[]},
-    {c:'CE-UY 4092', n:'Leadership, Business, Policy & Ethics', cr:2, t:6, s:'plan', gen:1},
-    {c:'HUSS-UY 1', n:'Humanities & Social Sciences Elective', cr:4, t:6, s:'plan', gen:1},
-    {c:'CE-UY 4863', n:'Environmental Engineering Capstone', cr:3, t:7, s:'plan', tier:4, req:['CE-UY 3243','CE-UY 3233'], anti:[]},
-    {c:'HUSS-UY 2', n:'Humanities & Social Sciences Elective', cr:4, t:7, s:'plan', gen:1},
-    {c:'FREE-UY 1', n:'Free Elective', cr:3, t:7, s:'plan', gen:1}
+    {c:'MA-UY 1024', n:'Calculus I for Engineers', cr:4, t:0, s:'done', g:'math', tier:0, req:[], anti:[]},
+    {c:'EG-UY 1004', n:'Introduction to Engineering and Design', cr:4, t:0, s:'done', g:'major', tier:0, req:[], anti:[]},
+    {c:'EXPOS-UA 1', n:'Writing as Inquiry', cr:4, t:0, s:'done', g:'huss', gen:1},
+    {c:'MA-UY 1124', n:'Calculus II for Engineers', cr:4, t:1, s:'done', g:'math', tier:1, req:['MA-UY 1024'], anti:[]},
+    {c:'PH-UY 1013', n:'Mechanics', cr:3, t:1, s:'done', g:'sci', tier:1, req:['MA-UY 1024'], anti:[]},
+    {c:'EXPOS-UA 22', n:'Advanced Writing for Engineers', cr:4, t:1, s:'done', g:'huss', gen:1},
+    {c:'CE-UY 1002', n:'Intro to Civil and Environmental Engineering', cr:2, t:1, s:'done', g:'major', tier:1, req:[], anti:[]},
+    {c:'CM-UY 1003', n:'General Chemistry for Engineers', cr:3, t:0, s:'done', g:'sci', tier:0, req:[], anti:[]},
+    {c:'CS-UY 1113', n:'Problem Solving and Programming I', cr:3, t:1, s:'done', g:'major', tier:1, req:[], anti:[]},
+    {c:'MA-UY 2034', n:'Linear Algebra and Differential Equations', cr:4, t:2, s:'done', g:'math', tier:2, req:['MA-UY 1124'], anti:[]},
+    {c:'PH-UY 2023', n:'Electricity, Magnetism, & Fluids', cr:3, t:2, s:'done', g:'sci', tier:2, req:['PH-UY 1013'], anti:[]},
+    {c:'BMS-UY 1003', n:'Introduction to Cell and Molecular Biology', cr:3, t:2, s:'done', g:'sci', tier:2, req:[], anti:[]},
+    {c:'URB-UY 2334', n:'Environmental Studies', cr:4, t:2, s:'done', g:'huss', gen:1},
+    {c:'MA-UY 2224', n:'Probability and Statistics for Engineers', cr:4, t:3, s:'current', g:'math', tier:2, req:['MA-UY 1124'], anti:[]},
+    {c:'CE-UY 2112', n:'Structural Statics', cr:2, t:3, s:'current', g:'major', tier:2, req:['PH-UY 1013'], anti:[]},
+    {c:'CE-UY 3223', n:'Fundamentals of Environmental Engineering', cr:3, t:3, s:'current', g:'major', tier:3, req:['CM-UY 1003'], anti:[]},
+    {c:'URB-UY 3834', n:'Environmental Policy', cr:4, t:3, s:'current', g:'huss', gen:1},
+    {c:'CE-UY 2213', n:'Fluid Mechanics and Hydraulics', cr:3, t:4, s:'todo', g:'major', tier:2, req:['PH-UY 1013','MA-UY 1124'], anti:[], key:1},
+    {c:'CE-UY 2253', n:'Hydrology', cr:3, t:4, s:'plan', g:'major', tier:3, req:['CE-UY 2213'], anti:[]},
+    {c:'CE-UY 3013', n:'Computing in Civil Engineering', cr:3, t:4, s:'plan', g:'major', tier:3, req:['CS-UY 1113'], anti:[]},
+    {c:'CE-UY 3243', n:'Water Resources Engineering', cr:3, t:4, s:'blocked', g:'major', ghost:1, note:'DEFERRED — NEEDS CE-UY 2213 FIRST'},
+    {c:'CE-UY 3243', n:'Water Resources Engineering', cr:3, t:5, s:'plan', g:'major', tier:3, req:['CE-UY 2213'], anti:[]},
+    {c:'CE-UY 3263', n:'Environmental Chemistry', cr:3, t:5, s:'plan', g:'major', tier:3, req:['CE-UY 3223'], anti:[]},
+    {c:'CE-UY 3233', n:'Water and Wastewater Treatment', cr:3, t:5, s:'plan', g:'major', tier:4, req:['CE-UY 3223'], anti:[]},
+    {c:'CE-UY 3273', n:'Air Pollution Control', cr:3, t:6, s:'plan', g:'major', tier:4, req:['CE-UY 3223'], anti:[]},
+    {c:'CE-UY 4092', n:'Leadership, Business, Policy & Ethics', cr:2, t:6, s:'plan', g:'major', gen:1},
+    {c:'HUSS-UY 1', n:'Humanities & Social Sciences Elective', cr:4, t:6, s:'plan', g:'huss', gen:1},
+    {c:'CE-UY 4863', n:'Environmental Engineering Capstone', cr:3, t:7, s:'plan', g:'major', tier:4, req:['CE-UY 3243','CE-UY 3233'], anti:[]},
+    {c:'HUSS-UY 2', n:'Humanities & Social Sciences Elective', cr:4, t:7, s:'plan', g:'huss', gen:1},
+    {c:'FREE-UY 1', n:'Free Elective', cr:3, t:7, s:'plan', g:'free', gen:1}
   ]
 
   },
@@ -1808,35 +1883,35 @@ class Component extends DCLogic {
   ],
 
   COURSES: [
-    {c:'15-112', n:'Fundamentals of Programming and CS', cr:12, t:0, s:'done', tier:0, req:[], anti:[]},
-    {c:'21-120', n:'Differential and Integral Calculus', cr:10, t:0, s:'done', tier:0, req:[], anti:[]},
-    {c:'76-101', n:'Interpretation and Argument', cr:9, t:0, s:'done', gen:1},
-    {c:'99-101', n:'Computing @ Carnegie Mellon', cr:3, t:0, s:'done', gen:1},
-    {c:'15-122', n:'Principles of Imperative Computation', cr:12, t:1, s:'done', tier:1, req:['15-112'], anti:[]},
-    {c:'21-122', n:'Integration and Approximation', cr:10, t:1, s:'done', tier:1, req:['21-120'], anti:[]},
-    {c:'15-128', n:'Freshman Immigration Course', cr:3, t:1, s:'done', gen:1},
-    {c:'79-104', n:'Global Histories', cr:9, t:1, s:'done', gen:1},
-    {c:'15-150', n:'Principles of Functional Programming', cr:12, t:2, s:'done', tier:2, req:['15-122'], anti:[]},
-    {c:'21-127', n:'Concepts of Mathematics', cr:12, t:2, s:'done', tier:1, req:[], anti:['15-151']},
-    {c:'33-121', n:'Physics I for Science Students', cr:12, t:2, s:'done', gen:1},
-    {c:'15-213', n:'Introduction to Computer Systems', cr:12, t:3, s:'current', tier:2, req:['15-122'], anti:[]},
-    {c:'15-210', n:'Parallel and Sequential Data Structures and Algorithms', cr:12, t:3, s:'current', tier:3, req:['15-150','15-122'], anti:[]},
-    {c:'76-270', n:'Writing for the Professions', cr:9, t:3, s:'current', gen:1},
-    {c:'15-251', n:'Great Ideas in Theoretical Computer Science', cr:12, t:4, s:'todo', tier:3, req:['15-122','21-127'], anti:[], key:1},
-    {c:'21-241', n:'Matrices and Linear Transformations', cr:11, t:4, s:'plan', tier:2, req:['21-122'], anti:[]},
-    {c:'09-105', n:'Introduction to Modern Chemistry I', cr:10, t:4, s:'plan', gen:1},
-    {c:'15-451', n:'Algorithm Design and Analysis', cr:12, t:4, s:'blocked', ghost:1, note:'DEFERRED — NEEDS 15-251 FIRST'},
-    {c:'15-451', n:'Algorithm Design and Analysis', cr:12, t:5, s:'plan', tier:4, req:['15-210','15-251'], anti:[]},
-    {c:'15-259', n:'Probability and Computing', cr:12, t:5, s:'plan', tier:3, req:['21-127'], anti:['36-218']},
-    {c:'73-102', n:'Principles of Microeconomics', cr:9, t:5, s:'plan', gen:1},
-    {c:'15-410', n:'Operating System Design and Implementation', cr:15, t:6, s:'plan', tier:4, req:['15-213','15-210'], anti:[]},
-    {c:'10-315', n:'Introduction to Machine Learning (SCS majors)', cr:12, t:6, s:'plan', tier:4, req:['21-241','15-259'], anti:[]},
-    {c:'76-271', n:'Minor Elective', cr:9, t:6, s:'plan', gen:1},
-    {c:'15-411', n:'Compiler Design', cr:15, t:7, s:'plan', tier:4, req:['15-213','15-210'], anti:[]},
-    {c:'15-455', n:'Undergraduate Complexity Theory', cr:12, t:7, s:'plan', tier:4, req:['15-251'], anti:[]},
-    {c:'15-462', n:'Computer Graphics', cr:12, t:7, s:'plan', tier:4, req:['15-213'], anti:[]},
-    {c:'15-151', n:'Mathematical Foundations for Computer Science', cr:12, t:-1, s:'alt', tier:1, req:[], anti:['21-127'], alt:1},
-    {c:'36-218', n:'Probability Theory for Computer Scientists', cr:9, t:-1, s:'alt', tier:3, req:['21-122'], anti:['15-259'], alt:1}
+    {c:'15-112', n:'Fundamentals of Programming and CS', cr:12, t:0, s:'done', g:'major', tier:0, req:[], anti:[]},
+    {c:'21-120', n:'Differential and Integral Calculus', cr:10, t:0, s:'done', g:'math', tier:0, req:[], anti:[]},
+    {c:'76-101', n:'Interpretation and Argument', cr:9, t:0, s:'done', g:'huss', gen:1},
+    {c:'99-101', n:'Computing @ Carnegie Mellon', cr:3, t:0, s:'done', g:'free', gen:1},
+    {c:'15-122', n:'Principles of Imperative Computation', cr:12, t:1, s:'done', g:'major', tier:1, req:['15-112'], anti:[]},
+    {c:'21-122', n:'Integration and Approximation', cr:10, t:1, s:'done', g:'math', tier:1, req:['21-120'], anti:[]},
+    {c:'15-128', n:'Freshman Immigration Course', cr:3, t:1, s:'done', g:'major', gen:1},
+    {c:'79-104', n:'Global Histories', cr:9, t:1, s:'done', g:'huss', gen:1},
+    {c:'15-150', n:'Principles of Functional Programming', cr:12, t:2, s:'done', g:'major', tier:2, req:['15-122'], anti:[]},
+    {c:'21-127', n:'Concepts of Mathematics', cr:12, t:2, s:'done', g:'math', tier:1, req:[], anti:['15-151']},
+    {c:'33-121', n:'Physics I for Science Students', cr:12, t:2, s:'done', g:'sci', gen:1},
+    {c:'15-213', n:'Introduction to Computer Systems', cr:12, t:3, s:'current', g:'major', tier:2, req:['15-122'], anti:[]},
+    {c:'15-210', n:'Parallel and Sequential Data Structures and Algorithms', cr:12, t:3, s:'current', g:'major', tier:3, req:['15-150','15-122'], anti:[]},
+    {c:'76-270', n:'Writing for the Professions', cr:9, t:3, s:'current', g:'huss', gen:1},
+    {c:'15-251', n:'Great Ideas in Theoretical Computer Science', cr:12, t:4, s:'todo', g:'major', tier:3, req:['15-122','21-127'], anti:[], key:1},
+    {c:'21-241', n:'Matrices and Linear Transformations', cr:11, t:4, s:'plan', g:'math', tier:2, req:['21-122'], anti:[]},
+    {c:'09-105', n:'Introduction to Modern Chemistry I', cr:10, t:4, s:'plan', g:'sci', gen:1},
+    {c:'15-451', n:'Algorithm Design and Analysis', cr:12, t:4, s:'blocked', g:'major', ghost:1, note:'DEFERRED — NEEDS 15-251 FIRST'},
+    {c:'15-451', n:'Algorithm Design and Analysis', cr:12, t:5, s:'plan', g:'major', tier:4, req:['15-210','15-251'], anti:[]},
+    {c:'15-259', n:'Probability and Computing', cr:12, t:5, s:'plan', g:'math', tier:3, req:['21-127'], anti:['36-218']},
+    {c:'73-102', n:'Principles of Microeconomics', cr:9, t:5, s:'plan', g:'huss', gen:1},
+    {c:'15-410', n:'Operating System Design and Implementation', cr:15, t:6, s:'plan', g:'major', tier:4, req:['15-213','15-210'], anti:[]},
+    {c:'10-315', n:'Introduction to Machine Learning (SCS majors)', cr:12, t:6, s:'plan', g:'major', tier:4, req:['21-241','15-259'], anti:[]},
+    {c:'76-271', n:'Minor Elective', cr:9, t:6, s:'plan', g:'huss', gen:1},
+    {c:'15-411', n:'Compiler Design', cr:15, t:7, s:'plan', g:'major', tier:4, req:['15-213','15-210'], anti:[]},
+    {c:'15-455', n:'Undergraduate Complexity Theory', cr:12, t:7, s:'plan', g:'major', tier:4, req:['15-251'], anti:[]},
+    {c:'15-462', n:'Computer Graphics', cr:12, t:7, s:'plan', g:'major', tier:4, req:['15-213'], anti:[]},
+    {c:'15-151', n:'Mathematical Foundations for Computer Science', cr:12, t:-1, s:'alt', g:'math', tier:1, req:[], anti:['21-127'], alt:1},
+    {c:'36-218', n:'Probability Theory for Computer Scientists', cr:9, t:-1, s:'alt', g:'math', tier:3, req:['21-122'], anti:['15-259'], alt:1}
   ]
 
   },
@@ -1874,36 +1949,36 @@ class Component extends DCLogic {
   ],
 
   COURSES: [
-    {c:'21-120', n:'Differential and Integral Calculus', cr:10, t:0, s:'done', tier:0, req:[], anti:[]},
-    {c:'33-141', n:'Physics I for Engineering Students', cr:12, t:0, s:'done', tier:0, req:[], anti:[]},
-    {c:'76-101', n:'Interpretation and Argument', cr:9, t:0, s:'done', gen:1},
-    {c:'99-101', n:'Computing @ Carnegie Mellon', cr:3, t:0, s:'done', gen:1},
-    {c:'21-122', n:'Integration and Approximation', cr:10, t:1, s:'done', tier:1, req:['21-120'], anti:[]},
-    {c:'24-101', n:'Fundamentals of Mechanical Engineering', cr:12, t:1, s:'done', tier:1, req:['21-120'], anti:[]},
-    {c:'09-105', n:'Introduction to Modern Chemistry I', cr:10, t:1, s:'done', tier:1, req:[], anti:[]},
-    {c:'15-110', n:'Principles of Computing', cr:10, t:1, s:'done', tier:1, req:[], anti:[]},
-    {c:'21-259', n:'Calculus in Three Dimensions', cr:10, t:2, s:'done', tier:2, req:['21-122'], anti:[]},
-    {c:'33-142', n:'Physics II for Engineering Students', cr:12, t:2, s:'done', tier:2, req:['33-141'], anti:[]},
-    {c:'24-221', n:'Thermodynamics', cr:10, t:2, s:'done', tier:2, req:['24-101','21-122'], anti:[]},
-    {c:'79-104', n:'Global Histories', cr:9, t:2, s:'done', gen:1},
-    {c:'21-260', n:'Differential Equations', cr:10, t:3, s:'current', tier:2, req:['21-122'], anti:[]},
-    {c:'24-231', n:'Fluid Mechanics', cr:10, t:3, s:'current', tier:3, req:['24-101','21-259'], anti:[]},
-    {c:'24-251', n:'Electronics for Sensing and Actuation', cr:3, t:3, s:'current', tier:2, req:['24-101'], anti:[]},
-    {c:'76-270', n:'Writing for the Professions', cr:9, t:3, s:'current', gen:1},
-    {c:'24-261', n:'Mechanics I: 2D Design', cr:10, t:4, s:'todo', tier:2, req:['24-101','21-122'], anti:[], key:1},
-    {c:'24-351', n:'Dynamics', cr:10, t:4, s:'plan', tier:3, req:['24-101','21-260'], anti:[]},
-    {c:'24-311', n:'Numerical Methods', cr:12, t:4, s:'plan', tier:3, req:['21-260','15-110'], anti:[]},
-    {c:'24-262', n:'Mechanics II: 3D Design', cr:10, t:4, s:'blocked', ghost:1, note:'DEFERRED — NEEDS 24-261 FIRST'},
-    {c:'24-262', n:'Mechanics II: 3D Design', cr:10, t:5, s:'plan', tier:3, req:['24-261'], anti:[]},
-    {c:'24-322', n:'Heat Transfer', cr:10, t:5, s:'plan', tier:3, req:['24-231','24-221'], anti:[]},
-    {c:'24-352', n:'Dynamic Systems and Controls', cr:12, t:5, s:'plan', tier:4, req:['24-351','21-260'], anti:[]},
-    {c:'24-321', n:'Thermal-Fluids Experimentation', cr:12, t:6, s:'plan', tier:4, req:['24-231','24-221'], anti:[]},
-    {c:'24-370', n:'Mechanical Design: Methods and Applications', cr:12, t:6, s:'plan', tier:4, req:['24-262'], anti:[]},
-    {c:'73-102', n:'Principles of Microeconomics', cr:9, t:6, s:'plan', gen:1},
-    {c:'24-441', n:'Product Design', cr:12, t:7, s:'plan', tier:4, req:['24-370'], anti:['24-671']},
-    {c:'24-402', n:'Mechanical Engineering Elective', cr:9, t:7, s:'plan', tier:4, req:['24-262'], anti:[]},
-    {c:'76-272', n:'Free Elective', cr:9, t:7, s:'plan', gen:1},
-    {c:'24-671', n:'Electromechanical Systems Design', cr:12, t:-1, s:'alt', tier:4, req:['24-370'], anti:['24-441'], alt:1}
+    {c:'21-120', n:'Differential and Integral Calculus', cr:10, t:0, s:'done', g:'math', tier:0, req:[], anti:[]},
+    {c:'33-141', n:'Physics I for Engineering Students', cr:12, t:0, s:'done', g:'sci', tier:0, req:[], anti:[]},
+    {c:'76-101', n:'Interpretation and Argument', cr:9, t:0, s:'done', g:'huss', gen:1},
+    {c:'99-101', n:'Computing @ Carnegie Mellon', cr:3, t:0, s:'done', g:'free', gen:1},
+    {c:'21-122', n:'Integration and Approximation', cr:10, t:1, s:'done', g:'math', tier:1, req:['21-120'], anti:[]},
+    {c:'24-101', n:'Fundamentals of Mechanical Engineering', cr:12, t:1, s:'done', g:'major', tier:1, req:['21-120'], anti:[]},
+    {c:'09-105', n:'Introduction to Modern Chemistry I', cr:10, t:1, s:'done', g:'sci', tier:1, req:[], anti:[]},
+    {c:'15-110', n:'Principles of Computing', cr:10, t:1, s:'done', g:'major', tier:1, req:[], anti:[]},
+    {c:'21-259', n:'Calculus in Three Dimensions', cr:10, t:2, s:'done', g:'math', tier:2, req:['21-122'], anti:[]},
+    {c:'33-142', n:'Physics II for Engineering Students', cr:12, t:2, s:'done', g:'sci', tier:2, req:['33-141'], anti:[]},
+    {c:'24-221', n:'Thermodynamics', cr:10, t:2, s:'done', g:'major', tier:2, req:['24-101','21-122'], anti:[]},
+    {c:'79-104', n:'Global Histories', cr:9, t:2, s:'done', g:'huss', gen:1},
+    {c:'21-260', n:'Differential Equations', cr:10, t:3, s:'current', g:'math', tier:2, req:['21-122'], anti:[]},
+    {c:'24-231', n:'Fluid Mechanics', cr:10, t:3, s:'current', g:'major', tier:3, req:['24-101','21-259'], anti:[]},
+    {c:'24-251', n:'Electronics for Sensing and Actuation', cr:3, t:3, s:'current', g:'major', tier:2, req:['24-101'], anti:[]},
+    {c:'76-270', n:'Writing for the Professions', cr:9, t:3, s:'current', g:'huss', gen:1},
+    {c:'24-261', n:'Mechanics I: 2D Design', cr:10, t:4, s:'todo', g:'major', tier:2, req:['24-101','21-122'], anti:[], key:1},
+    {c:'24-351', n:'Dynamics', cr:10, t:4, s:'plan', g:'major', tier:3, req:['24-101','21-260'], anti:[]},
+    {c:'24-311', n:'Numerical Methods', cr:12, t:4, s:'plan', g:'major', tier:3, req:['21-260','15-110'], anti:[]},
+    {c:'24-262', n:'Mechanics II: 3D Design', cr:10, t:4, s:'blocked', g:'major', ghost:1, note:'DEFERRED — NEEDS 24-261 FIRST'},
+    {c:'24-262', n:'Mechanics II: 3D Design', cr:10, t:5, s:'plan', g:'major', tier:3, req:['24-261'], anti:[]},
+    {c:'24-322', n:'Heat Transfer', cr:10, t:5, s:'plan', g:'major', tier:3, req:['24-231','24-221'], anti:[]},
+    {c:'24-352', n:'Dynamic Systems and Controls', cr:12, t:5, s:'plan', g:'major', tier:4, req:['24-351','21-260'], anti:[]},
+    {c:'24-321', n:'Thermal-Fluids Experimentation', cr:12, t:6, s:'plan', g:'major', tier:4, req:['24-231','24-221'], anti:[]},
+    {c:'24-370', n:'Mechanical Design: Methods and Applications', cr:12, t:6, s:'plan', g:'major', tier:4, req:['24-262'], anti:[]},
+    {c:'73-102', n:'Principles of Microeconomics', cr:9, t:6, s:'plan', g:'huss', gen:1},
+    {c:'24-441', n:'Product Design', cr:12, t:7, s:'plan', g:'major', tier:4, req:['24-370'], anti:['24-671']},
+    {c:'24-402', n:'Mechanical Engineering Elective', cr:9, t:7, s:'plan', g:'major', tier:4, req:['24-262'], anti:[]},
+    {c:'76-272', n:'Free Elective', cr:9, t:7, s:'plan', g:'free', gen:1},
+    {c:'24-671', n:'Electromechanical Systems Design', cr:12, t:-1, s:'alt', g:'major', tier:4, req:['24-370'], anti:['24-441'], alt:1}
   ]
 
   }
@@ -1914,7 +1989,187 @@ class Component extends DCLogic {
   // sync path that can go stale when the selector changes.
   get META()    { return this.SCHOOLS[this.state.school].META; }
   get TERMS()   { return this.SCHOOLS[this.state.school].TERMS; }
-  get COURSES() { return this.SCHOOLS[this.state.school].COURSES; }
+  get BASE_COURSES() { return this.SCHOOLS[this.state.school].COURSES; }
+
+  // A row's identity: the code, plus a marker so a ghost placeholder and the real
+  // course of the same code stay distinguishable.
+  rowId(c) { return c.c + (c.ghost ? '#g' : ''); }
+
+  get edits() { return (this.state.edits || {})[this.state.school] || { moved:{}, added:[], removed:[] }; }
+
+  writeEdits(next) {
+    this.setState({ edits: { ...(this.state.edits || {}), [this.state.school]: next },
+                    editV: (this.state.editV || 0) + 1 });
+  }
+
+  // Status follows the term a course is sitting in.
+  statusFor(t, c) {
+    if (c && c.ghost) return 'blocked';
+    if (t < 0) return 'alt';
+    const cur = this.TERMS.findIndex(x => x.st === 'current');
+    if (t < cur) return 'done';
+    if (t === cur) return 'current';
+    return c && c.key ? 'todo' : 'plan';
+  }
+
+  // The live plan: the published curriculum with the student's edits applied.
+  get COURSES() {
+    const e = this.edits;
+    const moved = e.moved || {}, removed = e.removed || [], added = e.added || [];
+    if (!Object.keys(moved).length && !removed.length && !added.length) return this.BASE_COURSES;
+    const out = [];
+    this.BASE_COURSES.forEach(c => {
+      const id = this.rowId(c);
+      if (removed.includes(id)) return;
+      const t = moved[id];
+      if (t === undefined || t === c.t) { out.push(c); return; }
+      out.push({ ...c, t, s: this.statusFor(t, c) });
+    });
+    return out.concat(added);
+  }
+
+  // Codes whose prerequisites are not satisfied by the term they are scheduled in:
+  // a prerequisite that is missing from the plan, or that sits in the same term or later.
+  get UNMET() {
+    const term = {};
+    this.COURSES.filter(c => c.t >= 0 && !c.ghost).forEach(c => {
+      if (term[c.c] === undefined || c.t < term[c.c]) term[c.c] = c.t;
+    });
+    const bad = {};
+    this.COURSES.filter(c => c.t >= 0 && !c.ghost).forEach(c => {
+      const why = (c.req || []).filter(r => term[r] === undefined || term[r] >= c.t);
+      if (why.length) bad[c.c] = why;
+    });
+    return bad;
+  }
+
+  // ---- plan edits
+  moveCourse(id, t) {
+    const e = this.edits;
+    const add = (e.added || []).find(a => this.rowId(a) === id);
+    if (add) {
+      this.writeEdits({ ...e, added: (e.added || []).map(a =>
+        this.rowId(a) === id ? { ...a, t, s: this.statusFor(t, a) } : a) });
+      return;
+    }
+    this.writeEdits({ ...e, moved: { ...(e.moved || {}), [id]: t } });
+  }
+
+  addCourse(t, code) {
+    const e = this.edits;
+    const existing = this.COURSES.find(c => c.c === code && !c.ghost);
+    if (existing) { this.moveCourse(this.rowId(existing), t); return; }
+    const base = this.BASE_COURSES.find(x => x.c === code && !x.ghost);
+    const gen = this.GENEDS.find(x => x.c === code);
+    let other = null;
+    if (!base && !gen) {
+      for (const [k, S] of Object.entries(this.SCHOOLS)) {
+        if (S.META.school !== this.META.school) continue;
+        const f = S.COURSES.find(x => x.c === code && !x.ghost);
+        if (f) { other = f; break; }
+      }
+    }
+    const row = base ? { ...base, t, s: this.statusFor(t, base) }
+      : gen ? { c:gen.c, n:gen.n, cr:gen.cr, g:gen.g, t, s:this.statusFor(t, {}), gen:1 }
+      : other ? { c:other.c, n:other.n, cr:other.cr, g:other.g, tier:other.tier,
+                  req:other.req || [], anti:other.anti || [], t, s:this.statusFor(t, other) } : null;
+    if (!row) return;
+    const removed = (e.removed || []).filter(r => r !== this.rowId(row));
+    if (base) this.writeEdits({ ...e, removed, moved: { ...(e.moved || {}), [this.rowId(row)]: t } });
+    else this.writeEdits({ ...e, removed, added: (e.added || []).concat([row]) });
+  }
+
+  removeCourse(id) {
+    const e = this.edits;
+    if ((e.added || []).some(a => this.rowId(a) === id)) {
+      this.writeEdits({ ...e, added: (e.added || []).filter(a => this.rowId(a) !== id) });
+      return;
+    }
+    this.writeEdits({ ...e, removed: (e.removed || []).concat([id]) });
+  }
+
+  // Everything the editable plan needs: drag payloads, the picker overlay, add/reset.
+  editVals() {
+    const drag = this.state.drag || null;
+    const pick = this.state.picker || null;
+    const unmet = this.UNMET;
+    const dragStart = id => e => {
+      if (e.dataTransfer) { e.dataTransfer.effectAllowed = 'move'; try { e.dataTransfer.setData('text/plain', id); } catch (_) {} }
+      this._dragId = id; this._dropOK = false;
+      this.setState({ drag: id });
+    };
+    const dragOver = t => e => { if (e.preventDefault) e.preventDefault(); if (this.state.dragOver !== t) this.setState({ dragOver: t }); };
+    const drop = t => e => {
+      if (e.preventDefault) e.preventDefault();
+      if (e.stopPropagation) e.stopPropagation();
+      let id = drag || this._dragId;
+      if (!id && e.dataTransfer) { try { id = e.dataTransfer.getData('text/plain'); } catch (_) {} }
+      this._dropOK = true;
+      this.setState({ drag: null, dragOver: null });
+      if (id) this.moveCourse(id, t);
+    };
+    // A course released outside every term block (in a gap, or off the plan) is removed.
+    // Landing on a term set _dropOK first, so only true drops-into-nowhere delete.
+    const dragEnd = () => {
+      const id = this._dragId;
+      if (!this._dropOK && id) this.removeCourse(id);
+      this._dragId = null; this._dropOK = false;
+      this.setState({ drag: null, dragOver: null });
+    };
+
+    // picker rows: the finder pool, minus what is already in the target term
+    const q = (this.state.pq || '').trim().toLowerCase();
+    const termKey = pick && this.TERMS[pick.t] ? this.TERMS[pick.t].k : '';
+    const termLbl = pick && this.TERMS[pick.t] ? this.TERMS[pick.t].l : 'this term';
+    const inTerm = pick ? this.COURSES.filter(c => c.t === pick.t && !c.ghost).map(c => c.c) : [];
+    const rows = !pick ? [] : this.FINDER
+      .filter(r => !inTerm.includes(r.c))
+      .filter(r => !q || r.c.toLowerCase().includes(q) || r.n.toLowerCase().includes(q) || r.area.toLowerCase().includes(q))
+      .map(r => {
+        const avail = this.offeredIn(r.offered, termKey);
+        return { ...r, avail,
+          availLabel: avail ? `OFFERED IN ${termLbl.toUpperCase()}` : `NOT OFFERED IN ${termLbl.toUpperCase()}`,
+          availStyle: `font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.08em;border-radius:4px;padding:2px 5px;white-space:nowrap;border:1px solid ${avail ? '#C9D2C0' : '#DFCB9B'};color:${avail ? '#3F5139' : '#7A5C1E'};background:${avail ? '#EDF1E7' : '#F6EFDC'}`,
+          click: () => {
+            if (pick.mode === 'swap' && pick.id) this.removeCourse(pick.id);
+            this.addCourse(pick.t, r.c);
+            this.setState({ picker: null, pq: '' });
+          },
+          rowStyle: `display:flex;align-items:flex-start;gap:10px;width:100%;text-align:left;padding:9px 11px;border-radius:7px;border:1px solid transparent;background:transparent;opacity:${avail ? 1 : 0.72}`,
+          dotStyle: `width:7px;height:7px;border-radius:50%;flex:none;margin-top:6px;background:${r.elig ? '#5A7355' : '#B4AC9C'}`,
+          metaLabel: `${r.cr}${r.abbr} · ${r.area} · offered ${r.offered}` };
+      })
+      .sort((a, b) => (a.avail === b.avail ? 0 : a.avail ? -1 : 1))
+      .slice(0, 80);
+
+    return {
+      dragging: !!drag,
+      pickerOpen: !!pick,
+      pickerTitle: !pick ? '' : pick.mode === 'swap' ? `Replace ${pick.id ? pick.id.replace('#g','') : ''}` : `Add a course to ${this.TERMS[pick.t] ? this.TERMS[pick.t].l : ''}`,
+      pickerSub: !pick ? '' : pick.mode === 'swap'
+        ? `Pick the course that should take its place in ${this.TERMS[pick.t] ? this.TERMS[pick.t].l : 'this term'}.`
+        : 'Your major sequence first, then the school-wide electives.',
+      pickerRows: rows,
+      pickerCount: `${rows.length} available`,
+      pq: this.state.pq || '',
+      onPq: e => this.setState({ pq: e.target.value }),
+      closePicker: () => this.setState({ picker: null, pq: '' }),
+      removePicked: () => { if (pick && pick.id) this.removeCourse(pick.id); this.setState({ picker: null, pq: '' }); },
+      canRemove: !!(pick && pick.mode === 'swap' && pick.id),
+      hasEdits: !!(Object.keys(this.edits.moved || {}).length || (this.edits.added || []).length || (this.edits.removed || []).length),
+      resetEdits: () => this.resetPlan(),
+      _dragStart: dragStart, _dragOver: dragOver, _drop: drop, _dragEnd: dragEnd, _unmet: unmet,
+      openAdd: t => () => this.setState({ picker: { mode:'add', t }, pq: '' }),
+      openSwap: (t, id) => () => this.setState({ picker: { mode:'swap', t, id }, pq: '' })
+    };
+  }
+
+  resetPlan() {
+    const next = { ...(this.state.edits || {}) };
+    delete next[this.state.school];
+    this.setState({ edits: next, editV: (this.state.editV || 0) + 1, picker: null });
+  }
+
   get REQS()    { return this.SCHOOLS[this.state.school].REQS; }
   get TIERS()   { return this.SCHOOLS[this.state.school].TIERS; }
   // The term the snapshot strip describes: the one marked current, else the first.
@@ -1980,105 +2235,125 @@ class Component extends DCLogic {
       : `${base};color:#5C554A;font-weight:600`;
   }
 
-  BASE_BOARD = [
-    { k:'F24', yr:'YEAR 1', sem:'Semester 1', term:'Fall 2024', l:'Semester 1 · Fall 2024', tag:'COMPLETE', st:'done',
-      courses:[{c:'CS 110',n:'Intro to Programming',cr:4,col:0,row:0},{c:'MATH 151',n:'Calculus I',cr:4,col:2,row:0},{c:'ENGL 101',n:'Writing & Rhetoric',cr:3,col:4,row:0},{c:'HIST 120',n:'World History',cr:3,col:1,row:1}] },
-    { k:'S25', yr:'YEAR 1', sem:'Semester 2', term:'Spring 2025', l:'Semester 2 · Spring 2025', tag:'COMPLETE', st:'done',
-      courses:[{c:'CS 120',n:'Object-Oriented Design',cr:4,col:0,row:0},{c:'PHYS 141',n:'Mechanics',cr:4,col:2,row:0},{c:'COMM 110',n:'Public Speaking',cr:3,col:3,row:0},{c:'ART 105',n:'Visual Culture',cr:3,col:1,row:1}] },
-    { k:'F25', yr:'YEAR 2', sem:'Semester 3', term:'Fall 2025', l:'Semester 3 · Fall 2025', tag:'COMPLETE', st:'done',
-      courses:[{c:'CS 230',n:'Computer Systems',cr:4,col:0,row:0},{c:'PHIL 210',n:'Ethics & Technology',cr:3,col:2,row:0},{c:'ECON 101',n:'Microeconomics',cr:3,col:4,row:0},{c:'SPAN 101',n:'Elementary Spanish',cr:3,col:1,row:1}] },
-    { k:'S26', yr:'YEAR 2', sem:'Semester 4', term:'Spring 2026', l:'Semester 4 · Spring 2026', tag:'IN PROGRESS', st:'current',
-      courses:[{c:'CS 235',n:'Intro to Data Science',cr:3,col:0,row:0},{c:'STAT 210',n:'Introductory Statistics',cr:3,col:1,row:0,flag:'anti'},{c:'PSYC 101',n:'General Psychology',cr:3,col:3,row:0},{c:'MUS 120',n:'Music Theory',cr:2,col:4,row:1}],
-      issues:[{k:'anti',t:'STAT 210 is an anti-requisite of STAT 250',d:'The catalog awards credit for only one of the two, and STAT 250 is the one CS 360 requires. Keeping both means STAT 210 counts as a free elective, not toward the major.',fix:'Swap to STAT 250 next term'}] },
-    { k:'F26', yr:'YEAR 3', sem:'Semester 5', term:'Fall 2026', l:'Semester 5 · Fall 2026', tag:'DRAFT', st:'plan',
-      courses:[{c:'MATH 152',n:'Calculus II',cr:4,col:0,row:0,flag:'key'},{c:'CS 210',n:'Data Structures & Algorithms',cr:4,col:2,row:0,flag:'error'},{c:'CS 245',n:'Human–Computer Interaction',cr:3,col:4,row:0},{c:'WRIT 200',n:'Technical Writing',cr:3,col:1,row:1},{c:'SOC 101',n:'Sociology',cr:3,col:3,row:1}],
-      issues:[{k:'prereq',course:'CS 210',t:'Its prerequisite sits in the same term',d:'MATH 152 has to be finished before this term begins, so registration will block CS 210. Two clean fixes, both keeping the Spring 2028 graduation date.',fix:'Move CS 210 to Spring 2027',fixes:['Move CS 210 → Spring 2027','Move MATH 152 → Summer 2026 (six weeks, online)']}] },
-    { k:'S27', yr:'YEAR 3', sem:'Semester 6', term:'Spring 2027', l:'Semester 6 · Spring 2027', tag:'DRAFT', st:'plan',
-      courses:[{c:'MATH 240',n:'Discrete Mathematics',cr:3,col:0,row:0},{c:'MATH 260',n:'Linear Algebra',cr:3,col:1,row:0},{c:'STAT 250',n:'Probability & Statistics',cr:3,col:3,row:0},{c:'CS 320',n:'Databases',cr:3,col:4,row:1,flag:'clash'},{c:'LING 200',n:'Language & Mind',cr:3,col:2,row:1,flag:'clash'}],
-      issues:[{k:'clash',t:'CS 320 and LING 200 meet at the same hour',d:'Both sections run Tuesday and Thursday, 2:00–3:15 pm. LING 200 also has a Wednesday evening section with seats open.',fix:'Switch LING 200 to the Wed section'}] },
-    { k:'F27', yr:'YEAR 4', sem:'Semester 7', term:'Fall 2027', l:'Semester 7 · Fall 2027', tag:'DRAFT', st:'plan',
-      courses:[{c:'CS 310',n:'Algorithms',cr:4,col:0,row:0},{c:'CS 330',n:'Operating Systems',cr:4,col:2,row:0},{c:'CS 340',n:'Software Engineering',cr:3,col:3,row:0},{c:'BIOL 105',n:'Human Biology & Lab',cr:4,col:4,row:1},{c:'CS 425',n:'Distributed Systems',cr:3,col:1,row:1,flag:'load'}],
-      issues:[{k:'load',t:'18 credits, four of them 300-level CS',d:'Three credits over the recommended maximum, and the heaviest term in the plan. Moving CS 425 to spring keeps the same graduation date.',fix:'Move CS 425 to Spring 2028'}] },
-    { k:'S28', yr:'YEAR 4', sem:'Semester 8', term:'Spring 2028', l:'Semester 8 · Spring 2028', tag:'DRAFT', st:'plan',
-      courses:[{c:'CS 360',n:'Machine Learning',cr:3,col:0,row:0},{c:'CS 380',n:'Deep Learning Lab',cr:3,col:2,row:0},{c:'CS 450',n:'Senior Capstone',cr:4,col:3,row:0},{c:'ASTR 110',n:'Astronomy & Lab',cr:4,col:1,row:1}] }
-  ];
+  // The board is the same data as the dependency graph, laid out by term. Ghost rows
+  // stand in for the deferred course, so the blocked placement is what you see.
+  get BASE_BOARD() {
+    const YRS = ['YEAR 1','YEAR 1','YEAR 2','YEAR 2','YEAR 3','YEAR 3','YEAR 4','YEAR 4'];
+    const ghostCodes = new Set(this.COURSES.filter(c => c.ghost).map(c => c.c));
+    const key = this.META.keyCode;
+    const unmet = this.UNMET;
+    return this.TERMS.map((t, i) => {
+      const rows = this.COURSES.filter(c => c.t === i && !(ghostCodes.has(c.c) && !c.ghost));
+      const courses = rows.map((c, j) => {
+        const o = { c:c.c, n:c.n, cr:c.cr, col: j % 5, row: Math.floor(j / 5), rid: this.rowId(c) };
+        if (c.ghost) o.flag = 'error';
+        else if (unmet[c.c]) o.flag = 'error';
+        else if (c.key) o.flag = 'key';
+        else if ((c.anti || []).some(a => rows.some(x => x.c === a))) o.flag = 'anti';
+        return o;
+      });
+      const issues = [];
+      rows.filter(c => !c.ghost && unmet[c.c]).forEach(c => issues.push({ k:'prereq', course:c.c,
+        t:`${c.c} does not have its prerequisites yet`,
+        d:`${unmet[c.c].join(' and ')} ${unmet[c.c].length > 1 ? 'are' : 'is'} not finished before this term begins, so registration will block ${c.c}.`,
+        fix:`Move ${c.c} later, or pull ${unmet[c.c][0]} earlier` }));
+      const ghost = rows.find(c => c.ghost);
+      if (ghost) issues.push({ k:'prereq', course:ghost.c,
+        t:'Its prerequisite sits in the same term',
+        d:`${key} has to be finished before this term begins, so registration will block ${ghost.c}.`,
+        fix:`Move ${ghost.c} to the next term` });
+      const cr = courses.filter(c => c.flag !== 'error').reduce((a, c) => a + c.cr, 0);
+      const heavy = this.META.unitLabel === 'units' ? 54 : 18;
+      if (cr > heavy) issues.push({ k:'load',
+        t:`${cr} ${this.META.unitLabel} in one term`,
+        d:'Over the recommended maximum for the term, and the heaviest in the plan.',
+        fix:'Move one course to the following term' });
+      return { ti:i, k:t.k, yr:YRS[i] || 'YEAR 4', sem:`Semester ${i + 1}`, term:t.l,
+        l:`Semester ${i + 1} · ${t.l}`, tag:t.tag, st:t.st, courses, issues };
+    });
+  }
 
-  BASE_EDGES = [
-    { f:'CS 110',   t:'CS 120',   col:'#4A6C8C' },
-    { f:'CS 120',   t:'CS 230',   col:'#4A6C8C' },
-    { f:'CS 120',   t:'CS 235',   col:'#4A6C8C' },
-    { f:'CS 230',   t:'CS 330',   col:'#4A6C8C' },
-    { f:'MATH 151', t:'MATH 152', col:'#5A7355' },
-    { f:'MATH 152', t:'CS 210',   col:'#B4552F', kind:'broken' },
-    { f:'MATH 152', t:'MATH 240', col:'#5A7355' },
-    { f:'MATH 152', t:'MATH 260', col:'#5A7355' },
-    { f:'MATH 152', t:'STAT 250', col:'#5A7355' },
-    { f:'CS 210',   t:'CS 310',   col:'#A2593A' },
-    { f:'CS 210',   t:'CS 320',   col:'#A2593A' },
-    { f:'CS 210',   t:'CS 340',   col:'#A2593A' },
-    { f:'CS 310',   t:'CS 360',   col:'#7A5C8F' },
-    { f:'STAT 250', t:'CS 360',   col:'#7A5C8F' },
-    { f:'CS 340',   t:'CS 450',   col:'#7A5C8F' },
-    { f:'STAT 210', t:'STAT 250', col:'#96742E', kind:'anti' }
-  ];
+  get BASE_EDGES() {
+    const placed = new Set();
+    this.BASE_BOARD.forEach(t => t.courses.forEach(c => placed.add(c.c)));
+    const broken = new Set(this.COURSES.filter(c => c.ghost).map(c => c.c));
+    const out = [], seen = new Set();
+    this.COURSES.filter(c => c.tier !== undefined && !c.ghost).forEach(c => {
+      (c.req || []).forEach(r => {
+        if (!placed.has(r) || !placed.has(c.c)) return;
+        const id = r + '>' + c.c;
+        if (seen.has(id)) return;
+        seen.add(id);
+        const isBroken = broken.has(c.c) && r === this.META.keyCode;
+        out.push(isBroken ? { f:r, t:c.c, col:'#B4552F', kind:'broken' }
+                          : { f:r, t:c.c, col: c.g === 'math' ? '#5A7355' : '#4A6C8C' });
+      });
+    });
+    return out;
+  }
 
-  PATHS = [
-    { id:'A', rec:true, name:'Summer bridge',
-      sub:'Calculus II online over six weeks this summer, then Data Structures in Fall 2026 as planned. Distributed Systems slides to spring to keep senior year even.',
-      rows:[['GRADUATES','Spring 2028 — on time','good'],['ADDED COST','One 4-credit summer course','plain'],['ML TRACK','Fully intact, plus a 2027 internship','good'],['WATCH FOR','Calculus II compressed into six weeks','warn']] },
-    { id:'B', name:'Heavier junior year',
-      sub:'Keep Calculus II in Fall 2026 and push Data Structures to spring. Databases and Distributed Systems shift with it. No summer term, no extra tuition.',
-      rows:[['GRADUATES','Spring 2028 — on time','plain'],['ADDED COST','None','good'],['ML TRACK','Intact, but ML lands in the final term','plain'],['WATCH FOR','Two heavy terms next to the capstone','warn']] },
-    { id:'C', name:'Shift the concentration',
-      sub:'Move from Machine Learning to Software Engineering. Linear Algebra and Probability leave the plan, so the math sequence stops driving everything.',
-      rows:[['GRADUATES','Spring 2028 — on time','good'],['ADDED COST','None','good'],['ML TRACK','Dropped — math becomes self-study','warn'],['WATCH FOR','Pivoting back later costs a summer','warn']] }
-  ];
+  // Catch-up options, phrased against whichever curriculum is active.
+  get PATHS() {
+    const k = this.META.keyCode, kn = this.META.keyName;
+    const g = this.COURSES.find(c => c.ghost);
+    const gn = g ? g.n : 'the blocked course';
+    const grad = this.META.gradTerm;
+    return [
+      { id:'A', rec:true, name:'Summer bridge',
+        sub:`${kn} over the summer, then ${gn} in the fall as planned. The rest of the draft keeps its shape.`,
+        rows:[['GRADUATES',`${grad} — on time`,'good'],['ADDED COST',`One summer course (${k})`,'plain'],
+              ['SEQUENCE','Fully intact','good'],['WATCH FOR',`${kn} compressed into six weeks`,'warn']] },
+      { id:'B', name:'Heavier junior year',
+        sub:`Keep ${kn} where it is and push ${gn} to the following term. No summer term, no extra tuition.`,
+        rows:[['GRADUATES',`${grad} — on time`,'plain'],['ADDED COST','None','good'],
+              ['SEQUENCE',`Intact, but ${gn} lands a term later`,'plain'],['WATCH FOR','Two heavy terms back to back','warn']] },
+      { id:'C', name:'Lighten the term',
+        sub:`Push ${gn} back and drop an elective from the same term, so the term that absorbs it stays under the cap.`,
+        rows:[['GRADUATES',`${grad} — on time`,'good'],['ADDED COST','None','good'],
+              ['SEQUENCE','One elective moves to senior year','plain'],['WATCH FOR','Less room later for depth','warn']] }
+    ];
+  }
 
   buildPlan(id) {
     const board = this.BASE_BOARD.map(t => ({ ...t, courses: t.courses.map(c => ({ ...c })), issues: (t.issues || []).map(i => ({ ...i })) }));
     const edges = this.BASE_EDGES.map(e => ({ ...e }));
     if (!id) return { board, edges };
-    const T = k => board.find(b => b.k === k);
+    const key = this.META.keyCode;
+    const ghost = (this.COURSES.find(c => c.ghost) || {}).c;
     const pull = code => { for (const t of board) { const i = t.courses.findIndex(c => c.c === code); if (i >= 0) return t.courses.splice(i, 1)[0]; } return null; };
-    const move = (code, k, col, row) => { const c = pull(code); if (!c) return; delete c.flag; Object.assign(c, { col, row }); T(k).courses.push(c); };
-    const drop = (k, kind) => { const t = T(k); if (t) t.issues = t.issues.filter(i => i.k !== kind); };
-    const e = edges.find(x => x.f === 'MATH 152' && x.t === 'CS 210');
-    if (e) { delete e.kind; e.col = '#5A7355'; }
-    drop('F26', 'prereq');
-    board.forEach(t => t.courses.forEach(c => { if (c.c === 'CS 210') delete c.flag; }));
 
+    // every path clears the broken prerequisite edge and its advisory
+    const be = edges.find(x => x.kind === 'broken');
+    if (be) { delete be.kind; be.col = '#5A7355'; }
+    board.forEach(t => { t.issues = (t.issues || []).filter(i => i.k !== 'prereq');
+                         t.courses.forEach(c => { if (c.flag === 'error') delete c.flag; }); });
+
+    const cur = Math.max(0, board.findIndex(b => b.st === 'current'));
     if (id === 'A') {
-      const m = pull('MATH 152');
-      Object.assign(m, { col:1, row:0, flag:'key' });
-      board.splice(board.findIndex(b => b.k === 'S26') + 1, 0,
-        { k:'SUM26', yr:'YEAR 2', sem:'Summer', term:'Summer 2026', l:'Summer · Summer 2026', tag:'ADDED BY PATH A', st:'plan', courses:[m], issues:[] });
-      move('CS 425', 'S28', 4, 1);
-      drop('F27', 'load');
+      const m = pull(key);
+      if (m) {
+        Object.assign(m, { col:1, row:0, flag:'key' });
+        const yr = (board[cur].term.match(/\d{4}/) || ['']) [0];
+        board.splice(cur + 1, 0, { k:'SUM', yr:board[cur].yr, sem:'Summer', term:`Summer ${yr}`,
+          l:`Summer · Summer ${yr}`, tag:'ADDED BY PATH A', st:'plan', courses:[m], issues:[] });
+      }
     }
-    if (id === 'B') {
-      move('CS 425', 'S28', 4, 1);
-      move('LING 200', 'F26', 2, 0);
-      move('CS 210', 'S27', 0, 1);
-      move('CS 320', 'F27', 1, 1);
-      drop('S27', 'clash');
-    }
-    if (id === 'C') {
-      pull('MATH 260'); pull('STAT 250');
-      move('CS 425', 'S28', 4, 1);
-      move('CS 210', 'S27', 1, 0);
-      move('CS 320', 'F27', 1, 1);
-      move('BIOL 105', 'S27', 3, 1);
-      drop('S27', 'clash'); drop('F27', 'load');
-      const s28 = T('S28');
-      s28.courses = s28.courses.map(c =>
-        c.c === 'CS 360' ? { c:'CS 415', n:'Software Architecture', cr:3, col:0, row:0 } :
-        c.c === 'CS 380' ? { c:'CS 460', n:'Cloud & Deployment', cr:3, col:2, row:0 } : c);
+    if (id === 'B' || id === 'C') {
+      const g = pull(ghost);
+      const dest = board[cur + 2] || board[cur + 1];
+      if (g && dest) { delete g.flag; Object.assign(g, { col:0, row:1 }); dest.courses.push(g); }
+      if (id === 'C' && dest) {
+        const spare = dest.courses.find(c => c.c !== ghost && !c.flag);
+        if (spare) { pull(spare.c); const last = board[board.length - 1]; Object.assign(spare, { col:4, row:1 }); last.courses.push(spare); }
+        dest.issues = (dest.issues || []).filter(i => i.k !== 'load');
+      }
     }
     return { board, edges };
   }
 
   activeKey() { const s = this.state; return s.pathsOpen ? (s.pathPrev || 'A') : (s.pathApplied || null); }
-  plan() { const k = this.activeKey(); if (this._pk !== k || !this._plan) { this._pk = k; this._plan = this.buildPlan(k); } return this._plan; }
+
+  plan() { const k = this.state.school + '|' + (this.state.editV || 0) + '|' + this.activeKey(); if (this._pk !== k || !this._plan) { this._pk = k; this._plan = this.buildPlan(k); } return this._plan; }
   get BOARD() { return this.plan().board; }
   get EDGES() { return this.plan().edges; }
 
@@ -2106,44 +2381,152 @@ class Component extends DCLogic {
       unlocks:['CS 310','CS 320','CS 330','CS 340'], anti:[] }
   };
 
-  CATALOG = [
-    {c:'MATH 152',n:'Calculus II',cr:4,area:'Math & stats',lvl:100,terms:'Summer · Fall · Spring',elig:1,open:1,when:'Online',tag:'UNBLOCKS 4',m:'Requires MATH 151 ✓ · six-week summer section, fully online'},
-    {c:'CS 245',n:'Human–Computer Interaction',cr:3,area:'CS elective',lvl:200,terms:'Fall · Spring',elig:1,open:1,when:'Afternoons',tag:'ELIGIBLE NOW',m:'Requires CS 120 ✓ · TTh 2:00 · 18 seats left'},
-    {c:'WRIT 200',n:'Technical Writing',cr:3,area:'University core',lvl:200,terms:'Summer · Fall · Spring',elig:1,open:1,when:'Online',tag:'ELIGIBLE NOW',m:'No prerequisites · satisfies the upper-level writing core'},
-    {c:'LING 200',n:'Language & Mind',cr:3,area:'Free elective',lvl:200,terms:'Fall · Spring',elig:1,open:1,clash:1,when:'Evenings',tag:'WED SECTION OPEN',m:'The Wednesday evening section avoids your CS 320 clash'},
-    {c:'BIOL 105',n:'Human Biology & Lab',cr:4,area:'University core',lvl:100,terms:'Fall · Spring',elig:1,open:0,when:'Mornings',tag:'WAITLIST',m:'Lab science requirement · three students ahead of you'},
-    {c:'CS 210',n:'Data Structures & Algorithms',cr:4,area:'CS core',lvl:200,terms:'Fall · Spring',elig:0,open:1,when:'Mornings',tag:'BLOCKED',m:'Requires CS 120 ✓ and MATH 152 ✗ · gate into the 300 level'},
-    {c:'MATH 240',n:'Discrete Mathematics',cr:3,area:'Math & stats',lvl:200,terms:'Fall · Spring',elig:0,open:1,when:'Afternoons',tag:'NEEDS MATH 152',m:'Required by CS 310 · offered every term'},
-    {c:'MATH 260',n:'Linear Algebra',cr:3,area:'Math & stats',lvl:200,terms:'Fall · Spring',elig:0,open:1,when:'Mornings',tag:'NEEDS MATH 152',m:'Required by CS 360 · anti-requisite of MATH 265'},
-    {c:'STAT 250',n:'Probability & Statistics',cr:3,area:'Math & stats',lvl:200,terms:'Fall · Spring',elig:0,open:1,when:'Mornings',tag:'FIXES A CONFLICT',m:'Replaces STAT 210 for major credit · required by CS 360'},
-    {c:'CS 310',n:'Algorithms',cr:4,area:'CS core',lvl:300,terms:'Fall',elig:0,open:1,when:'Mornings',tag:'NEEDS CS 210',m:'Requires CS 210 and MATH 240 · Fall only'},
-    {c:'CS 320',n:'Databases',cr:3,area:'CS core',lvl:300,terms:'Fall · Spring',elig:0,open:1,clash:1,when:'Afternoons',tag:'CLASHES',m:'Requires CS 210 · TTh 2:00 overlaps LING 200 in your draft'},
-    {c:'CS 330',n:'Operating Systems',cr:4,area:'CS core',lvl:300,terms:'Fall',elig:0,open:0,when:'Afternoons',tag:'WAITLIST',m:'Requires CS 210 and CS 230 ✓ · one section a year'},
-    {c:'CS 340',n:'Software Engineering',cr:3,area:'CS core',lvl:300,terms:'Fall · Spring',elig:0,open:1,when:'Mornings',tag:'FEEDS CAPSTONE',m:'Requires CS 210 · prerequisite for CS 450'},
-    {c:'CS 360',n:'Machine Learning',cr:3,area:'CS elective',lvl:300,terms:'Spring',elig:0,open:1,when:'Mornings',tag:'TRACK CORE',m:'Requires CS 310, MATH 260, STAT 250 · Spring only'},
-    {c:'CS 380',n:'Deep Learning Lab',cr:3,area:'CS elective',lvl:300,terms:'Spring',elig:0,open:1,when:'Afternoons',tag:'',m:'Requires CS 360 · project-based, Spring only'},
-    {c:'CS 425',n:'Distributed Systems',cr:3,area:'CS elective',lvl:300,terms:'Fall · Spring',elig:0,open:1,when:'Evenings',tag:'',m:'Requires CS 330 · Tuesday evening seminar'},
-    {c:'DATA 340',n:'Applied Machine Learning',cr:3,area:'CS elective',lvl:300,terms:'Fall · Spring',elig:0,open:1,when:'Evenings',tag:'ANTI-REQUISITE',m:'Cannot be combined with CS 360 — the catalog credits one only',warn:1}
-  ];
 
-  CATS = [
-    {n:'CS core',c:'9 courses',d:'The required spine, CS 110 through the senior capstone.'},
-    {n:'CS elective',c:'14 courses',d:'Track depth — ML, HCI, systems, graphics, security.'},
-    {n:'Math & stats',c:'5 courses',d:'Calculus, discrete, linear algebra, probability.'},
-    {n:'University core',c:'10 areas',d:'Writing, lab science, humanities, language.'},
-    {n:'Free elective',c:'26 credits',d:'Anything that interests you and fits the week.'}
-  ];
-
-  TNOTES = {
-    F24: { b:'Your first term, and the one that set the pace: Programming and Calculus I both finished cleanly.', n:'A strong start. CS 110 with a B+ was enough to place you straight into the design sequence.' },
-    S25: { b:'Object-Oriented Design landed here, which is why most 200-level CS is already open to you.', n:'CS 120 is the prerequisite doing the most work in your plan — four courses sit directly on top of it.' },
-    F25: { b:'Computer Systems finished, and the University Core moved close to complete.', n:'CS 230 is banked, so Operating Systems only waits on Data Structures now.' },
-    S26: { b:'In progress. Eleven credits, and one of them will not count toward the major as scheduled.', n:'Finish STAT 210 for the credit, but plan on STAT 250 next year — the catalog will only award one of the two.' },
-    F26: { b:'The pressure term of the draft: Calculus II arrives late, and Data Structures is sitting on top of it.', n:'Decide this before 19 August. A summer section of MATH 152 is the cleanest fix; an override for CS 210 is possible but rarely granted.' },
-    S27: { b:'The math sequence catches up here — three courses that everything in senior year depends on.', n:'Watch the Tuesday/Thursday 2:00 hour. Two courses want it, and only LING 200 has an alternative section.' },
-    F27: { b:'Eighteen credits with four 300-level CS courses. The heaviest term in the plan by some distance.', n:'If you take one thing from this draft, move CS 425 to spring. Same graduation date, three fewer credits in the hardest term.' },
-    S28: { b:'The finish: Machine Learning, the Deep Learning lab, and the capstone in one term.', n:'Capstone and CS 380 both carry heavy project loads. Keep the fourth slot to a lab science and nothing more.' }
+  // Breadth courses open to any major at the school. Representative of the
+  // published core, not the exhaustive catalogue.
+  SCHOOL_GENEDS = {
+    NYU: [
+      {c:'CORE-UA 400', n:'Texts and Ideas', cr:4, g:'huss', when:'Mornings', terms:'Fall · Spring'},
+      {c:'CORE-UA 500', n:'Cultures and Contexts', cr:4, g:'huss', when:'Afternoons', terms:'Fall · Spring'},
+      {c:'CORE-UA 600', n:'Societies and the Social Sciences', cr:4, g:'huss', when:'Mornings', terms:'Fall · Spring'},
+      {c:'CORE-UA 700', n:'Expressive Culture', cr:4, g:'huss', when:'Evenings', terms:'Fall · Spring'},
+      {c:'CORE-UA 100', n:'Quantitative Reasoning', cr:4, g:'math', when:'Mornings', terms:'Fall · Spring'},
+      {c:'CORE-UA 200', n:'Physical Science', cr:4, g:'sci', when:'Afternoons', terms:'Fall · Spring'},
+      {c:'CORE-UA 300', n:'Life Science', cr:4, g:'sci', when:'Mornings', terms:'Fall · Spring'},
+      {c:'EXPOS-UA 1', n:'Writing as Inquiry', cr:4, g:'huss', when:'Mornings', terms:'Fall · Spring'},
+      {c:'FREN-UA 1', n:'Elementary French I', cr:4, g:'huss', when:'Mornings', terms:'Fall · Spring'},
+      {c:'SPAN-UA 1', n:'Elementary Spanish I', cr:4, g:'huss', when:'Afternoons', terms:'Fall · Spring'},
+      {c:'ECON-UA 1', n:'Introduction to Microeconomics', cr:4, g:'free', when:'Mornings', terms:'Fall · Spring'},
+      {c:'PSYCH-UA 1', n:'Introduction to Psychology', cr:4, g:'free', when:'Afternoons', terms:'Fall · Spring'},
+      {c:'PHIL-UA 1', n:'Central Problems in Philosophy', cr:4, g:'free', when:'Evenings', terms:'Fall · Spring'},
+      {c:'MUSIC-UA 1', n:'Elements of Music', cr:4, g:'free', when:'Evenings', terms:'Fall'}
+    ],
+    CMU: [
+      {c:'76-101', n:'Interpretation and Argument', cr:9, g:'huss', when:'Mornings', terms:'Fall · Spring'},
+      {c:'76-270', n:'Writing for the Professions', cr:9, g:'huss', when:'Afternoons', terms:'Fall · Spring'},
+      {c:'79-104', n:'Global Histories', cr:9, g:'huss', when:'Mornings', terms:'Fall · Spring'},
+      {c:'80-100', n:'Introduction to Philosophy', cr:9, g:'huss', when:'Afternoons', terms:'Fall · Spring'},
+      {c:'85-102', n:'Introduction to Psychology', cr:9, g:'huss', when:'Mornings', terms:'Fall · Spring'},
+      {c:'73-102', n:'Principles of Microeconomics', cr:9, g:'huss', when:'Afternoons', terms:'Fall · Spring'},
+      {c:'36-200', n:'Reasoning with Data', cr:9, g:'math', when:'Mornings', terms:'Fall · Spring'},
+      {c:'33-121', n:'Physics I for Science Students', cr:12, g:'sci', when:'Mornings', terms:'Fall · Spring'},
+      {c:'09-105', n:'Introduction to Modern Chemistry I', cr:10, g:'sci', when:'Afternoons', terms:'Fall · Spring'},
+      {c:'03-121', n:'Modern Biology', cr:9, g:'sci', when:'Mornings', terms:'Fall'},
+      {c:'99-101', n:'Computing @ Carnegie Mellon', cr:3, g:'free', when:'Online', terms:'Fall · Spring'},
+      {c:'82-171', n:'Elementary French I', cr:12, g:'huss', when:'Mornings', terms:'Fall · Spring'},
+      {c:'62-150', n:'Introduction to Design', cr:9, g:'free', when:'Evenings', terms:'Fall · Spring'},
+      {c:'70-100', n:'Global Business', cr:9, g:'free', when:'Afternoons', terms:'Fall · Spring'}
+    ]
   };
+
+  get GENEDS() { return this.SCHOOL_GENEDS[this.META.school] || []; }
+
+  // Area label shown in the finder, per requirement group.
+  AREA = { major:'Major core', math:'Mathematics', sci:'Science', huss:'Humanities & social sciences', free:'Free electives' };
+
+  // Course level from the number in the code: NYU "CSCI-UA 310" -> 300, CMU "15-251" -> 200.
+  levelOf(code) {
+    const m = code.match(/(\d{3,4})\s*$/);
+    if (!m) return 100;
+    const n = parseInt(m[1], 10);
+    return n >= 1000 ? Math.floor(n / 1000) * 100 : Math.floor(n / 100) * 100 || 100;
+  }
+
+  // Which terms a course tends to run. Derived so the whole catalog carries a
+  // plausible pattern: intro courses every term (incl. summer), advanced electives
+  // once a year, the rest usually both fall and spring.
+  offeringOf(code, tier) {
+    const lvl = this.levelOf(code);
+    const h = [...code].reduce((a, ch) => (a * 33 + ch.charCodeAt(0)) >>> 0, 5);
+    if (lvl <= 100 || tier === 0) return 'Summer · Fall · Spring';
+    if (lvl >= 400 || tier === 4) return (h % 2) ? 'Fall' : 'Spring';
+    return (h % 4 === 0) ? ((h >> 1) % 2 ? 'Fall' : 'Spring') : 'Fall · Spring';
+  }
+  seasonOf(termKey) {
+    if (!termKey) return 'Fall';
+    if (termKey.slice(0, 3) === 'SUM') return 'Summer';
+    return termKey[0] === 'F' ? 'Fall' : 'Spring';
+  }
+  offeredIn(offered, termKey) { return (offered || '').includes(this.seasonOf(termKey)); }
+
+  // The finder catalog: every course across ALL programs of the active school,
+  // plus that school's gen-ed pool. The active program's own courses rank first
+  // (major sequence, then by tier), then the school's other majors, then gen-eds.
+  get FINDER() {
+    const order = { major:0, math:1, sci:2, huss:3, free:4 };
+    const doneSet = new Set(this.COURSES.filter(c => c.s === 'done' || c.s === 'current').map(c => c.c));
+    const inPlan = new Set(this.COURSES.filter(c => c.t >= 0 && !c.ghost).map(c => c.c));
+    const school = this.META.school;
+    const abbr = this.META.unitAbbr;
+    const seen = new Set();
+    const out = [];
+    Object.entries(this.SCHOOLS).forEach(([key, S]) => {
+      if (S.META.school !== school) return;
+      const base = key === this.state.school ? 0 : 1000;
+      S.COURSES.filter(c => !c.ghost).forEach(c => {
+        if (seen.has(c.c)) return;
+        seen.add(c.c);
+        const req = c.req || [];
+        const unmet = req.filter(r => !doneSet.has(r));
+        const done = doneSet.has(c.c);
+        const offered = this.offeringOf(c.c, c.tier);
+        out.push({ c:c.c, n:c.n, cr:c.cr, area:this.AREA[c.g] || 'Free electives', lvl:this.levelOf(c.c),
+          terms:offered, offered, program:S.META.tab, abbr,
+          elig: unmet.length === 0 ? 1 : 0, open:1,
+          when: ['Mornings','Afternoons','Evenings'][this.levelOf(c.c) / 100 % 3 | 0],
+          inPlan: inPlan.has(c.c) ? 1 : 0,
+          tag: c.key ? 'UNBLOCKS YOUR PLAN' : done ? 'COMPLETED'
+             : unmet.length ? 'NEEDS ' + unmet[0] : 'ELIGIBLE NOW',
+          m: req.length ? 'Requires ' + req.map(r => r + (doneSet.has(r) ? ' ✓' : ' ✗')).join(' and ')
+                        : 'No prerequisites · counts toward ' + (this.AREA[c.g] || 'free electives').toLowerCase(),
+          sort: base + (order[c.g] ?? 5) * 10 + (c.tier ?? 5) });
+      });
+    });
+    this.GENEDS.forEach(g => {
+      if (seen.has(g.c)) return;
+      seen.add(g.c);
+      out.push({ c:g.c, n:g.n, cr:g.cr, area:this.AREA[g.g] || 'Free electives', lvl:this.levelOf(g.c),
+        terms:g.terms, offered:g.terms, program:'Gen-ed · any major', abbr,
+        elig:1, open:1, when:g.when, inPlan: inPlan.has(g.c) ? 1 : 0, tag:'ELIGIBLE NOW',
+        m:'Open to any ' + school + ' major · no prerequisites',
+        sort:2000 + (order[g.g] ?? 5) * 10 + 8 });
+    });
+    return out.sort((a, b) => a.sort - b.sort || a.c.localeCompare(b.c));
+  }
+
+  // Per-term commentary on the expanded semester, written from the plan itself.
+  get TNOTES() {
+    const u = this.META.unitLabel, key = this.META.keyCode;
+    const o = {};
+    this.TERMS.forEach((t, i) => {
+      const cs = this.COURSES.filter(c => c.t === i && !c.ghost);
+      const ghost = this.COURSES.find(c => c.t === i && c.ghost);
+      const keyC = cs.find(c => c.key);
+      const majors = cs.filter(c => c.g === 'major');
+      const cr = cs.reduce((a, c) => a + c.cr, 0);
+      const names = majors.slice(0, 2).map(m => m.n).join(' and ');
+      let b, n;
+      if (t.st === 'done') {
+        b = `${cr} ${u} completed${names ? `, including ${names}` : ''}.`;
+        n = majors.length ? `${majors[0].c} is banked, so what sits behind it is open.`
+                          : 'Breadth requirements moved forward here.';
+      } else if (t.st === 'current') {
+        b = `In progress. ${cr} ${u} this term${names ? `, with ${names} the load-bearing pair` : ''}.`;
+        n = 'Finish these cleanly and the draft behind them holds its shape.';
+      } else if (keyC) {
+        b = `The pressure term of the draft: ${keyC.n} arrives late, and the sequence above it is waiting.`;
+        n = `Decide this before registration. Clearing ${key} early is the cleanest fix.`;
+      } else if (ghost) {
+        b = `${ghost.n} cannot register here — ${key} has to finish first.`;
+        n = `Move ${ghost.c} a term later, or clear ${key} over the summer.`;
+      } else {
+        b = `Draft. ${cr} ${u} planned${names ? `, led by ${names}` : ''}.`;
+        n = 'Nothing here is locked in yet.';
+      }
+      o[t.k] = { b, n };
+    });
+    return o;
+  }
 
   FAC = ['Dr. R. Adeyemi','Dr. L. Ferreira','Prof. J. Whitlock','Dr. S. Nakamura','Prof. A. Duval','Dr. M. Okafor','Prof. H. Lindqvist','Dr. T. Beaumont','Prof. K. Osei','Dr. N. Varela','Prof. E. Castellanos','Dr. P. Rowan'];
   SLOTS = ['MWF 9:00–9:50','MWF 10:00–10:50','MWF 11:00–11:50','TTh 9:30–10:45','TTh 11:00–12:15','MW 1:00–2:15','TTh 3:30–4:45','MWF 1:00–1:50'];
@@ -2210,7 +2593,7 @@ class Component extends DCLogic {
     const termOf = {}; this.BOARD.forEach((t, i) => t.courses.forEach(c => { if (termOf[c.c] === undefined) termOf[c.c] = i; }));
     const bc = this.BOARD.flatMap(t => t.courses.map(x => ({ ...x, tl: t.term, st: t.st }))).find(x => x.c === code) || null;
     const c = this.COURSES.find(x => x.c === code && !x.ghost) || null;
-    const cat = this.CATALOG.find(x => x.c === code) || null;
+    const cat = this.FINDER.find(x => x.c === code) || null;
     const name = bc ? bc.n : c ? c.n : cat ? cat.n : code;
     const cr = (cur && cur.cr) || (bc ? bc.cr : c ? c.cr : 3);
     const m = this.meet(code);
@@ -2260,13 +2643,15 @@ class Component extends DCLogic {
   }
 
   boardVals(screen, det) {
+    const E = this.editVals();
     const COLS = 5, META = 124, PADR = 16, CG = 18, PH = 66, RG = 14, PADT = 18, PADB = 18, GAPB = 58;
     const cw = this.state.cw ?? 1000;
     const PW = Math.max(126, Math.floor((cw - META - PADR - (COLS - 1) * CG) / COLS));
     const SK = this.SK;
     const px = col => META + col * (PW + CG);
     const openWarn = this.state.openWarn ?? {};
-    const sel = this.state.sel === undefined ? ((this.props.panelState ?? 'course') === 'course' ? 'CS 210' : null) : this.state.sel;
+    const defaultSel = (this.COURSES.find(c => c.ghost) || this.COURSES.find(c => c.key) || {}).c || null;
+    const sel = this.state.sel === undefined ? ((this.props.panelState ?? 'course') === 'course' ? defaultSel : null) : this.state.sel;
     const hov = this.state.hov;
     const wide = this.state.wide ?? false;
     const rail = this.state.rail ?? false;
@@ -2284,7 +2669,7 @@ class Component extends DCLogic {
     const STACK_W = META + COLS * PW + (COLS - 1) * CG + PADR;
     let y = 0;
     this.BOARD.forEach((tm, i) => {
-      const rows = Math.max(...tm.courses.map(c => c.row)) + 1;
+      const rows = tm.courses.length ? Math.max(...tm.courses.map(c => c.row)) + 1 : 1;
       const all = tm.issues || [];
       const iss = all.filter(x => x.k !== 'prereq');
       const blk = all.filter(x => x.k === 'prereq');
@@ -2302,10 +2687,13 @@ class Component extends DCLogic {
 
     // --- semester blocks
     const bTerms = blocks.map((b, i) => {
+      const _drop = { dragOver: E._dragOver(b.ti), drop: E._drop(b.ti), addClick: E.openAdd(b.ti),
+        dropStyle: `position:absolute;left:0;right:0;top:${b.top}px;height:${b.h}px;border-radius:12px;pointer-events:${E.dragging ? 'auto' : 'none'};background:${this.state.dragOver === b.ti ? 'rgba(162,89,58,0.07)' : 'transparent'};border:1px ${this.state.dragOver === b.ti ? 'dashed #A2593A' : 'solid transparent'};z-index:${E.dragging ? 7 : 0}`,
+        addStyle: 'margin-top:8px;font-family:\'JetBrains Mono\',monospace;font-size:8.5px;letter-spacing:0.1em;color:#A2593A;border:1px dashed #DFC2AC;border-radius:5px;padding:4px 7px;background:#FDFBF6' };
       const active = b.st === 'current';
       const tagCol = active ? '#A2593A' : b.st === 'done' ? '#5A7355' : '#A9A192';
       const bk = b.blk[0] || null;
-      return { ...b,
+      return { ..._drop, ...b,
         expand: () => this.setState({ expand: b.k }),
         bannerStyle: 'display:flex;flex-direction:column;gap:1px;align-items:flex-start;text-align:left;margin:0 -7px;padding:4px 7px 5px;border-radius:7px',
         hasBlock: !!bk,
@@ -2360,12 +2748,18 @@ class Component extends DCLogic {
       const dim = dimPills && chainSet && !chainSet.has(c.c);
       bPills.push({ ...c,
         crLabel: `${c.cr}`,
-        style: `position:absolute;left:${g.x}px;top:${g.y}px;width:${PW}px;height:${PH}px;z-index:${dim ? 1 : isSel ? 6 : 5};padding:7px 10px;border-radius:8px;text-align:left;background:${base.bg};border:${isSel ? 2 : 1}px solid ${isSel ? '#A2593A' : base.bd};color:${base.fg};opacity:${dim ? 0.5 : 1};filter:${dim ? 'blur(1.6px)' : 'none'};transition:opacity .18s,filter .18s,box-shadow .15s;box-shadow:${isSel ? '0 3px 12px rgba(162,89,58,0.22)' : 'none'};display:flex;flex-direction:column;justify-content:center;gap:2px`,
+        style: `position:absolute;left:${g.x}px;top:${g.y}px;width:${PW}px;height:${PH}px;z-index:${dim ? 1 : isSel ? 6 : 5};padding:7px 10px;border-radius:8px;text-align:left;background:${base.bg};border:${isSel ? 2 : 1}px solid ${isSel ? '#A2593A' : base.bd};color:${base.fg};opacity:${dim ? 0.5 : 1};filter:${dim ? 'blur(1.6px)' : 'none'};transition:opacity .18s,filter .18s,box-shadow .15s;box-shadow:${isSel ? '0 3px 12px rgba(162,89,58,0.22)' : 'none'};cursor:pointer;display:flex;flex-direction:column;justify-content:center;gap:2px`,
         dotStyle: `width:6px;height:6px;border-radius:50%;flex:none;background:${base.dot}`,
         showFlag: !!c.flag && c.flag !== 'key',
         flagGlyph: c.flag === 'error' ? '!' : '△',
         flagStyle: `margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:9px;width:14px;height:14px;border-radius:4px;display:flex;align-items:center;justify-content:center;background:${base.dot};color:#FDFBF6`,
         click: () => this.setState({ sel: sel === c.c ? null : c.c }),
+        swap: ev => { if (ev && ev.stopPropagation) ev.stopPropagation(); this.setState({ picker: { mode:'swap', t: b.ti, id: c.rid }, pq: '' }); },
+        rid: c.rid,
+        dragStart: E._dragStart(c.rid),
+        dragEnd: E._dragEnd,
+        dragOver: E._dragOver(b.ti),
+        drop: E._drop(b.ti),
         enter: () => this.setState({ hov: c.c }),
         leave: () => this.setState({ hov: null })
       });
@@ -2405,7 +2799,12 @@ class Component extends DCLogic {
     };
     const CH = [0, -1, 1, -2, 2, -3, 3];
     const chUse = gaps.map(() => 0);
-    const chan = gi => gaps[gi].mid + CH[chUse[gi]++ % CH.length] * 7.5;
+    const chan = gi => {
+      const j = Math.max(0, Math.min(gaps.length - 1, gi));
+      const g = gaps[j];
+      if (!g) return 0;
+      return g.mid + CH[chUse[j]++ % CH.length] * 7.5;
+    };
     const termOf = {}; blocks.forEach((b, i) => b.courses.forEach(c => termOf[c.c] = i));
     // fan strands out of a source and into a target at distinct points
     const outs = {}, ins = {};
@@ -2427,7 +2826,7 @@ class Component extends DCLogic {
       const t0 = termOf[e.f], t1 = termOf[e.t], span = t1 - t0;
       const ax = fan(outs[e.f], e, a), zx = fan(ins[e.t], e, z);
 
-      if (span === 0) {
+      if (span <= 0) {
         const yy = a.cy, right = a.r < z.x;
         const x1 = right ? a.r + 4 : a.x - 4, x2 = right ? z.x - 8 : z.r + 8, dir = right ? 1 : -1;
         els.push(React.createElement('path', { key:'e'+i, d:`M${x1},${yy} L${x2},${yy}`, fill:'none', stroke:e.col, strokeWidth:w + 0.2, strokeDasharray:'4 3', opacity:op }));
@@ -2469,7 +2868,7 @@ class Component extends DCLogic {
     // ---- finder course detail
     const fcode = this.state.fsel || null;
     const FD = fcode ? this.detailFor(fcode) : null;
-    const fcat = fcode ? (this.CATALOG.find(x => x.c === fcode) || null) : null;
+    const fcat = fcode ? (this.FINDER.find(x => x.c === fcode) || null) : null;
     const fPlanned = fcode ? (this.BOARD.find(t => t.courses.some(x => x.c === fcode)) || null) : null;
     const reqStyle = ([c, note, tone]) => ({ c, note,
       style: `display:flex;align-items:baseline;gap:9px;padding:9px 11px;border-radius:7px;background:${tone === 'bad' ? '#FBE9E4' : '#E9EDE2'};border:1px solid ${tone === 'bad' ? '#D99B84' : '#C9D2C0'}`,
@@ -2514,18 +2913,26 @@ class Component extends DCLogic {
     };
     const pSched = D ? D.sched.map(([k, v]) => ({ k, v })) : [];
 
-    const suggested = [
-      { c:'MATH 152', n:'Calculus II — summer session', why:'Six weeks online. Clears the block under Data Structures a full year early and keeps every later term at 15–16 credits.', tag:'HIGHEST IMPACT' },
-      { c:'STAT 250', n:'Probability & Statistics', why:'Replaces STAT 210 for major credit and is required by Machine Learning. Offered every term, so it slots in easily.', tag:'FIXES A CONFLICT' },
-      { c:'CS 245', n:'Human–Computer Interaction', why:'Only needs CS 120, which you have. A safe way to keep making major progress while the math sequence catches up.', tag:'READY NOW' }
-    ];
+    const suggested = (() => {
+      const done = new Set(this.COURSES.filter(c => c.s === 'done' || c.s === 'current').map(c => c.c));
+      const keyC = this.COURSES.find(c => c.key);
+      const unlocked = this.COURSES.filter(c => (c.req || []).includes(this.META.keyCode) && !c.ghost);
+      const ready = this.COURSES.filter(c => !c.ghost && !c.key && c.tier !== undefined &&
+        (c.s === 'plan') && (c.req || []).every(r => done.has(r))).slice(0, 2);
+      const out = [];
+      if (keyC) out.push({ c:keyC.c, n:keyC.n, tag:'HIGHEST IMPACT',
+        why:`Clears the block under ${unlocked.map(u => u.n).join(' and ') || 'the rest of the sequence'} and keeps the later terms level.` });
+      ready.forEach(r => out.push({ c:r.c, n:r.n, tag:'READY NOW',
+        why:(r.req || []).length ? `Only needs ${(r.req || []).join(' and ')}, which you have.`
+                                 : 'No prerequisites outstanding — safe major progress while the sequence catches up.' }));
+      return out;
+    })();
 
-    const flags = [
-      { k:'F26', tone:'bad', t:'CS 210 blocked by MATH 152', s:'Fall 2026' },
-      { k:'S26', tone:'warn', t:'STAT 210 / STAT 250 anti-requisite', s:'Spring 2026' },
-      { k:'S27', tone:'warn', t:'CS 320 and LING 200 clash', s:'Spring 2027' },
-      { k:'F27', tone:'warn', t:'18-credit overload', s:'Fall 2027' }
-    ].map(f => ({ ...f, dotStyle:`width:7px;height:7px;border-radius:50%;flex:none;margin-top:5px;background:${f.tone === 'bad' ? '#B4552F' : '#96742E'}` }));
+    const flags = this.BOARD.flatMap(t => (t.issues || []).map(i => ({
+      k:t.k, tone: i.k === 'prereq' ? 'bad' : 'warn',
+      t: i.k === 'prereq' ? `${i.course} blocked by ${this.META.keyCode}` : i.t,
+      s: t.term
+    }))).map(f => ({ ...f, dotStyle:`width:7px;height:7px;border-radius:50%;flex:none;margin-top:5px;background:${f.tone === 'bad' ? '#B4552F' : '#96742E'}` }));
 
     // ---- course finder
     const searchOpen = this.state.search ?? false;
@@ -2534,18 +2941,21 @@ class Component extends DCLogic {
     const chipS = on => `font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.07em;border-radius:5px;padding:5px 9px;white-space:nowrap;background:${on ? '#F1E3D8' : '#FDFBF6'};border:1px solid ${on ? '#DFC2AC' : '#E4DED0'};color:${on ? '#7E3F22' : '#8F8779'}`;
     const filterGroups = [
       ['avail', 'READY', ['Eligible now','Seats open','No time clash']],
-      ['area',  'AREA',  ['CS core','CS elective','Math & stats','University core','Free elective']],
-      ['level', 'LEVEL', ['100','200','300']],
-      ['term',  'TERM',  ['Summer 2026','Fall 2026','Spring 2027']],
+      ['area',  'AREA',  [...new Set(this.FINDER.map(x => x.area))]],
+      ['level', 'LEVEL', [...new Set(this.FINDER.map(x => String(x.lvl)))].sort()],
+      ['term',  'TERM',  this.TERMS.slice(4).map(t => t.l)],
       ['when',  'MEETS', ['Mornings','Afternoons','Evenings','Online']]
     ].map(([k, label, vals]) => ({ label, chips: vals.map(v => ({ label: v.toUpperCase(), click: setF(k, v), style: chipS(F[k] === v) })) }));
-    const pool = this.CATALOG.filter(x =>
+    const q = (this.state.q || '').trim().toLowerCase();
+    const pool = this.FINDER.filter(x =>
+      (!q || x.c.toLowerCase().includes(q) || x.n.toLowerCase().includes(q) || x.area.toLowerCase().includes(q)) &&
       (!F.area || x.area === F.area) &&
       (!F.level || String(x.lvl) === F.level) &&
       (!F.term || x.terms.includes(F.term.split(' ')[0])) &&
       (!F.when || x.when === F.when) &&
       (!F.avail || (F.avail === 'Eligible now' ? !!x.elig : F.avail === 'Seats open' ? !!x.open : !x.clash)));
     const results = pool.map(r => ({ ...r,
+      offeredLabel: `OFFERED ${(r.offered || '').toUpperCase()} · ${r.program || ''}`,
       click: () => this.setState({ fsel: this.state.fsel === r.c ? null : r.c }),
       openLabel: this.state.fsel === r.c ? 'Open' : 'Details',
       openStyle: `flex:none;align-self:center;font-size:11.5px;font-weight:500;white-space:nowrap;color:${this.state.fsel === r.c ? '#7E3F22' : '#A2593A'}`,
@@ -2554,7 +2964,14 @@ class Component extends DCLogic {
       showTag: !!r.tag,
       tagStyle: `font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.1em;border-radius:4px;padding:2px 5px;white-space:nowrap;border:1px solid ${r.elig ? '#C9D2C0' : '#E4DED0'};color:${r.elig ? '#3F5139' : '#8F8779'}`
     }));
-    const cats = this.CATS.map(k => ({ ...k, click: setF('area', k.n),
+    const areaCounts = this.FINDER.reduce((a, x) => { a[x.area] = (a[x.area] || 0) + 1; return a; }, {});
+    const CATD = { 'Major core':'The required spine of the major, in sequence.',
+      'Mathematics':'Calculus, discrete, linear algebra, probability.',
+      'Science':'Physics, chemistry and the lab requirement.',
+      'Humanities & social sciences':'Writing, history, culture and language.',
+      'Free electives':'Anything that interests you and fits the week.' };
+    const cats = Object.keys(areaCounts).map(n => ({ n, c:`${areaCounts[n]} courses`,
+      d: CATD[n] || '', click: setF('area', n),
       style: 'display:block;width:100%;text-align:left;background:#F8F4EA;border:1px solid #EFEADD;border-radius:8px;padding:11px 12px' }));
 
     // ---- expanded semester
@@ -2648,7 +3065,10 @@ class Component extends DCLogic {
       hasApplied: !!applied && !pathsOpen,
       appliedLabel: appliedName ? `Path applied · ${appliedName}` : '',
       revertPath: () => this.setState({ pathApplied:null }),
-      finderCount: `${pool.length} of ${this.CATALOG.length} courses`,
+      finderCount: `${pool.length} of ${this.FINDER.length} courses`,
+      q: this.state.q || '',
+      onQ: e => this.setState({ q: e.target.value }),
+      searchPlaceholder: `Search ${this.META.school} ${this.META.tab} courses, codes, or requirements`,
       finderBrowse: !F.area,
       noResults: pool.length === 0,
       clearFilters: () => this.setState({ filt:{} }),
@@ -2706,20 +3126,34 @@ class Component extends DCLogic {
       .map(([k,label]) => ({ key:k, label, go: go(k), style: this.navStyle(screen === k) }));
 
     // ---- terms with courses
+    const EV = this.editVals();
+    const unmetT = this.UNMET;
+    // A course whose prerequisites are not met by its term reads red, wherever it appears.
+    const BAD = { bg:'#FBE9E4', bd:'#D99B84', fg:'#8C3A1E' };
     const terms = this.TERMS.map((t, i) => {
       const cs = this.COURSES.filter(c => c.t === i).map(c => {
-        const k = S[c.s] || S.plan;
+        const bad = !c.ghost && !!unmetT[c.c];
+        const k = bad ? BAD : (S[c.s] || S.plan);
         const dashed = c.s === 'blocked' || c.s === 'todo';
+        const rid = this.rowId(c);
         return { ...c,
           showNote: !!c.note,
-          chipStyle: `border-radius:7px;padding:8px 10px;background:${k.bg};color:${k.fg};border:1px ${dashed?'dashed':'solid'} ${k.bd}`,
+          showBad: bad,
+          badLabel: bad ? unmetT[c.c].join(' + ') : '',
+          dragStart: EV._dragStart(rid),
+          dragEnd: EV._dragEnd,
+          swap: EV.openSwap(i, rid),
+          chipStyle: `border-radius:7px;padding:8px 10px;cursor:grab;background:${k.bg};color:${k.fg};border:1px ${dashed?'dashed':'solid'} ${k.bd}`,
           leafStyle: `border-radius:7px;padding:7px 9px;background:${k.bg==='transparent'?'#FDFBF6':k.bg};color:${k.fg};border:1px ${dashed?'dashed':'solid'} ${k.bd};text-align:left`
         };
       });
       const cr = cs.filter(c => c.s !== 'blocked').reduce((a,c) => a + c.cr, 0);
       const active = t.st === 'current';
+      const over = this.state.dragOver === i;
       return { ...t, cr, courses: cs, top: cs.slice(0,2), bottom: cs.slice(2),
-        colStyle: `flex:none;width:172px;background:${active?'#FBF3E9':'#FDFBF6'};border:1px solid ${active?'#DFC2AC':'#E4DED0'};border-radius:9px`,
+        dragOver: EV._dragOver(i), drop: EV._drop(i), addClick: EV.openAdd(i),
+        addStyle: `width:100%;margin-top:2px;font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:0.1em;color:#A2593A;border:1px dashed #DFC2AC;border-radius:6px;padding:7px;background:transparent`,
+        colStyle: `flex:none;width:172px;background:${over?'#F6EDE3':active?'#FBF3E9':'#FDFBF6'};border:1px ${over?'dashed':'solid'} ${over?'#A2593A':active?'#DFC2AC':'#E4DED0'};border-radius:9px`,
         stationStyle: `width:${active?14:10}px;height:${active?14:10}px;border-radius:50%;background:${t.st==='done'?'#5A7355':active?'#A2593A':'#FDFBF6'};border:2px solid ${t.st==='done'?'#5A7355':active?'#A2593A':'#C9C0AE'};box-shadow:0 0 0 4px #FDFBF6`
       };
     });
@@ -2862,6 +3296,28 @@ class Component extends DCLogic {
         pathsOpen:false, pathApplied:null, search:false, rail:false }),
       snapshotHead: `${this.curTerm.l.toUpperCase()} · ${this.META.classYear} · ADVISING SNAPSHOT`,
       curTermLabel: this.curTerm.l,
+      ...this.editVals(),
+      ...(() => {
+        // The pressure point: the term holding the deferred course, else the heaviest draft term.
+        const g = this.COURSES.find(c => c.ghost);
+        const drafts = this.TERMS.map((t, i) => ({ t, i,
+          cr: this.COURSES.filter(c => c.t === i && !c.ghost).reduce((a, c) => a + c.cr, 0) }))
+          .filter(x => x.t.st === 'plan');
+        const heavy = drafts.sort((a, b) => b.cr - a.cr)[0];
+        const gt = g ? this.TERMS[g.t] : null;
+        return gt
+          ? { pressureHead: `${gt.l} is where ${g.n} stalls.`,
+              pressureBody: `That's the pressure point in this draft — ${this.META.keyCode} has to clear first. Two of the three catch-up paths remove it.` }
+          : { pressureHead: heavy ? `${heavy.t.l} is a ${heavy.cr} ${this.META.unitLabel} term.` : 'The draft is balanced.',
+              pressureBody: 'The heaviest term in the plan. The catch-up paths even it out.' };
+      })(),
+      termCountLabel: `${this.TERMS.length} TERMS · ${this.META.totalCr} ${this.META.unitLabel.toUpperCase()}`,
+      planIntro: (() => {
+        const g = this.COURSES.find(c => c.ghost);
+        const t = this.TERMS[this.TERMS.findIndex(x => x.st === 'current') + 1];
+        return `Everything after ${this.curTerm.l} is a draft.` + (g && t
+          ? ` ${t.l} is where the missed prerequisite shows up — ${g.n} has to wait a term.` : '');
+      })(),
       unitAbbr: this.META.unitAbbr,
       unitAbbrCaps: this.META.unitAbbr.toUpperCase(),
       barDoneStyle: `width:${Math.round(this.META.doneCr / this.META.totalCr * 100)}%;background:#5A7355`,

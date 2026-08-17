@@ -1,0 +1,585 @@
+{
+  "school": "CMU",
+  "program": {
+    "id": "cmu-bscs-2025",
+    "name": "Computer Science, B.S.",
+    "degree": "BS",
+    "catalog_year": "2025",
+    "unit_label": "units",
+    "unit_abbr": "u",
+    "total_units": 360
+  },
+  "terms": [
+    {
+      "index": 0,
+      "key": "F24",
+      "label": "Fall 2024",
+      "tag": "FIRST YEAR",
+      "status": "done"
+    },
+    {
+      "index": 1,
+      "key": "S25",
+      "label": "Spring 2025",
+      "tag": "FIRST YEAR",
+      "status": "done"
+    },
+    {
+      "index": 2,
+      "key": "F25",
+      "label": "Fall 2025",
+      "tag": "SOPHOMORE",
+      "status": "done"
+    },
+    {
+      "index": 3,
+      "key": "S26",
+      "label": "Spring 2026",
+      "tag": "IN PROGRESS",
+      "status": "current"
+    },
+    {
+      "index": 4,
+      "key": "F26",
+      "label": "Fall 2026",
+      "tag": "JUNIOR \u00b7 DRAFT",
+      "status": "plan"
+    },
+    {
+      "index": 5,
+      "key": "S27",
+      "label": "Spring 2027",
+      "tag": "JUNIOR \u00b7 DRAFT",
+      "status": "plan"
+    },
+    {
+      "index": 6,
+      "key": "F27",
+      "label": "Fall 2027",
+      "tag": "SENIOR \u00b7 DRAFT",
+      "status": "plan"
+    },
+    {
+      "index": 7,
+      "key": "S28",
+      "label": "Spring 2028",
+      "tag": "SENIOR \u00b7 DRAFT",
+      "status": "plan"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "cs-core",
+      "name": "Computer science core",
+      "min_courses": 5,
+      "match": {
+        "explicit": [
+          "15-122",
+          "15-150",
+          "15-210",
+          "15-213",
+          "15-251"
+        ]
+      }
+    },
+    {
+      "id": "cs-electives",
+      "name": "CS electives",
+      "min_courses": 4,
+      "match": {
+        "any_of": [
+          "15-451",
+          "15-410",
+          "15-411",
+          "15-455",
+          "15-462",
+          "10-315"
+        ]
+      }
+    },
+    {
+      "id": "math-core",
+      "name": "Mathematics",
+      "min_courses": 4,
+      "match": {
+        "explicit": [
+          "21-120",
+          "21-122",
+          "21-127",
+          "21-241"
+        ]
+      }
+    },
+    {
+      "id": "probability",
+      "name": "Probability",
+      "min_courses": 1,
+      "match": {
+        "any_of": [
+          "15-259",
+          "36-218"
+        ]
+      }
+    },
+    {
+      "id": "science",
+      "name": "Science & engineering",
+      "min_courses": 2,
+      "match": {
+        "any_of": [
+          "33-121",
+          "09-105"
+        ]
+      }
+    },
+    {
+      "id": "humanities",
+      "name": "Humanities & arts",
+      "min_courses": 3,
+      "match": {
+        "any_of": [
+          "76-101",
+          "76-270",
+          "79-104",
+          "73-102"
+        ]
+      }
+    }
+  ],
+  "courses": [
+    {
+      "c": "15-112",
+      "n": "Fundamentals of Programming and CS",
+      "cr": 12,
+      "t": 0,
+      "s": "done",
+      "tier": 0,
+      "req": [],
+      "anti": [],
+      "g": "major",
+      "offering": "Summer \u00b7 Fall \u00b7 Spring",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "21-120",
+      "n": "Differential and Integral Calculus",
+      "cr": 10,
+      "t": 0,
+      "s": "done",
+      "tier": 0,
+      "req": [],
+      "anti": [],
+      "g": "math",
+      "offering": "Summer \u00b7 Fall \u00b7 Spring",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "76-101",
+      "n": "Interpretation and Argument",
+      "cr": 9,
+      "t": 0,
+      "s": "done",
+      "gen": 1,
+      "g": "huss",
+      "offering": "Fall",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "99-101",
+      "n": "Computing @ Carnegie Mellon",
+      "cr": 3,
+      "t": 0,
+      "s": "done",
+      "gen": 1,
+      "g": "free",
+      "offering": "Spring",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "15-122",
+      "n": "Principles of Imperative Computation",
+      "cr": 12,
+      "t": 1,
+      "s": "done",
+      "tier": 1,
+      "req": [
+        "15-112"
+      ],
+      "anti": [],
+      "g": "major",
+      "offering": "Fall",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "21-122",
+      "n": "Integration and Approximation",
+      "cr": 10,
+      "t": 1,
+      "s": "done",
+      "tier": 1,
+      "req": [
+        "21-120"
+      ],
+      "anti": [],
+      "g": "math",
+      "offering": "Summer \u00b7 Fall \u00b7 Spring",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "15-128",
+      "n": "Freshman Immigration Course",
+      "cr": 3,
+      "t": 1,
+      "s": "done",
+      "gen": 1,
+      "g": "major",
+      "offering": "Fall",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "79-104",
+      "n": "Global Histories",
+      "cr": 9,
+      "t": 1,
+      "s": "done",
+      "gen": 1,
+      "g": "huss",
+      "offering": "Fall",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "15-150",
+      "n": "Principles of Functional Programming",
+      "cr": 12,
+      "t": 2,
+      "s": "done",
+      "tier": 2,
+      "req": [
+        "15-122"
+      ],
+      "anti": [],
+      "g": "major",
+      "offering": "Spring",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "21-127",
+      "n": "Concepts of Mathematics",
+      "cr": 12,
+      "t": 2,
+      "s": "done",
+      "tier": 1,
+      "req": [],
+      "anti": [
+        "15-151"
+      ],
+      "g": "math",
+      "offering": "Summer \u00b7 Fall \u00b7 Spring",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "33-121",
+      "n": "Physics I for Science Students",
+      "cr": 12,
+      "t": 2,
+      "s": "done",
+      "gen": 1,
+      "g": "sci",
+      "offering": "Spring",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "15-213",
+      "n": "Introduction to Computer Systems",
+      "cr": 12,
+      "t": 3,
+      "s": "current",
+      "tier": 2,
+      "req": [
+        "15-122"
+      ],
+      "anti": [],
+      "g": "major",
+      "offering": "Spring",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "15-210",
+      "n": "Parallel and Sequential Data Structures and Algorithms",
+      "cr": 12,
+      "t": 3,
+      "s": "current",
+      "tier": 3,
+      "req": [
+        "15-150",
+        "15-122"
+      ],
+      "anti": [],
+      "g": "major",
+      "offering": "Fall",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "76-270",
+      "n": "Writing for the Professions",
+      "cr": 9,
+      "t": 3,
+      "s": "current",
+      "gen": 1,
+      "g": "huss",
+      "offering": "Spring",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "15-251",
+      "n": "Great Ideas in Theoretical Computer Science",
+      "cr": 12,
+      "t": 4,
+      "s": "todo",
+      "tier": 3,
+      "req": [
+        "15-122",
+        "21-127"
+      ],
+      "anti": [],
+      "key": 1,
+      "g": "major",
+      "offering": "Spring",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "21-241",
+      "n": "Matrices and Linear Transformations",
+      "cr": 11,
+      "t": 4,
+      "s": "plan",
+      "tier": 2,
+      "req": [
+        "21-122"
+      ],
+      "anti": [],
+      "g": "math",
+      "offering": "Summer \u00b7 Fall \u00b7 Spring",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "09-105",
+      "n": "Introduction to Modern Chemistry I",
+      "cr": 10,
+      "t": 4,
+      "s": "plan",
+      "gen": 1,
+      "g": "sci",
+      "offering": "Fall",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "15-451",
+      "n": "Algorithm Design and Analysis",
+      "cr": 12,
+      "t": 4,
+      "s": "blocked",
+      "ghost": 1,
+      "note": "DEFERRED \u2014 NEEDS 15-251 FIRST",
+      "g": "major",
+      "offering": "Spring",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "15-451",
+      "n": "Algorithm Design and Analysis",
+      "cr": 12,
+      "t": 5,
+      "s": "plan",
+      "tier": 4,
+      "req": [
+        "15-210",
+        "15-251"
+      ],
+      "anti": [],
+      "g": "major",
+      "offering": "Spring",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "15-259",
+      "n": "Probability and Computing",
+      "cr": 12,
+      "t": 5,
+      "s": "plan",
+      "tier": 3,
+      "req": [
+        "21-127"
+      ],
+      "anti": [
+        "36-218"
+      ],
+      "g": "math",
+      "offering": "UNKNOWN",
+      "needs_review": true,
+      "review_note": "Prereq collapsed from CMU's OR-list (21-127 / 15-251 / 21-128 / 15-151) to the sample-sequence course; grades dropped."
+    },
+    {
+      "c": "73-102",
+      "n": "Principles of Microeconomics",
+      "cr": 9,
+      "t": 5,
+      "s": "plan",
+      "gen": 1,
+      "g": "huss",
+      "offering": "Fall \u00b7 Spring",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "15-410",
+      "n": "Operating System Design and Implementation",
+      "cr": 15,
+      "t": 6,
+      "s": "plan",
+      "tier": 4,
+      "req": [
+        "15-213",
+        "15-210"
+      ],
+      "anti": [],
+      "g": "major",
+      "offering": "Fall",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "10-315",
+      "n": "Introduction to Machine Learning (SCS majors)",
+      "cr": 12,
+      "t": 6,
+      "s": "plan",
+      "tier": 4,
+      "req": [
+        "21-241",
+        "15-259"
+      ],
+      "anti": [],
+      "g": "major",
+      "offering": "UNKNOWN",
+      "needs_review": true,
+      "review_note": "Prerequisites inferred from sample-sequence order; program page printed none."
+    },
+    {
+      "c": "76-271",
+      "n": "Minor Elective",
+      "cr": 9,
+      "t": 6,
+      "s": "plan",
+      "gen": 1,
+      "g": "huss",
+      "offering": "Fall",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "15-411",
+      "n": "Compiler Design",
+      "cr": 15,
+      "t": 7,
+      "s": "plan",
+      "tier": 4,
+      "req": [
+        "15-213",
+        "15-210"
+      ],
+      "anti": [],
+      "g": "major",
+      "offering": "Spring",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "15-455",
+      "n": "Undergraduate Complexity Theory",
+      "cr": 12,
+      "t": 7,
+      "s": "plan",
+      "tier": 4,
+      "req": [
+        "15-251"
+      ],
+      "anti": [],
+      "g": "major",
+      "offering": "Spring",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "15-462",
+      "n": "Computer Graphics",
+      "cr": 12,
+      "t": 7,
+      "s": "plan",
+      "tier": 4,
+      "req": [
+        "15-213"
+      ],
+      "anti": [],
+      "g": "major",
+      "offering": "Spring",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "15-151",
+      "n": "Mathematical Foundations for Computer Science",
+      "cr": 12,
+      "t": -1,
+      "s": "alt",
+      "tier": 1,
+      "req": [],
+      "anti": [
+        "21-127"
+      ],
+      "alt": 1,
+      "g": "math",
+      "offering": "Fall",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "36-218",
+      "n": "Probability Theory for Computer Scientists",
+      "cr": 9,
+      "t": -1,
+      "s": "alt",
+      "tier": 3,
+      "req": [
+        "21-122"
+      ],
+      "anti": [
+        "15-259"
+      ],
+      "alt": 1,
+      "g": "math",
+      "offering": "Spring",
+      "needs_review": false,
+      "review_note": null
+    }
+  ]
+}
