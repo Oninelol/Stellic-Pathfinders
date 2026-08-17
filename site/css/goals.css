@@ -1,0 +1,123 @@
+/* Goals / Brain Dump / Habits board — Figma 388:571.
+   Same treatment as the career-plan board: one three-column grid under the three
+   headings. This board is a whiteboard too — the page never scrolls, .gboard sits
+   inside the .wb-stage from css/plan.css and is panned and zoomed with it. The
+   whiteboard shell, the calendar and the pinned tool rail all live in plan.css and
+   are shared by both boards. */
+
+.gboard {
+  /* one set of tracks, used by both the header bar and the body grid */
+  --gb-cols: minmax(0, 1.5fr) minmax(0, 1.35fr) minmax(0, 1fr);
+  --gb-gap: 24px;
+  --board-w: 1300px;
+
+  position: absolute;
+  left: 0; top: 0;
+  width: var(--board-w);
+  padding: 22px 24px 36px;
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+}
+
+.gb-header {
+  min-height: 88px;
+  background: var(--panel-alt); border-radius: 20px;
+  box-shadow: 0 4px 16px rgba(156, 164, 172, .3);
+  display: grid;
+  grid-template-columns: var(--gb-cols);
+  gap: var(--gb-gap);
+  align-items: center;
+  padding: 10px 22px;
+}
+.gb-header h2 {
+  font-family: var(--font-hand); font-weight: 400; color: var(--ink-2);
+  /* 40px is the frame's size; it eases off just enough to keep the longest
+     heading on one line when the columns narrow. */
+  font-size: clamp(26px, 2.4vw, 40px);
+  min-width: 0;
+}
+.gb-header__end {
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between;
+  gap: 6px 16px; min-width: 0;
+}
+.gb-header__link { font-family: var(--font-hand); font-size: 16px; color: var(--accent); }
+.gb-header__link:hover { text-decoration: underline; }
+
+.gb-grid {
+  display: grid;
+  grid-template-columns: var(--gb-cols);
+  gap: var(--gb-gap);
+  align-items: stretch;
+  margin-top: 26px;
+}
+.gb-col { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+
+/* No viewport media query: board space is a fixed --board-w canvas now, so the
+   three tracks always fit. Zoom out to see more of the board. */
+
+/* --- goal cards ------------------------------------------------------------- */
+
+.gcard {
+  position: relative;
+  min-height: 145px;
+  background: var(--panel-alt); border-radius: 15px;
+  box-shadow: 0 4px 16px rgba(156, 164, 172, .3);
+  padding: 16px 22px 34px;
+  font-family: var(--font-body);
+  color: var(--ink-2);
+}
+
+.gcard__head { display: flex; align-items: center; gap: 12px; }
+.gcard__title { font-size: 16px; min-width: 0; flex: 1 1 auto; }
+.gcard__add { margin-left: auto; font-size: 20px; color: var(--accent); line-height: 1; flex: 0 0 auto; }
+.gcard__list { margin: 12px 0 0 22px; list-style: disc; font-size: 12px; }
+.gcard__list li::marker { color: var(--ink-3); }
+.gcard__list li.is-done { text-decoration: line-through; }
+.gcard__status { position: absolute; right: 22px; bottom: 14px; font-size: 12px; }
+
+.gcheck {
+  appearance: none;
+  width: 12px; height: 12px; flex: 0 0 12px;
+  border: 2px solid var(--accent); border-radius: 4px;
+  background: transparent; cursor: pointer;
+}
+.gcheck:checked { background: var(--accent); }
+
+/* --- calendar + habits ------------------------------------------------------ */
+
+.gb-cal {
+  background: var(--panel-alt); border-radius: 15px;
+  box-shadow: 0 6px 8px rgba(0, 0, 0, .06);
+  padding: 16px 24px;
+  min-width: 0;
+}
+
+.gb-habits {
+  background: var(--panel-alt); border-radius: 15px;
+  box-shadow: 0 6px 8px rgba(0, 0, 0, .06);
+  padding: 18px 21px;
+  min-width: 0;
+  font-family: var(--font-body);
+  color: var(--ink-2);
+}
+.gb-habits__title { font-family: var(--font-hand); font-size: 17px; color: var(--ink); }
+.gb-habits__row { display: flex; align-items: center; gap: 12px; height: 24px; margin-top: 10px; font-size: 12px; }
+
+/* --- speech bubble, anchored to the bottom of its column --------------------- */
+
+.gb-bubble {
+  margin: auto 0 0 auto;
+  width: 100%; max-width: 237px; min-height: 87px;
+  background: var(--panel);
+  border: 5px solid #404040;
+  border-radius: 20px 20px 0 20px;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, .25);
+  padding: 12px 14px;
+  font-family: var(--font-hand); font-size: 13px; color: var(--ink-2);
+}
+
+.gb-bubble { font-family: var(--font-body); font-size: 12px; }
+
+/* The pigeon and the tool rail are screen chrome — see the .wb-chrome,
+   .gb-tools and .gb-mascot rules in css/plan.css, which both boards share. */

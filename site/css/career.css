@@ -1,0 +1,628 @@
+/* Career — Figma 388:56 (default), 388:245 (expanded), 388:470 (start-up detail) */
+
+.career-top { display: flex; gap: 23px; align-items: flex-start; }
+
+.profile-card {
+  flex: 1 1 auto;
+  height: 181px;
+  background: var(--panel);
+  border-radius: 20px;
+  box-shadow: var(--sh-2);
+  display: flex;
+  align-items: center;
+  gap: 38px;
+  padding: 0 40px 0 25px;
+}
+
+.profile-card__avatar {
+  flex: 0 0 128px;
+  width: 128px; height: 128px;
+  border-radius: 50%;
+  background: var(--placeholder);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+.profile-card__avatar img { width: 96px; height: auto; }
+
+.profile-card__name { font-family: var(--font-hand); font-size: 45px; line-height: 1.05; font-weight: 400; }
+.profile-card__meta { color: var(--ink-2); font-size: 16px; margin-top: 6px; }
+.profile-card__meta span { display: block; }
+.profile-card__cta { margin-left: auto; }
+
+/* 286 / 1124 of the 1440 frame's content area — the fixed px width of the frame
+   expressed as its share of whatever the content area is now. */
+/* The slot holds the row's geometry (286 / 1124 of the 1440 frame). The panel
+   inside it is absolutely placed, so opening the full list drops it down over
+   the page instead of pushing `.career-body` and the visa banner around. */
+.saved-rail-slot {
+  position: relative;
+  flex: 0 1 25.45%;
+  min-width: 240px;
+  height: 180px;
+  z-index: 20;
+}
+
+.saved-rail {
+  position: absolute;
+  left: 0; right: 0; top: 0;
+  height: 180px;
+  overflow: hidden;
+  transition: height var(--panel-ms) var(--ease-out), box-shadow var(--panel-ms) var(--ease-out);
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 18px;
+}
+/* The head row is the height of the label (16px) so the 24px arrow button
+   overhangs it evenly — that is how 388:56 has it: label 18..34 from the panel
+   top, arrow box 13..37. */
+.saved-rail__head {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 16px;
+}
+
+/* 388:56 replaced the flat glyph with a brick-red accent arrow button. It is
+   the same control as the toolbar ⤢, so it carries the same two icons. */
+.saved-rail__toggle {
+  flex: 0 0 24px;
+  width: 24px; height: 24px;
+  margin-right: -5px;          /* icon box ends 13px from the panel edge, per the frame */
+  display: grid; place-items: center;
+  border-radius: 6px;
+  color: var(--accent);
+  transition: background .15s ease;
+}
+.saved-rail__toggle:hover { background: var(--accent-tint); }
+.saved-rail__toggle img { width: 24px; height: 24px; }
+.saved-rail__toggle .icon-collapse { display: none; }
+.saved-rail.is-open .saved-rail__toggle .icon-collapse { display: block; }
+.saved-rail.is-open .saved-rail__toggle .icon-expand { display: none; }
+
+/* Open: the panel grows to fit the whole list, capped so it can never run off
+   the bottom of a short window — the list scrolls inside it past that point. */
+.saved-rail.is-open {
+  height: var(--saved-open-h, 420px);
+  box-shadow: var(--sh-4);
+}
+.saved-rail.is-open .saved-rail__list {
+  max-height: calc(var(--saved-open-h, 420px) - 52px);
+  overflow-y: auto;
+}
+
+.saved-rail__list { margin-top: 15px; }
+.saved-rail__item { padding-bottom: 12px; border-bottom: 1px solid var(--border); margin-bottom: 12px; }
+.saved-rail__item:last-child { border-bottom: 0; margin-bottom: 0; padding-bottom: 0; }
+
+/* Each saved title now sits on a tinted pill (402:71 peach, 402:73 sage).
+   The drawn rect runs from 7px left of the text column to 33px short of its
+   right edge, and is 24px tall around 20px of text. */
+.saved-rail__title {
+  display: block;
+  margin: 0 33px 0 -7px;
+  padding: 1px 6px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--accent-tint);
+  font-size: 15px; font-weight: 500; line-height: 20px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.saved-rail__item[data-tone="sage"] .saved-rail__title { background: var(--green-tint); }
+.saved-rail__sub { font-size: 13px; color: var(--ink-2); margin-top: 2px; }
+
+/* --- toolbar --------------------------------------------------------------- */
+
+/* The wide start-ups panel is pulled 29px up to sit level with this row, so the
+   row would otherwise peek out above it. It goes fully hidden while the panel is
+   open and comes back when it closes — visibility rather than display, so the
+   panel does not jump 65px up the page mid-swipe. */
+.career-page.is-startups-wide .career-tools {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity var(--panel-ms) var(--ease-in), visibility 0s linear var(--panel-ms);
+}
+
+.career-tools {
+  display: flex; align-items: center; gap: 22px;
+  margin: 27px 0 10px;
+  opacity: 1;
+  transition: opacity var(--panel-ms) var(--ease-out);
+}
+.expand-toggle {
+  width: 28px; height: 28px;
+  display: grid; place-items: center;
+  border-radius: 6px;
+}
+.expand-toggle:hover { background: var(--accent-tint); }
+.expand-toggle img { width: 28px; height: 28px; }
+.expand-toggle .icon-collapse { display: none; }
+.is-expanded .expand-toggle .icon-collapse { display: block; }
+.is-expanded .expand-toggle .icon-expand { display: none; }
+
+.filters { display: flex; gap: 26px; }
+.filter {
+  font-size: 10px; font-weight: 600; letter-spacing: .5px;
+  color: var(--ink-3);
+  padding-bottom: 3px;
+  border-bottom: 2px solid transparent;
+}
+.filter[data-cat="internship"] { color: var(--accent); }
+.filter[data-cat="research"]   { color: var(--green); }
+.filter[data-cat="oncampus"]   { color: var(--amber); }
+.filter.is-on { border-bottom-color: currentColor; }
+.filter:hover { border-bottom-color: color-mix(in srgb, currentColor 40%, transparent); }
+
+/* --- body grid ------------------------------------------------------------- */
+
+/* Default state is a straight 50/50 split — the listings side and the start-ups
+   side each get half of the content area. The detail state keeps the frame's
+   proportion (464 : 643 -> 0.722fr : 1fr). */
+/* --- one place for every duration in this screen --------------------------
+   Defined on the page body, not on `.career-body`, because `.career-tools` is
+   a *sibling* of `.career-body` and has to read them too. career.js reads them
+   back with getComputedStyle, so the reduced-motion block below is all it takes
+   to switch the choreography off everywhere at once.
+
+   ONE vocabulary drives both expansions — the listings grid and the start-ups
+   directory: the panel that leaves flies out over `--panel-ms`, the content
+   that arrives rises `--rise-from` with a `--stagger-ms` step. */
+.career-page {
+  --panel-ms:       300ms;   /* whichever half slides off / back again        */
+  --card-ms:        260ms;   /* a revealed card rising into place             */
+  --card-out-ms:    200ms;   /* ... and dropping back out                     */
+  --stagger-ms:      24ms;   /* per-card entry delay                          */
+  --stagger-out-ms:  18ms;   /* per-card exit delay                           */
+  --rise-from:       28px;   /* how far BELOW its resting place a card starts */
+  --fall-to:         22px;   /* how far below it drops on the way out         */
+  --ease-out: cubic-bezier(.22, .9, .32, 1);
+  --ease-in:  cubic-bezier(.45, 0, .85, .35);
+}
+
+.career-body {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 17px;
+  align-items: stretch;
+  position: relative;
+}
+.career-body.is-expanded { grid-template-columns: minmax(0, 1fr); }
+.career-body.is-expanded .startups:not(.is-flying) { display: none; }
+
+.career-body.is-detail { grid-template-columns: minmax(280px, 0.722fr) minmax(0, 1fr); }
+.career-body.is-detail .jobs:not(.is-flying) { display: none; }
+
+/* the start-ups panel taking the whole content width */
+.career-body.is-startups-wide { grid-template-columns: minmax(0, 1fr); }
+.career-body.is-startups-wide .jobs:not(.is-flying) { display: none; }
+
+/* One rule for both states: the card keeps roughly its drawn width and the column
+   count follows the space it is given — 2 up compact and 4 up expanded at 1440,
+   more as the viewport grows. The 47% keeps two columns even in the narrow
+   compact rail, where 234px would not fit twice. */
+.jobs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(234px, 47%), 1fr));
+  gap: 16px 18px;
+}
+/* `.is-leaving` keeps a card on screen for its exit animation after the grid
+   has already gone back to eight. */
+.jobs > .job:nth-child(n + 9):not(.is-leaving) { display: none; }
+.is-expanded .jobs > .job:nth-child(n + 9) { display: flex; }
+.job.is-filtered { display: none !important; }
+
+/* --- expand / collapse choreography ---------------------------------------
+   Transform and opacity only, so nothing here touches layout. */
+
+@keyframes jobRise {
+  from { opacity: 0; transform: translateY(var(--rise-from)); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes jobFall {
+  from { opacity: 1; transform: none; }
+  to   { opacity: 0; transform: translateY(var(--fall-to)); }
+}
+
+.jobs > .job.is-rising {
+  animation: jobRise var(--card-ms) var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * var(--stagger-ms));
+  transition: none;
+}
+.jobs > .job.is-leaving {
+  display: flex;
+  z-index: 2;
+  pointer-events: none;
+  animation: jobFall var(--card-out-ms) var(--ease-in) both;
+  animation-delay: calc(var(--i, 0) * var(--stagger-out-ms));
+  transition: none;
+}
+.jobs > .job.is-rising:hover,
+.jobs > .job.is-leaving:hover { transform: none; }
+
+.job {
+  position: relative;
+  display: flex;
+  min-height: 150px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  box-shadow: var(--sh-3);
+  overflow: hidden;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.job:hover { transform: translateY(-2px); box-shadow: var(--sh-4); }
+.job::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 6px;
+  background: var(--accent);
+}
+.job[data-cat="research"]::before { background: var(--green); }
+.job[data-cat="oncampus"]::before { background: var(--amber); }
+.job[data-cat="plain"]::before    { background: var(--accent); }
+
+.job__body { flex: 1 1 auto; padding: 16px 20px 0 22px; min-width: 0; }
+.job__top { display: flex; align-items: flex-start; gap: 8px; }
+.job__actions { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+
+.job__warn {
+  width: 16px; height: 16px; border-radius: 50%;
+  background: #c0392b;
+  color: #fff; font-size: 10px; font-weight: 600;
+  display: grid; place-items: center;
+}
+
+.job__title { font-family: var(--font-serif); font-size: 16px; margin-top: 22px; }
+.job__company { font-size: 12px; font-weight: 500; color: var(--ink-2); margin-top: 6px; }
+.job__loc {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; color: var(--ink-2); margin-top: 5px;
+}
+.job__loc img { width: 6px; height: 6px; }
+
+.bookmark { line-height: 0; opacity: .85; }
+.bookmark img { width: 21px; height: 21px; }
+.bookmark:hover { opacity: 1; }
+.bookmark.is-on img { filter: none; }
+.bookmark:not(.is-on) img { filter: grayscale(1) opacity(.55); }
+
+/* --- start-ups panel ------------------------------------------------------- */
+
+.startups {
+  /* the panel starts level with the toolbar, 29px above the listings grid */
+  margin-top: -29px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 25px 18px 20px 23px;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+/* --- the leaving half ------------------------------------------------------
+   Both expansions use the same two steps: pin the half that is leaving over the
+   rect it occupies right now (`fixed`, so neither `.main`'s clip nor a panel's
+   scroll box crops it), then translate it off the near edge. The start-ups panel
+   leaves to the RIGHT when the listings grid expands; the listings grid leaves
+   to the LEFT when the start-ups directory expands. Transform and opacity only. */
+.startups.is-flying,
+.jobs.is-flying {
+  position: fixed;
+  z-index: 4;
+  margin: 0;
+  will-change: transform;
+}
+/* the transition is a second class so the half can be *placed* off screen
+   without animating, then animated back from there */
+.startups.is-moving,
+.jobs.is-moving {
+  transition: transform var(--panel-ms) var(--ease-in),
+              opacity   var(--panel-ms) linear;
+}
+.startups.is-moving.is-back,
+.jobs.is-moving.is-back { transition-timing-function: var(--ease-out), linear; }
+
+.startups.is-gone      { transform: translateX(calc(100% + 80px));  opacity: 0; }
+.jobs.is-gone-left     { transform: translateX(calc(-100% - 80px)); opacity: 0; }
+
+.startups__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex: 0 0 auto; }
+.startups__title { font-family: var(--font-hand); font-size: 24px; font-weight: 400; color: #000; }
+.startups__back img { transition: transform .28s var(--ease-out); transform: rotate(-90deg); }
+.is-startups-wide .startups__back img { transform: rotate(90deg); }
+
+.startups__body {
+  display: flex;
+  gap: 20px;
+  flex: 1 1 auto;
+  min-height: 0; min-width: 0;
+}
+/* The 5px of padding is headroom for the hover scale: the enlarged card grows
+   ~2.5px past its box on every side, and without the padding that overflow
+   would grow the scroll box and flash a scrollbar. The matching negative
+   margins put the column back exactly where it was drawn. */
+.startups__list {
+  display: flex; flex-direction: column; gap: 12px;
+  padding: 5px 13px 5px 5px;
+  margin: -5px -5px -5px -5px;
+  flex: 1 1 auto; min-height: 0; min-width: 0;
+  overflow-y: auto;
+}
+.is-startups-wide .startups__list { flex: 0 0 38%; }
+
+.startup {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--sh-1);
+  padding: 16px;
+  cursor: pointer;
+  transition: box-shadow var(--card-ms) var(--ease-out),
+              border-color var(--card-ms) var(--ease-out),
+              transform var(--card-ms) var(--ease-out);
+}
+.startup__row { display: flex; gap: 12px; align-items: flex-start; }
+.startup__logo { flex: 0 0 48px; width: 48px; height: 48px; border-radius: 10px; background: var(--placeholder); }
+.startup__name { font-family: var(--font-serif); font-size: 17px; }
+.startup__meta { font-size: 12.5px; color: var(--ink-3); margin-top: 2px; }
+.startup__blurb { font-size: 13px; color: var(--ink-2); margin-top: 14px; }
+
+/* The contact row is laid out in every card at every moment — that is what
+   keeps the list from jumping as the pointer crosses it. Only its paint is
+   toggled, and the card's own growth is a transform, so neither the siblings
+   nor the panel ever move. */
+.startup__foot {
+  display: flex; align-items: center; justify-content: flex-end; gap: 10px;
+  margin-top: 16px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(4px);
+  transition: opacity var(--card-ms) var(--ease-out),
+              transform var(--card-ms) var(--ease-out),
+              visibility 0s linear var(--card-ms);
+}
+.startup__foot > img { width: 32px; height: 32px; }
+
+/* hover — and its keyboard mirror, so the footer is reachable without a mouse
+   (tabbing to a card, or to the bookmark inside it, reveals the same row) */
+.startup:hover,
+.startup:focus-visible,
+.startup:focus-within {
+  border-radius: 18px;
+  border-color: var(--accent-line);
+  box-shadow: var(--sh-4);
+  transform: scale(1.02);
+  z-index: 1;
+}
+.startup:hover .startup__foot,
+.startup:focus-visible .startup__foot,
+.startup:focus-within .startup__foot {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition: opacity var(--card-ms) var(--ease-out),
+              transform var(--card-ms) var(--ease-out),
+              visibility 0s;
+}
+.startup:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* line-md:discord is two layers in the frame (388:115) — the body outline and
+   the eyes — and the outline is 28.7x22.67, not square. Drawing it alone in a
+   32px box stretched it and lost the eyes. Both layers sit at the frame's own
+   insets inside a 32px box, so the outline keeps its aspect. */
+.icon-discord {
+  position: relative;
+  display: block;
+  flex: 0 0 32px;
+  width: 32px; height: 32px;
+  overflow: hidden;
+}
+.icon-discord .icon-discord__body,
+.icon-discord .icon-discord__eyes {
+  position: absolute;
+  display: block;
+  width: auto; height: auto;
+}
+.icon-discord .icon-discord__body { top: 16.67%; right: 8.22%;  bottom: 18.75%; left: 8.34%; }
+.icon-discord .icon-discord__eyes { top: 43.75%; right: 31.25%; bottom: 43.75%; left: 31.25%; }
+
+/* the email contact, alongside the Discord and Instagram marks */
+.startup__mail { display: block; line-height: 0; opacity: .9; transition: opacity .15s ease; }
+.startup__mail:hover { opacity: 1; }
+.startup__mail img { width: 32px; height: 32px; }
+
+/* `is-open` is now nothing but a *selected* marker — the card whose detail is
+   showing. The enlarge-and-reveal above belongs to the pointer, not to state,
+   so no card is ever stuck in it. */
+.startup.is-open {
+  border-color: var(--accent);
+  box-shadow: var(--sh-3);
+}
+
+/* --- start-ups: the swipe-over directory view ------------------------------
+   Placeholder records, drawn with the components this screen already has —
+   eyebrow, serif title, meta row, blurb, and the category tags. */
+
+.startups__wide {
+  display: none;
+  flex: 1 1 auto; min-width: 0; min-height: 0;
+  padding-right: 8px;
+  overflow-y: auto;
+}
+.is-startups-wide .startups__wide { display: block; }
+
+/* The directory arrives exactly the way the newly revealed job cards do —
+   `jobRise`, `--card-ms`, `--rise-from`, a `--stagger-ms` step per row — and
+   leaves exactly the way they leave. On the way out the block is pinned over
+   the rect it just had, so the panel can shrink back to half width underneath
+   it while the rows drop. */
+.startups__wide.is-rising > * {
+  animation: jobRise var(--card-ms) var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * var(--stagger-ms));
+}
+.startups__wide.is-leaving {
+  display: block;
+  z-index: 4;
+  overflow: hidden;
+  pointer-events: none;
+  will-change: transform;
+}
+.startups__wide.is-leaving > * {
+  animation: jobFall var(--card-out-ms) var(--ease-in) both;
+  animation-delay: calc(var(--i, 0) * var(--stagger-out-ms));
+}
+
+.startups__wide-title { font-family: var(--font-serif); font-size: 26px; margin-top: 10px; }
+.startups__wide-meta { font-size: 12.5px; color: var(--ink-3); margin-top: 4px; }
+.startups__wide-blurb { font-size: 13px; color: var(--ink-2); margin-top: 14px; }
+.startups__wide-label { margin-top: 22px; }
+
+.startups__roles { margin-top: 10px; }
+.startups__role {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.startups__role:last-child { border-bottom: 0; }
+.startups__role-name { font-family: var(--font-serif); font-size: 15px; }
+.startups__role-meta { margin-left: auto; font-size: 12px; color: var(--ink-3); }
+
+.startups__wide-foot {
+  display: flex; align-items: center; gap: 10px;
+  margin-top: 14px;
+}
+.startups__wide-foot > img { width: 32px; height: 32px; }
+.startups__wide-foot .btn { margin-left: auto; }
+
+.startup-detail {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 26px 30px;
+  min-height: 0;
+  display: none;
+}
+.is-detail .startup-detail { display: block; }
+/* Opening a detail is ONE animation: the pane rises in, on the same token as a
+   job card. Nothing swipes — see career.js `openDetail`. */
+.startup-detail.is-rising { animation: jobRise var(--card-ms) var(--ease-out) both; }
+.startup-detail__title { font-family: var(--font-hand); font-size: 30px; font-weight: 400; margin-bottom: 18px; }
+.startup-detail__body p { font-size: 13px; color: var(--ink-2); margin-bottom: 16px; }
+
+.is-detail .startups__title { font-size: 20px; }
+
+/* --- visa banner ----------------------------------------------------------- */
+
+/* Stays the centred notice it is in the frame, but as a share of the content
+   area (866 / 1124) so it scales with the page instead of stranding. */
+.visa {
+  margin: 16px auto 0;
+  max-width: 77%;
+  min-height: 84px;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-line);
+  border-radius: 20px;
+  padding: 15px 24px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.visa__title { font-size: 19px; font-weight: 600; color: var(--accent); }
+.visa__text { font-size: 14px; margin-top: 6px; }
+.visa__actions { margin-left: auto; text-align: right; display: flex; flex-direction: column; gap: 12px; }
+.visa__actions a, .visa__actions button { font-size: 14px; font-weight: 500; color: var(--accent); }
+.visa__actions button:hover, .visa__actions a:hover { text-decoration: underline; }
+
+/* --- full-height page: one screen, no document scroll ----------------------
+   On a normal desktop viewport the screen is a flex column that fills the
+   viewport exactly: the profile row and the toolbar keep their intrinsic
+   height, `.career-body` takes every pixel that is left, and the visa banner
+   is the last band, sitting on the bottom edge. Overflow is absorbed inside
+   the two panels (`.jobs` and `.startups__list`), never by the page.
+   Below 1101px wide or 700px tall the page falls back to normal document
+   flow and is allowed to scroll. */
+
+@media (min-width: 1101px) and (min-height: 700px) {
+
+  .career-page .app { height: 100vh; min-height: 0; }
+
+  .career-page .main {
+    height: 100vh;
+    min-height: 0;
+    padding-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .career-page .career-top,
+  .career-page .career-tools { flex: 0 0 auto; }
+
+  .career-page .career-body { flex: 1 1 auto; min-height: 0; }
+
+  /* the banner keeps its centred 77% width now that it is a flex item */
+  .career-page .visa { flex: 0 0 auto; width: 77%; }
+
+  /* Two columns compact, four expanded — fixed counts so the card proportion
+     stays sane however wide the screen gets. Rows share the height the body
+     row hands down, from a floor that keeps the card legible up to a cap that
+     stops a tall viewport stretching a card out of shape. */
+  .jobs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: minmax(140px, 240px);
+    align-content: start;
+    min-height: 0;
+    overflow: hidden auto;
+  }
+  .career-body.is-expanded .jobs { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+  /* the row, not the frame, sets the card height here */
+  .job { min-height: 0; }
+
+  .startup-detail { overflow: hidden auto; }
+}
+
+/* --- narrow: the two-column rows stack ------------------------------------- */
+
+/* --- reduced motion --------------------------------------------------------
+   Zeroing the durations is enough: career.js reads them back for its own
+   timers, so the state still switches, just without the choreography. */
+
+@media (prefers-reduced-motion: reduce) {
+  .career-page {
+    --panel-ms: 0ms;
+    --card-ms: 0ms;
+    --card-out-ms: 0ms;
+    --stagger-ms: 0ms;
+    --stagger-out-ms: 0ms;
+    --rise-from: 0px;
+    --fall-to: 0px;
+  }
+  .startups__back img,
+  .job { transition: none; }
+
+  /* the start-up cards still reveal their contact row — just without the
+     growth, and with no transition to carry it */
+  .startup,
+  .startup__foot { transition: none; }
+  .startup:hover,
+  .startup:focus-visible,
+  .startup:focus-within { transform: none; }
+}
+
+/* --- narrow: the two-column rows stack ------------------------------------- */
+
+@media (max-width: 1100px) {
+  .career-top { flex-wrap: wrap; }
+  .saved-rail { flex: 1 1 100%; }
+
+  .career-body,
+  .career-body.is-detail { grid-template-columns: minmax(0, 1fr); }
+
+  /* no left half to swipe over once everything is one column */
+  .startups__body { flex-direction: column; }
+  .is-startups-wide .startups__list { flex: 1 1 auto; }
+
+  /* nothing to sit level with once the panel is below the grid */
+  .startups { margin-top: 0; }
+
+  .visa { max-width: 100%; }
+}

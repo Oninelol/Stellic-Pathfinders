@@ -1,0 +1,678 @@
+/* Personalized Career Plan — Figma frame 388:669.
+
+   BOARD SPACE
+   The frame is 1448 x 1238 with a 165px sidebar down its left edge. This page
+   uses the canonical 217px sidebar instead, so the *drawing* is what board space
+   reproduces: a 1283 x 1238 canvas (1448 - 165), where
+
+       board_x = figma_x - 165
+       board_y = figma_y
+
+   Every panel is absolutely placed at that coordinate with the width the frame
+   gave it. Board space is independent of the viewport, so there are no media
+   queries and no reflow — the arrangement is the drawn arrangement at every
+   screen size, and the whiteboard's zoom is what adapts it to the window.
+
+   SCREEN CHROME
+   The page never scrolls. .wb-canvas is a viewport-sized window; .wb-stage
+   inside it carries one `translate() scale()` that all board content shares.
+   The header, the tool rail, the zoom pill, the template picker and the mascot
+   sit OUTSIDE the stage and are `fixed`, so they are pinned and unscaled.
+
+   PALETTE / TYPE (a deliberate departure from the frame — see README notes)
+   The frame's collage leans pink/peach: a rose "People i met", peach long-term
+   and wins cards, a cool blue-grey skill card, and body copy in the rounded
+   Playpen Sans. This build keeps the hand face (--font-hand) for every heading
+   and every hand-written affordance, but sets body and label copy in Inter
+   (--font-body), and re-grounds the tints on the neutral/stone/sage end of the
+   base.css token set. Brick (--accent) stays, and is now the only saturated
+   colour on the board, so it reads as emphasis rather than decoration. */
+
+/* --- board tints ------------------------------------------------------------
+   Four warm neutrals plus one sage, all derived from the base.css tokens, so the
+   board sits on the same ground as the rest of the app instead of beside it. */
+
+.page-plan, .page-goals {
+  --pl-paper: #fffdf7;                    /* note paper — the primary surface  */
+  --pl-stone: #ece7db;                    /* was #fdf1e7 peach                 */
+  --pl-sage:  #e4eadd;                    /* was #fbe4e4 rose                  */
+  --pl-wheat: #efe6cd;
+  --pl-clay:  #e8ddd2;
+  --pl-shade: #ded6c8;
+  --pl-rule:  #e3ddd0;
+  --pl-cast:  rgba(107, 92, 74, .18);     /* one shadow colour, four depths    */
+}
+
+/* --- no page scrolling ----------------------------------------------------- */
+
+body.page-plan,
+body.page-goals { height: 100vh; overflow: hidden; }
+body.page-plan .app,
+body.page-goals .app { height: 100vh; overflow: hidden; }
+
+.page-plan .main,
+.page-goals .main { padding: 0; position: relative; height: 100vh; overflow: hidden; }
+
+/* --- whiteboard viewport + board space ------------------------------------- */
+
+.wb-canvas {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  touch-action: none;
+  overscroll-behavior: none;
+  background-color: var(--panel);
+  background-image: radial-gradient(#e7e0d2 1px, transparent 1px);
+  background-size: 17px 17px;
+  cursor: default;
+}
+.wb-canvas.is-grab { cursor: grab; }
+.wb-canvas.is-panning { cursor: grabbing; }
+.wb-canvas.is-panning .wb-stage,
+.wb-canvas.is-dragging .wb-stage { user-select: none; }
+.wb-canvas[data-tool="draw"] { cursor: crosshair; }
+.wb-canvas[data-tool="erase"] { cursor: cell; }
+
+/* Zero-sized origin marker: every child is placed absolutely in board
+   coordinates, so the stage's own box never depends on its contents. */
+.wb-stage {
+  position: absolute;
+  left: 0; top: 0;
+  width: 0; height: 0;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+
+/* the freehand ink layer — board space, and never eats a pointer event */
+.wb-ink {
+  position: absolute;
+  left: -4000px; top: -4000px;
+  width: 12000px; height: 12000px;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 2;
+}
+.wb-stroke {
+  fill: none;
+  stroke: var(--accent);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.wb-panels { position: absolute; left: 0; top: 0; width: 0; height: 0; z-index: 3; }
+
+/* The board canvas: exactly the drawing area of frame 388:669. */
+.board {
+  position: absolute;
+  left: 0; top: 0;
+  --board-w: 1283px;
+  --board-h: 1238px;
+  width: var(--board-w);
+  height: var(--board-h);
+  z-index: 1;
+}
+
+/* --- every panel is draggable ---------------------------------------------- */
+
+/* Position comes from the rule below for each panel; a drag writes inline
+   left/top, which wins. Panels are moved in BOARD units, so a dragged panel
+   stays glued to its neighbours through any pan or zoom. */
+.pl-panel { position: absolute; }
+.pl-panel.is-dragging { z-index: 12 !important; cursor: grabbing; }
+.pl-panel.is-lifted { z-index: 11; }
+
+/* --- decorative hand marks (loose vectors on the frame) --------------------- */
+
+.pl-mark { position: absolute; pointer-events: none; opacity: .85; z-index: 4; }
+.pl-mark--x1   { left: 1216px; top: 425px; width: 28px; }   /* 388:669 411:42 */
+.pl-mark--x2   { left: 278px;  top: 691px; width: 22px; }   /* 411:45         */
+.pl-mark--week { left: 768px;  top: 555px; width: 47px; transform: rotate(-14deg); }  /* 411:53 */
+.pl-mark--refl { left: 440px;  top: 700px; width: 40px; transform: scaleX(-1) rotate(-6deg); } /* 411:51 */
+.pl-mark--ppl  { left: 1102px; top: 696px; width: 46px; transform: scaleY(-1) rotate(-4deg); } /* 411:48 */
+.pl-mark--long { left: 754px;  top: 825px; width: 48px; transform: rotate(-6deg); }   /* 411:50 */
+
+/* --- header: screen chrome, not board content ------------------------------
+   Frame 388:865 draws it at x179 y13, 1250 x 101 inside a 1283-wide board — a
+   14px left inset and a 19px right inset. Pinned here with those same insets so
+   it holds the drawn position while staying put through pan and zoom.
+
+   pointer-events: none on the bar itself means the canvas underneath still gets
+   the pan, the wheel-zoom and the pen; only the two controls take clicks. */
+
+.pl-header {
+  position: fixed;
+  left: calc(var(--sidebar-w) + 14px);
+  right: 19px;
+  top: 13px;
+  height: 101px;
+  z-index: 18;
+  pointer-events: none;
+  background: var(--panel-alt);
+  border: 1px solid var(--border-soft);
+  border-radius: 20px;
+  box-shadow: 0 4px 16px rgba(107, 92, 74, .16);
+  display: flex; align-items: center; gap: 30px;
+  padding: 0 22px 0 22px;
+}
+.pl-header__title { font-family: var(--font-hand); font-size: 38px; font-weight: 400; line-height: 1.1; white-space: nowrap; }
+.pl-header__date  { font-family: var(--font-hand); font-size: 22px; color: var(--ink-2); white-space: nowrap; }
+.pl-header__link  {
+  pointer-events: auto;
+  font-family: var(--font-body); font-size: 13px; font-weight: 500;
+  color: var(--accent); white-space: nowrap;
+}
+.pl-header__link:hover { text-decoration: underline; }
+.pl-header__pill {
+  pointer-events: auto;
+  margin-left: auto;
+  flex: 0 0 auto;
+  width: 330px; max-width: 46%; height: 44px;
+  background: var(--panel);
+  border: 1px solid var(--border-soft);
+  border-radius: 22px;
+  display: flex; align-items: center; justify-content: space-around;
+  font-family: var(--font-body); font-size: 13px; color: var(--ink-2);
+}
+.pl-header__pill img { width: 14px; height: 14px; }
+.pl-header__pill span { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+
+/* --- semester goals — 388:780 @ (33, 147) 477 x 510 ------------------------- */
+
+.pl-goals {
+  left: 33px; top: 147px;
+  width: 477px; min-height: 510px;
+  background: var(--pl-paper);
+  border-radius: 10px;
+  box-shadow: 2px 4px 10px var(--pl-cast);
+  transform: rotate(-.4deg);            /* the drawn tilt — kept */
+  padding: 25px 0 12px;
+  display: flex; flex-direction: column;
+}
+.pl-goals__title {
+  font-family: var(--font-hand); font-weight: 400;
+  font-size: 21px; line-height: 23px; letter-spacing: .5px;
+  margin-left: 26px;
+}
+.pl-goals__hint {
+  font-family: var(--font-body); font-size: 11px; line-height: 16px; color: var(--ink-3);
+  text-align: right; margin: 4px 35px 0 0;
+}
+.pl-goals__rule { height: 1px; background: var(--pl-rule); margin: 11px 0 2px 22px; width: 420px; }
+.pl-goals__foot .pl-goals__rule { margin: 12px 0 12px 22px; }
+
+/* a goal is a card in its own right (411:56 etc): 405 x 90 in a 37px gutter,
+   on a 95px pitch — the frame's own geometry. */
+.pl-goal {
+  position: relative;
+  margin: 0 0 5px 37px;
+  width: 405px; min-height: 90px;
+  background: #fff;
+  border: 1px solid var(--pl-rule);
+  border-radius: 9px;
+  box-shadow: 0 1px 3px rgba(107, 92, 74, .10);
+  padding: 8px 9px 11px 5px;
+}
+/* The frame draws the fourth goal as a bare row — and overlapping the third
+   card. It is kept bare, but placed after the third card instead of over it. */
+.pl-goal--bare {
+  min-height: 43px; padding: 8px 9px 12px 5px;
+  background: transparent; border-width: 0; box-shadow: none;
+}
+.pl-goal__row { display: flex; align-items: center; gap: 26px; min-height: 23px; cursor: pointer; }
+.pl-goal__name { font-family: var(--font-hand); font-weight: 400; font-size: 19px; line-height: 23px; }
+.pl-goal.is-done .pl-goal__name { color: var(--ink-3); text-decoration: line-through; }
+.pl-goal__badge {
+  position: absolute; left: -29px; top: 28px;
+  width: 22px; height: 22px; border-radius: 50%;
+  display: grid; place-items: center;
+  font-family: var(--font-body); font-size: 11px; font-weight: 600; color: #fff;
+  background: var(--ink-3);
+}
+.pl-goal[data-pri="high"]   > .pl-goal__badge { background: var(--accent); }
+.pl-goal[data-pri="medium"] > .pl-goal__badge { background: #8c6b26; }
+.pl-goal[data-pri="low"]    > .pl-goal__badge { background: #b0a897; }
+.pl-goal__meta { margin: 0 0 0 35px; border-top: 1px solid var(--pl-rule); padding-top: 9px; }
+.pl-goal__meta p { font-family: var(--font-body); font-size: 12px; line-height: 18px; color: var(--ink-2); }
+
+.pl-goals__foot { margin-top: auto; }
+.pl-goals__add {
+  display: block; text-align: left; margin-left: 26px;
+  font-family: var(--font-body); font-size: 13px; line-height: 19px; font-weight: 500; color: var(--accent);
+}
+.pl-goals__note {
+  font-family: var(--font-body); font-size: 9.5px; line-height: 14px; color: var(--ink-4);
+  margin: 0 26px; display: flex; justify-content: space-between; gap: 12px; white-space: nowrap;
+}
+
+.pl-check {
+  appearance: none;
+  width: 15px; height: 15px; flex: 0 0 15px;
+  border: 1.4px solid var(--ink-3); border-radius: 3px;
+  background: transparent; cursor: pointer;
+}
+.pl-check:checked { background: var(--pl-sage); border-color: var(--green); }
+
+/* --- september — 388:684 @ (543, 164) 400 x 251 ---------------------------- */
+
+.pl-cal {
+  left: 543px; top: 164px;
+  width: 400px; height: 251px;
+  background: var(--panel-alt); border-radius: 15px;
+  border: 1px solid var(--border-soft);
+  box-shadow: 0 4px 10px rgba(107, 92, 74, .10);
+  padding: 15px 0 0 32px;
+}
+.cal__month { font-family: var(--font-hand); font-size: 17px; line-height: 25px; color: var(--ink-2); }
+/* 7 x 39.8 on a 50.03 pitch, 5 rows of 23 on a 33 pitch — the frame's grid */
+.cal__grid {
+  display: grid;
+  grid-template-columns: repeat(7, 39.8px);
+  column-gap: 10.2px; row-gap: 10px;
+  margin-top: 5px;
+}
+.cal__dow {
+  font-family: var(--font-body); font-size: 8px; font-weight: 500;
+  color: var(--ink-3); text-align: center; height: 11px;
+}
+.cal__day {
+  height: 23px; border-radius: 10px; background: var(--pl-shade);
+  display: grid; place-items: center;
+  font-family: var(--font-body); font-size: 8px; color: var(--ink-2);
+}
+.cal__day--mute { background: var(--ink-3); color: var(--panel-alt); }
+.cal__day--dark { background: #6b665e; }
+.cal__day--today { background: #fff; border: 1px solid var(--accent); color: var(--accent); font-weight: 600; }
+
+/* --- this week — 388:747 @ (543, 435) 400 x 210 ---------------------------- */
+
+.pl-week {
+  left: 543px; top: 435px;
+  width: 400px; height: 210px;
+  background: var(--panel-alt); border-radius: 12px;
+  border: 1px solid var(--border-soft);
+  box-shadow: 0 4px 10px rgba(107, 92, 74, .10);
+  padding: 8px 0 0 16px;
+  font-family: var(--font-body);
+  color: var(--ink-2);
+}
+.pl-week__title { font-family: var(--font-hand); font-size: 15px; line-height: 22px; color: var(--ink); }
+.pl-week__grid {
+  display: grid; grid-template-columns: repeat(5, 62px); column-gap: 12px;
+  margin-top: 5px;
+}
+.pl-week__day { font-size: 11px; font-weight: 500; text-align: center; color: var(--ink-2); height: 15px; }
+.pl-week__chip {
+  height: 20px; border-radius: 6px; font-size: 9px; font-weight: 500;
+  display: grid; place-items: center; margin-top: 9px;
+  color: var(--ink);
+}
+.pl-week__chip + .pl-week__chip { margin-top: 6px; }
+.pl-week__chip--cs   { background: var(--pl-clay); }
+.pl-week__chip--phys { background: var(--pl-wheat); }
+.pl-week__chip--engl { background: var(--pl-stone); }
+.pl-week__chip--math { background: var(--pl-sage); }
+.pl-week__chip--psy  { background: var(--pl-shade); }
+
+.pl-week__today { font-family: var(--font-hand); font-size: 14px; line-height: 20px; margin-top: 20px; color: var(--ink); }
+.pl-week__tasks { margin-top: 0; }
+.pl-week__task { display: flex; align-items: center; gap: 9px; margin-top: 6px; font-size: 11px; }
+.pl-week__task:first-child { margin-top: 0; }
+.pl-week__task input {
+  appearance: none; width: 11px; height: 11px; flex: 0 0 11px;
+  border: 1.2px solid var(--ink-3); border-radius: 2px; cursor: pointer;
+}
+.pl-week__task input:checked { background: var(--ink-3); }
+.pl-week__add {
+  position: absolute; right: 26px; bottom: 25px;
+  font-family: var(--font-body); font-size: 11px; font-weight: 500; color: var(--accent);
+}
+
+/* --- habits — 410:72 @ (957, 142) 307 x 512 -------------------------------- */
+/* the washi tape (388:817) sits half off the top of the card, 108px in         */
+
+.pl-habits-cell { left: 957px; top: 142px; width: 307px; height: 512px; }
+.pl-habits__tape {
+  position: absolute; z-index: 1;
+  left: 108px; top: 0;
+  width: 71px; height: 24px;
+  background: var(--pl-wheat); opacity: .85;
+  transform: rotate(-2deg);
+  box-shadow: 0 1px 2px rgba(107, 92, 74, .12);
+}
+.pl-habits {
+  position: absolute; left: 0; top: 8px;
+  width: 307px; height: 504px;
+  background: var(--panel-alt); border-radius: 12px;
+  border: 1px solid var(--border-soft);
+  box-shadow: 2px 4px 8px var(--pl-cast);
+  padding: 17px 0 0 24px;
+}
+.pl-habits__title { font-family: var(--font-hand); font-size: 17px; line-height: 19px; color: var(--ink); }
+/* 72px pitch between habits — 388:819 / 835 / 851 */
+.habit { margin-top: 36px; }
+.habit:first-of-type { margin-top: 20px; }
+.habit__name { font-family: var(--font-hand); font-size: 15px; line-height: 19px; color: var(--ink-2); }
+.habit__dots { display: flex; gap: 6.9px; margin-top: 8px; }
+.habit__dot {
+  width: 9.1px; height: 9.1px; flex: 0 0 9.1px; border-radius: 50%;
+  border: 1px solid var(--star); background: transparent;
+  cursor: pointer;
+}
+.habit__dot.is-on { background: var(--star); }
+.pl-habits__caption { font-family: var(--font-body); font-size: 11px; line-height: 16px; color: var(--ink-3); margin-top: 35px; }
+.pl-habits__jar { width: 150px; margin: 11px 0 0 52px; }
+
+/* --- letter to future self — 398:72 @ (27, 664) 267 wide ------------------- */
+
+.pl-letter { left: 27px; top: 664px; width: 267px; }
+.note-label { font-family: var(--font-hand); font-size: 16px; color: var(--ink-2); margin-left: 22px; }
+.pl-letter img { width: 267px; margin-top: 8px; }
+.pl-letter__caption { font-family: var(--font-body); font-size: 11px; color: var(--ink-3); margin: 10px 0 0 22px; }
+
+/* --- weekly reflections — 388:911/912/913 @ (307, 664) --------------------- */
+
+.pl-reflect { left: 307px; top: 664px; width: 238px; }
+.pl-reflect .note-label { margin-left: 18px; }
+.pl-reflect__stack { position: relative; height: 190px; margin-top: 16px; }
+.pl-reflect__card {
+  position: absolute;
+  background: var(--pl-paper); border: 1px solid var(--pl-rule);
+  border-radius: 8px;
+  box-shadow: 1px 2px 6px rgba(107, 92, 74, .13);
+}
+.pl-reflect__card--back  { left: 14px; top: 12px; width: 224px; height: 150px; transform: rotate(1.6deg); }
+.pl-reflect__card--mid   { left: 7px;  top: 6px;  width: 222px; height: 146px; transform: rotate(-.8deg); }
+.pl-reflect__card--front { left: 0;    top: 0;    width: 217px; height: 139px; padding: 14px 18px 0 20px; }
+.pl-reflect__lead { font-family: var(--font-body); font-size: 11px; color: var(--ink-3); }
+.pl-reflect__q { font-family: var(--font-hand); font-size: 15px; color: var(--ink); margin-top: 6px; }
+.pl-reflect__line { border-bottom: 1px solid var(--pl-rule); height: 20px; width: 175px; }
+.pl-reflect__line:first-of-type { margin-top: 14px; }
+.pl-reflect__foot { font-family: var(--font-body); font-size: 10px; color: var(--ink-3); margin-top: 10px; }
+.pl-reflect__look {
+  position: absolute; right: 12px; bottom: -18px;
+  font-family: var(--font-body); font-size: 11px; font-weight: 500; color: var(--amber);
+}
+.pl-reflect__look:hover { text-decoration: underline; }
+
+/* --- long-term goals — 410:68 @ (549, 684) 290 x 277 ----------------------- */
+
+.pl-long {
+  left: 549px; top: 684px;
+  width: 290px; height: 277px;
+  background: var(--pl-stone);                /* was #fdf1e7 peach */
+  border: 1px solid var(--pl-rule);
+  border-radius: 14px;
+  box-shadow: 1px 3px 8px rgba(107, 92, 74, .13);
+  padding: 13px 0 0 22px;
+}
+.pl-long__title { font-family: var(--font-hand); font-weight: 400; font-size: 19px; line-height: 25px; }
+.pl-long__sub { font-family: var(--font-body); font-size: 10.5px; color: var(--ink-2); margin-top: 2px; line-height: 16px; }
+/* the drawn 2 / 1 / 1 wrap falls out of these widths in a 246px track */
+.pl-long__chips { display: flex; flex-wrap: wrap; column-gap: 10px; row-gap: 12px; margin-top: 6px; width: 246px; }
+.pl-long__chip {
+  height: 28px; padding: 0 12px; border-radius: 14px;
+  background: var(--panel-alt); border: 1px solid var(--border);
+  font-family: var(--font-body); font-size: 11.5px; color: var(--ink-2);
+  display: inline-flex; align-items: center; white-space: nowrap;
+}
+.pl-long__add {
+  display: block; text-align: left; margin-top: 10px;
+  font-family: var(--font-body); font-size: 11.5px; line-height: 17px; font-weight: 500; color: var(--accent);
+}
+.pl-share {
+  display: flex; align-items: center; justify-content: space-between;
+  width: 240px; height: 32px; margin-top: 8px;
+  padding: 0 6px 0 14px;
+  background: var(--panel-alt); border: 1px solid var(--border); border-radius: 16px;
+  font-family: var(--font-body); font-size: 11.5px; color: var(--ink-2);
+}
+.pl-share__knob { flex: 0 0 17px; width: 17px; height: 17px; border-radius: 50%; background: var(--ink-4); transition: background .15s ease; }
+.pl-share.is-on { border-color: var(--green); }
+.pl-share.is-on .pl-share__knob { background: var(--green); }
+.pl-long__foot { font-family: var(--font-body); font-size: 10px; line-height: 15px; color: var(--ink-3); margin-top: 2px; }
+
+/* --- people i met — 410:69 @ (959, 668) 214 x 122 -------------------------- */
+
+.pl-people {
+  left: 959px; top: 668px;
+  width: 214px; height: 122px;
+  background: var(--pl-sage);                 /* was #fbe4e4 rose */
+  border: 1px solid #d7e0d0;
+  border-radius: 12px;
+  box-shadow: 1px 3px 8px rgba(107, 92, 74, .13);
+  padding: 9px 0 0 18px;
+  font-family: var(--font-body); color: var(--ink-2);
+}
+.pl-people__title { font-family: var(--font-hand); font-size: 17px; line-height: 21px; color: var(--ink); }
+.pl-people__name { font-size: 12px; line-height: 17px; margin-top: 6px; }
+.pl-people__row { display: flex; align-items: baseline; gap: 8px; margin-top: 6px; padding-right: 12px; }
+.pl-people__due { color: var(--accent); font-weight: 500; font-size: 11px; line-height: 16px; }
+.pl-people__row small { font-size: 10px; color: var(--ink-3); margin-left: auto; }
+.pl-people__add { display: block; text-align: left; margin-top: 12px; font-size: 11px; line-height: 16px; font-weight: 500; color: var(--accent); }
+
+/* --- wins log — 388:921 @ (33, 892) 215 x 124 ----------------------------- */
+
+.pl-wins {
+  left: 33px; top: 892px;
+  width: 215px; height: 124px;
+  background: var(--panel-alt);               /* was #fdf1e7 peach */
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  box-shadow: 1px 3px 8px rgba(107, 92, 74, .13);
+  padding: 14px 0 0 18px;
+  font-family: var(--font-body); color: var(--ink-2);
+}
+.pl-wins__title {
+  display: flex; align-items: center; gap: 6px;
+  font-family: var(--font-hand); font-size: 14px; line-height: 20px; letter-spacing: .6px; color: var(--ink);
+}
+.pl-wins__title img { width: 14px; height: 14px; }
+.pl-wins__item { font-size: 12px; line-height: 17px; margin-top: 4px; }
+.pl-wins__add { display: block; text-align: left; margin-top: 8px; font-size: 11px; line-height: 16px; font-weight: 500; color: var(--accent); }
+.pl-wins__foot { font-size: 10px; line-height: 15px; color: var(--ink-3); margin-top: 9px; }
+
+/* --- skill in progress — 410:73 @ (267, 892) 215 x 124 -------------------- */
+
+.pl-skill {
+  left: 267px; top: 892px;
+  width: 215px; height: 124px;
+  background: var(--pl-stone);                /* was #eef1f5, the only cool card */
+  border: 1px solid var(--pl-rule);
+  border-radius: 12px;
+  box-shadow: 1px 3px 8px rgba(107, 92, 74, .13);
+  padding: 12px 0 0 18px;
+  font-family: var(--font-body); color: var(--ink-2);
+}
+.pl-skill__title { font-family: var(--font-hand); font-size: 14px; line-height: 20px; letter-spacing: .6px; color: var(--ink); }
+.pl-skill__row { display: flex; align-items: center; gap: 10px; margin-top: 8px; font-size: 12px; line-height: 17px; width: 186px; }
+.pl-skill__row + .pl-skill__row { margin-top: 7px; }
+.pl-skill__bars { margin-left: auto; display: flex; gap: 3px; }
+.pl-skill__bar { width: 6px; height: 12px; background: var(--ink-3); }
+.pl-skill__bar--off { background: var(--placeholder); }
+.pl-skill__amt { font-size: 11px; width: 36px; text-align: right; }
+.pl-skill__foot { font-size: 10px; line-height: 15px; color: var(--ink-3); margin-top: 10px; }
+
+/* --- pigeon note — 388:746 @ (867, 1008) 260 x 150 ------------------------ */
+
+.pl-pigeon-note {
+  left: 867px; top: 1008px;
+  width: 260px; height: 150px;
+  background: var(--panel-alt);
+  border: 5px solid #4a443c;
+  border-radius: 20px 20px 0 20px;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, .22);
+  padding: 12px 0 0 17px;
+  font-family: var(--font-body); color: var(--ink-2); font-size: 11px; line-height: 16px;
+}
+.pl-pigeon-note__title { font-family: var(--font-hand); color: var(--ink-3); font-size: 13px; line-height: 19px; }
+.pl-pigeon-note li { display: flex; align-items: center; gap: 9px; margin-top: 10px; }
+.pl-pigeon-note li:first-child { margin-top: 5px; }
+.pl-pigeon-note li::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex: 0 0 6px; }
+.pl-pigeon-note li.is-ok { color: var(--star); }
+.pl-pigeon-note li.is-miss { color: var(--accent); }
+.pl-pigeon-note li.is-flat { color: var(--ink-2); }
+.pl-pigeon-note__foot { font-size: 10px; line-height: 15px; color: var(--ink-3); margin-top: 18px; }
+
+/* --- added panels (the + tool) --------------------------------------------- */
+
+.wb-note {
+  position: absolute;
+  width: 236px;
+  background: var(--pl-paper);
+  border: 1px solid var(--pl-rule);
+  border-radius: 10px;
+  box-shadow: 2px 4px 10px var(--pl-cast);
+  transform: rotate(var(--rot, -.6deg));
+  padding: 10px 14px 14px;
+  font-family: var(--font-body);
+  color: var(--ink-2);
+}
+.wb-note--checklist { background: var(--panel-alt); }
+.wb-note--habit     { background: var(--panel-alt); }
+.wb-note--people    { background: var(--pl-sage); border-color: #d7e0d0; }
+.wb-note--wins      { background: var(--pl-stone); }
+
+.wb-note__label {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  font-family: var(--font-hand); font-size: 14px; color: var(--ink-3);
+  cursor: grab;
+}
+.wb-note__del { font-size: 15px; line-height: 1; color: var(--ink-4); }
+.wb-note__del:hover { color: var(--accent); }
+.wb-note__body { margin-top: 8px; font-size: 12px; color: var(--ink); line-height: 1.5; }
+.wb-note__body [contenteditable] { outline: none; }
+.wb-note__body [contenteditable]:empty::before { content: attr(data-placeholder); color: var(--ink-4); }
+.wb-note__text { min-height: 72px; }
+.wb-note__row { display: flex; align-items: center; gap: 9px; margin-top: 8px; }
+.wb-note__row input[type="checkbox"] {
+  appearance: none; width: 13px; height: 13px; flex: 0 0 13px;
+  border: 1.3px solid var(--ink-3); border-radius: 3px; background: transparent; cursor: pointer;
+}
+.wb-note__row input[type="checkbox"]:checked { background: var(--pl-sage); border-color: var(--green); }
+.wb-note__row > [contenteditable] { flex: 1 1 auto; }
+.wb-note__add {
+  display: block; text-align: left; margin-top: 10px;
+  font-size: 11px; font-weight: 500; color: var(--accent);
+}
+.wb-note__foot { font-size: 10px; color: var(--ink-3); margin-top: 10px; }
+.wb-note__dots { display: flex; gap: 6.9px; margin-top: 10px; }
+
+/* --- screen chrome: tools, zoom, mascot ------------------------------------ */
+
+/* The frame draws the three tools in a row at the bottom-left of the board
+   (388:681/682/683 at y1171). They stay pinned there instead of panning. */
+.wb-chrome {
+  position: fixed;
+  left: calc(var(--sidebar-w) + 36px);
+  bottom: 26px;
+  z-index: 20;
+  display: flex; align-items: center; gap: 12px;
+}
+.wb-chrome > * {
+  background: var(--panel-alt);
+  border: 1px solid var(--border-soft);
+  border-radius: 16px;
+  box-shadow: 0 6px 18px var(--pl-cast);
+  padding: 6px;
+  display: flex; flex-direction: row; align-items: center; gap: 4px;
+}
+
+.pl-tools button, .gb-tools button { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 10px; }
+.pl-tools button:hover, .gb-tools button:hover { background: var(--pl-clay); }
+.pl-tools img, .gb-tools img { width: 28px; height: 28px; }
+.pl-tools button.is-on, .gb-tools button.is-on { background: var(--pl-clay); box-shadow: inset 0 0 0 1.5px var(--accent); }
+
+.wb-zoom__step {
+  width: 30px; height: 30px; border-radius: 8px;
+  font-size: 17px; line-height: 1; color: var(--ink-2);
+}
+.wb-zoom__step:hover { background: var(--pl-clay); }
+.wb-zoom__level {
+  min-width: 42px; border-radius: 8px; padding: 4px 6px;
+  font-family: var(--font-body); font-size: 11px; font-weight: 500; color: var(--ink-3);
+}
+.wb-zoom__level:hover { background: var(--pl-clay); color: var(--accent); }
+
+/* --- template picker (the + tool) ------------------------------------------ */
+
+.wb-picker {
+  position: fixed;
+  left: calc(var(--sidebar-w) + 36px);
+  bottom: 84px;
+  z-index: 25;
+  width: 226px;
+  background: var(--panel-alt);
+  border: 1px solid var(--border-soft);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(107, 92, 74, .26);
+  padding: 12px 12px 10px;
+}
+.wb-picker[hidden] { display: none; }
+.wb-picker__title { font-family: var(--font-hand); font-size: 16px; color: var(--ink-2); margin-bottom: 8px; }
+.wb-picker__grid { display: flex; flex-direction: column; gap: 2px; }
+.wb-picker__opt {
+  display: flex; align-items: center; gap: 10px;
+  width: 100%; padding: 7px 8px; border-radius: 10px;
+  font-family: var(--font-body); font-size: 12.5px; color: var(--ink-2);
+  text-align: left;
+}
+.wb-picker__opt:hover { background: var(--sunken); color: var(--ink); }
+.wb-picker__swatch {
+  flex: 0 0 26px; width: 26px; height: 22px; border-radius: 4px;
+  border: 1px solid var(--pl-rule); background: var(--pl-paper);
+  position: relative; overflow: hidden;
+}
+.wb-picker__swatch::after {
+  content: ''; position: absolute; left: 4px; right: 4px; top: 5px; height: 2px;
+  background: var(--placeholder);
+  box-shadow: 0 5px 0 var(--placeholder), 0 10px 0 var(--placeholder);
+}
+.wb-picker__swatch--checklist { background: var(--panel); }
+.wb-picker__swatch--habit { background: var(--panel); }
+.wb-picker__swatch--habit::after { box-shadow: 0 6px 0 var(--star); background: var(--star); opacity: .5; }
+.wb-picker__swatch--people { background: var(--pl-sage); }
+.wb-picker__swatch--wins { background: var(--pl-stone); }
+
+/* The pigeon is chrome, not board content: it is the companion that is always
+   there, so it must not be pannable off-screen or blown up by the zoom. */
+.pl-mascot, .gb-mascot {
+  position: fixed;
+  right: 28px; bottom: 92px;
+  width: 200px;
+  pointer-events: none;
+  z-index: 15;
+}
+.pl-mascot .pigeon, .gb-mascot .pigeon { width: 177px; }
+.pl-mascot .planet, .gb-mascot .planet { width: 170px; margin: -23px 0 0 -7px; }
+
+/* --- edit-goal modal (388:1656) -------------------------------------------- */
+
+.goal-edit { width: 470px; padding: 26px 30px 24px; border-radius: 18px; }
+.goal-edit__eyebrow { font-family: var(--font-body); font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--ink-3); }
+.goal-edit__name { font-family: var(--font-hand); font-size: 28px; font-weight: 400; margin-top: 6px; }
+.goal-edit__label { font-family: var(--font-body); font-size: 11px; font-weight: 600; letter-spacing: .8px; text-transform: uppercase; color: var(--ink-3); margin-top: 20px; }
+.goal-edit__pills { display: flex; gap: 12px; margin-top: 8px; }
+.pri {
+  height: 30px; padding: 0 22px; border-radius: 15px;
+  border: 1.4px solid var(--border);
+  font-family: var(--font-body); font-size: 12.5px; color: var(--ink-3);
+}
+.pri:hover { border-color: var(--ink-4); }
+.pri[data-pri="high"].is-on   { background: var(--accent); border-color: var(--accent); color: #fff; }
+.pri[data-pri="medium"].is-on { border-color: var(--amber); color: var(--amber); }
+.pri[data-pri="low"].is-on    { border-color: var(--ink-3); color: var(--ink-2); }
+.goal-edit__due {
+  width: 100%; max-width: 320px; height: 34px; margin-top: 8px;
+  border: 1.2px solid var(--border); border-radius: 17px;
+  background: #fff; padding: 0 16px;
+  font-family: var(--font-body); font-size: 13px; color: var(--ink);
+}
+.goal-edit__delete { display: block; margin-top: 22px; font-family: var(--font-body); font-size: 12.5px; font-weight: 500; color: #a8434f; }
+.goal-edit__delete:hover { text-decoration: underline; }
+.goal-edit__save {
+  display: block; margin: 14px 0 0 auto;
+  height: 34px; padding: 0 32px; border-radius: 17px;
+  background: var(--accent); color: #fff;
+  font-family: var(--font-body); font-size: 13px; font-weight: 500;
+}
+.goal-edit__save:hover { filter: brightness(1.08); }

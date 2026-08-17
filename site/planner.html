@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Planner · Stellic Pathfinders</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Inter:wght@400;500;600;700&family=Patrick+Hand&family=Playfair+Display:wght@500;600;700&family=Playpen+Sans:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/planner.css">
+</head>
+<body class="page-planner">
+
+<div class="app">
+
+  <!-- Canonical sidebar — identical on every page (Figma Home frame 388:1275) -->
+  <aside class="sidebar">
+    <div class="sidebar__mark--box" role="presentation"></div>
+    <p class="sidebar__title">Name of Site</p>
+    <nav class="sidebar__nav">
+      <a class="sidebar__link" href="index.html">Home</a>
+      <a class="sidebar__link is-active" href="planner.html" aria-current="page">Planner</a>
+      <a class="sidebar__link" href="plan.html">Goals</a>
+      <a class="sidebar__link" href="career.html">Career</a>
+      <a class="sidebar__link" href="contacts.html">Contacts</a>
+      <a class="sidebar__link" href="visa.html">Visa</a>
+    </nav>
+    <div class="sidebar__foot">
+      <a class="sidebar__avatar" href="profile.html" aria-label="Your profile">
+        <img src="assets/pigeon-avatar.png" alt="">
+      </a>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <!-- Two presentations of one plan. The control is local to this page: it is
+         not a nav item, it is not in the sidebar, and no other screen has it. -->
+    <div class="planner-bar">
+      <h1 class="planner-bar__title">Planner</h1>
+      <div class="planner-toggle" id="plannerView" role="group" aria-label="Planner view">
+        <button type="button" data-view="new">New</button>
+        <button type="button" data-view="old">Old</button>
+      </div>
+    </div>
+
+    <div class="planner-stage">
+      <!-- new: the same Compass Planner app — same panels, same ⌘K search, same
+           semester blocks — with two changes: it draws no connecting arrows until
+           a course is selected, and each block packs its courses on one grid. -->
+      <iframe class="planner-frame" id="plannerNew" src="planner-new-app.html" title="Planner — new view"></iframe>
+      <!-- old: the original self-contained Compass Planner bundle, byte for byte. -->
+      <iframe class="planner-frame" id="plannerOld" src="planner-app.html" title="Planner — Compass Planner"></iframe>
+    </div>
+
+    <!-- Neither view is marked active in the markup, so nothing of the wrong one
+         is ever painted while the stored choice is read. With scripting off that
+         read never happens, so fall back to the old view, which is the one that
+         works without JS. -->
+    <noscript><style>#plannerOld { visibility: visible; pointer-events: auto; z-index: 2; }</style></noscript>
+
+  </main>
+</div>
+
+<script type="module">
+import { store } from './js/store.js';
+
+/* ---------------------------------------------------------------- view toggle
+   Which of the two views is showing, remembered across visits in the shared
+   `stellic-pathfinders` blob. Scoped to this page: no other screen reads it. */
+
+const VIEW_FIELD = 'plannerView';
+const views = { new: document.getElementById('plannerNew'), old: document.getElementById('plannerOld') };
+const toggle = document.getElementById('plannerView');
+const buttons = [...toggle.querySelectorAll('button')];
+
+function show(view) {
+  if (view !== 'new' && view !== 'old') view = 'new';
+  for (const [name, el] of Object.entries(views)) el.classList.toggle('is-active', name === view);
+  for (const b of buttons) {
+    const on = b.dataset.view === view;
+    b.classList.toggle('is-on', on);
+    b.setAttribute('aria-pressed', on ? 'true' : 'false');
+  }
+  document.body.dataset.plannerView = view;
+  return view;
+}
+
+toggle.addEventListener('click', (ev) => {
+  const b = ev.target.closest('button[data-view]');
+  if (!b) return;
+  store.set('fields', VIEW_FIELD, show(b.dataset.view));
+});
+
+/* The new presentation is the default for a first visit; a stored choice wins. */
+show(store.get('fields', VIEW_FIELD, 'new'));
+
+
+/* ----------------------------------------------------------- view corrections
+   Both views are the same stand-alone app: it ships its own left rail (nav +
+   school picker + progress) and it opens with one course already selected on the
+   board. Both are wrong here — the site already has a sidebar, and the planner
+   should start as a clean slate. Neither bundle is edited for this; the iframes
+   are same-origin, so both are corrected from this side after they load, and the
+   identical treatment is applied to each so the two views differ only in what
+   the app itself draws.
+
+   Only timers are used below — never requestAnimationFrame, which does not fire
+   in a background tab and would leave the planner blank until the failsafe. */
+
+/* The app's root is `#dc-root > .sc-host > <flex row>`, whose first child is the
+   198px sticky rail. Matched structurally and by that width so a stray first
+   child could not be hidden by accident. Both spellings, because the serialised
+   attribute is unspaced but the DOM normalises it with a space. */
+const HIDE_INNER_NAV =
+  '#dc-root .sc-host > div > div:first-child[style*="width:198px"],' +
+  '#dc-root .sc-host > div > div:first-child[style*="width: 198px"]' +
+  '{display:none !important}';
+
+/* A selected course pill is the only thing drawn with a 2px #A2593A border, so
+   this is a direct read of "how many courses are selected". */
+function selectedCount(doc) {
+  let n = 0;
+  const pills = doc.querySelectorAll('#dc-root button');
+  for (const pill of pills) {
+    const s = doc.defaultView.getComputedStyle(pill);
+    if (s.borderTopWidth === '2px' && s.borderTopColor === 'rgb(162, 89, 58)') n++;
+  }
+  return n;
+}
+
+function correct(frame) {
+  /* Hide the view until the two corrections are applied, so the app's own rail
+     and its seeded selection are never painted. */
+  frame.classList.add('is-booting');
+  let revealed = false;
+  const reveal = () => { if (!revealed) { revealed = true; frame.classList.remove('is-booting'); } };
+  /* Safety net: never leave the planner hidden if anything below fails. */
+  setTimeout(reveal, 5000);
+
+  let applied = false;
+  const deadline = Date.now() + 5000;
+
+  function step() {
+    let doc, win;
+    try { doc = frame.contentDocument; win = frame.contentWindow; } catch (e) { return reveal(); }
+    if (!doc || !win) return reveal();
+
+    /* This polls every 16ms across the whole of a 1.4MB document load, so it will
+       land inside the instant where the browser has swapped in the new Document
+       but has not parsed an element into it yet: `head` and `documentElement` are
+       both null there. Nothing to do that tick — come back next one. */
+    const mount = doc.head || doc.documentElement;
+    if (!mount) {
+      if (Date.now() > deadline) return reveal();
+      return setTimeout(step, 16);
+    }
+
+    /* 1 — suppress the app's internal nav rail. A stylesheet, so it also covers
+       anything the app renders later. */
+    if (!doc.getElementById('site-planner-overrides')) {
+      const style = doc.createElement('style');
+      style.id = 'site-planner-overrides';
+      style.textContent = HIDE_INNER_NAV;
+      mount.appendChild(style);
+    }
+
+    /* 2 — start with no course selected. The bundle exposes `panelState` as a
+       prop: 'course' (its default) seeds the board with CS 210 selected,
+       'overview' starts with nothing selected and the overview panel open. Every
+       course stays in the catalogue and stays clickable. The bundle decompresses
+       its assets before booting, so poll until the runtime is there rather than
+       assuming it exists at the iframe's load event. */
+    if (!applied) {
+      try {
+        const name = win.__dcRegistry && Object.keys(win.__dcRegistry)[0];
+        if (name && typeof win.__dcSetProps === 'function') {
+          win.__dcSetProps(name, { panelState: 'overview' });
+          applied = true;
+        }
+      } catch (e) { /* app is still usable without it */ }
+    }
+
+    /* Reveal once the board has actually rendered with nothing selected — the prop
+       change re-renders asynchronously, so wait for the result, not a fixed delay. */
+    const root = doc.getElementById('dc-root');
+    const booted = !!(root && root.textContent.length > 200);
+    if (applied && booted && selectedCount(doc) === 0) return reveal();
+
+    if (Date.now() > deadline) return reveal();
+    setTimeout(step, 16);
+  }
+
+  step();
+}
+
+correct(views.new);
+correct(views.old);
+</script>
+
+</body>
+</html>

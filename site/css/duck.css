@@ -1,0 +1,6 @@
+/* Hand-drawn duck that sits in the Career profile avatar (Figma 388:125–388:146).
+   The glyph is 23 separate exported vectors; positions are the Figma coordinates
+   translated into the 128×128 avatar box. */
+
+.duck { position: relative; width: 128px; height: 128px; }
+.duck img { position: absolute; max-width: none; }

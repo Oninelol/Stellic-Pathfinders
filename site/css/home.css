@@ -1,0 +1,160 @@
+/* Home — Figma 388:1275 (dashboard) and 388:1454 (intake modal over it) */
+
+.page-home .main { padding: 20px 40px 40px 20px; }
+
+/* --- semester card --------------------------------------------------------- */
+
+.semester {
+  background: var(--panel);
+  border-radius: 20px;
+  box-shadow: var(--sh-2);
+  padding: 17px 31px 22px 25px;
+  margin-bottom: 15px;
+}
+
+.semester__head { display: flex; align-items: center; gap: 25px; }
+.semester__avatar { width: 128px; height: 128px; border-radius: 50%; background: var(--placeholder); flex: 0 0 128px; }
+.semester__hello { font-family: var(--font-hand); font-size: 48px; font-weight: 400; line-height: 1.05; }
+.semester__meta { font-size: 16px; color: var(--ink-2); margin-top: 8px; }
+
+.semester__eyebrow { margin: 14px 0 18px 26px; letter-spacing: .96px; font-size: 12px; }
+
+/* --- lower row ------------------------------------------------------------- */
+
+/* Frame 388:1275 drew this pair as 714px + 398px inside a 1163px content area,
+   i.e. roughly 1.8 : 1 — kept as a proportion so the row fills any width. */
+.home-lower {
+  display: grid;
+  grid-template-columns: minmax(0, 1.8fr) minmax(320px, 1fr);
+  gap: 51px;
+  align-items: start;
+}
+
+.pipeline { padding-left: 28px; }
+.pipeline__title { font-family: var(--font-hand); font-size: 36px; font-weight: 400; margin: 6px 0 26px; }
+
+.appl { padding-bottom: 16px; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
+.appl:last-of-type { border-bottom: 1px solid var(--border); }
+.appl__head { display: flex; align-items: flex-start; gap: 16px; }
+.appl__title { font-size: 17px; font-weight: 500; }
+.appl__meta { font-size: 13.5px; color: var(--ink-2); margin-top: 4px; }
+.appl__badge {
+  margin-left: auto; flex: 0 0 auto;
+  width: 100px; height: 24px; border-radius: 12px;
+  display: grid; place-items: center;
+  font-size: 11px; font-weight: 600; letter-spacing: .55px;
+}
+.appl__badge--interview { background: var(--green-tint); color: var(--green); }
+.appl__badge--applied   { background: var(--accent-tint); color: var(--accent); }
+.appl__badge--saved     { background: var(--panel); border: 1px solid var(--border); color: var(--ink-2); }
+
+.stages { display: flex; align-items: flex-start; gap: 10px; margin-top: 18px; }
+.stage { width: 90px; }
+.stage__bar { height: 6px; border-radius: 3px; background: var(--scroll-track); }
+.stage__label {
+  display: block; margin-top: 8px;
+  font-size: 9px; font-weight: 600; letter-spacing: .36px;
+  text-align: center; color: var(--ink-3);
+}
+.stage.is-done .stage__bar { background: var(--green); }
+.stage.is-done .stage__label { color: var(--green); }
+.stage.is-warm .stage__bar { background: var(--accent); }
+.stage.is-warm .stage__label { color: var(--accent); }
+.stage.is-cool .stage__bar { background: var(--ink-2); }
+.stage.is-cool .stage__label { color: var(--ink-2); }
+
+.reminder { display: flex; align-items: center; gap: 8px; margin-left: 84px; font-size: 12px; font-weight: 500; }
+.reminder__dot {
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--accent); color: #fff;
+  font-size: 9px; font-weight: 600;
+  display: grid; place-items: center; flex: 0 0 14px;
+}
+.reminder--warn { color: var(--amber); }
+.reminder--warn .reminder__dot { background: var(--amber); }
+.reminder--alert { color: var(--accent); }
+
+.stages-row { display: flex; align-items: flex-start; flex-wrap: wrap; }
+
+.goals-panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: var(--sh-2);
+  padding: 23px 26px;
+  min-height: 495px;
+}
+.goals-panel__title {
+  font-family: var(--font-hand); font-size: 32px; font-weight: 400;
+  letter-spacing: 1.92px; color: var(--ink-3);
+  line-height: 1.15;
+}
+.goals-panel .divider { margin: 24px 0 20px; }
+.goal-row { display: flex; align-items: center; gap: 10px; height: 48px; }
+.goal-row .check { width: 18px; height: 18px; flex-basis: 18px; border-color: var(--green); border-radius: 5px; background: var(--panel); }
+.goal-row .check:checked { background: var(--green); }
+.goal-row.is-done .goal-row__label { color: var(--ink-3); text-decoration: line-through; }
+.goal-row__label { font-size: 14px; }
+.goals-panel__add { display: inline-block; margin-top: 16px; font-size: 14px; font-weight: 500; color: var(--accent); }
+
+/* --- visa panel ------------------------------------------------------------ */
+
+.visa-panel {
+  margin-top: 0;
+  min-height: 299px;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-line);
+  border-radius: 20px;
+  padding: 26px 30px;
+}
+.visa-panel__eyebrow { color: var(--accent); letter-spacing: .96px; font-size: 12px; }
+.visa-panel__title { font-family: var(--font-hand); font-size: 36px; font-weight: 400; color: var(--accent); margin: 20px 0 34px; }
+/* three equal columns (286px each on the 1440 frame); they wrap rather than
+   crush if the panel ever gets narrow */
+.visa-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); row-gap: 26px; }
+.visa-col__head { display: flex; align-items: center; gap: 10px; }
+.visa-col__dot { width: 10px; height: 10px; border-radius: 5px; background: var(--green); }
+.visa-col__dot--warn { background: var(--accent); }
+.visa-col__label { font-size: 11px; font-weight: 600; letter-spacing: .55px; }
+.visa-col__value { font-size: 13.5px; margin-top: 10px; }
+.visa-panel__link { display: inline-block; margin-top: 32px; font-size: 14px; font-weight: 500; color: var(--accent); }
+
+/* --- narrow viewports ------------------------------------------------------ */
+
+@media (max-width: 1100px) {
+  .home-lower { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .goals-panel { min-height: 0; }
+}
+
+/* --- intake modal (388:1454) ----------------------------------------------- */
+
+.intake { width: 776px; padding: 34px 42px 40px; }
+.intake__dots { display: flex; justify-content: center; gap: 10px; }
+.intake__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); }
+.intake__dot.is-on { background: var(--accent); }
+.intake__step { text-align: center; margin-top: 14px; font-size: 11px; font-weight: 600; letter-spacing: 1px; color: var(--ink-3); }
+.intake__q { font-family: var(--font-serif); font-size: 30px; line-height: 1.25; margin: 26px 0 24px; max-width: 420px; }
+.intake__options { display: flex; flex-direction: column; gap: 14px; max-width: 460px; }
+.intake__option {
+  display: flex; align-items: center; gap: 14px;
+  height: 46px; padding: 0 18px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--panel-alt);
+  font-size: 14px;
+  text-align: left;
+  transition: border-color .12s ease, background .12s ease;
+}
+.intake__option:hover { border-color: var(--accent-line); }
+.intake__option.is-on { border-color: var(--accent); background: #fdefe8; }
+.intake__radio {
+  width: 18px; height: 18px; border-radius: 50%;
+  border: 1.5px solid var(--border); flex: 0 0 18px;
+  display: grid; place-items: center;
+}
+.intake__option.is-on .intake__radio { border-color: var(--accent); }
+.intake__option.is-on .intake__radio::after {
+  content: ''; width: 9px; height: 9px; border-radius: 50%; background: var(--accent);
+}
+.intake__nav { display: flex; align-items: center; gap: 18px; margin-top: 30px; }
+.intake__pigeon { position: absolute; right: 0; bottom: 0; width: 230px; pointer-events: none; }

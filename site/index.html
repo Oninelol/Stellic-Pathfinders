@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Home · Stellic Pathfinders</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Inter:wght@400;500;600;700&family=Patrick+Hand&family=Playfair+Display:wght@500;600;700&family=Playpen+Sans:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/schedule.css">
+<link rel="stylesheet" href="css/home.css">
+</head>
+<body class="page-home">
+
+<div class="app">
+
+  <!-- Canonical sidebar — identical on every page (Figma Home frame 388:1275) -->
+  <aside class="sidebar">
+    <div class="sidebar__mark--box" role="presentation"></div>
+    <p class="sidebar__title">Name of Site</p>
+    <nav class="sidebar__nav">
+      <a class="sidebar__link is-active" href="index.html" aria-current="page">Home</a>
+      <a class="sidebar__link" href="planner.html">Planner</a>
+      <a class="sidebar__link" href="plan.html">Goals</a>
+      <a class="sidebar__link" href="career.html">Career</a>
+      <a class="sidebar__link" href="contacts.html">Contacts</a>
+      <a class="sidebar__link" href="visa.html">Visa</a>
+    </nav>
+    <div class="sidebar__foot">
+      <a class="sidebar__avatar" href="profile.html" aria-label="Your profile">
+        <img src="assets/pigeon-avatar.png" alt="">
+      </a>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <section class="semester">
+      <div class="semester__head">
+        <div class="semester__avatar"></div>
+        <div>
+          <h1 class="semester__hello">Welcome back, Jordan</h1>
+          <p class="semester__meta">Sophomore · Computer Science · Class of 2029&nbsp; —&nbsp; Spring 2026, 15 credits in progress</p>
+        </div>
+      </div>
+
+      <p class="eyebrow semester__eyebrow">This semester's courses</p>
+
+      <div class="schedule">
+        <div class="courses">
+          <div class="course course--cs">
+            <p class="course__code">CS 210</p>
+            <p class="course__name">Data Structures &amp; Algorithms</p>
+            <p class="course__credits">4 credits</p>
+          </div>
+          <div class="course course--math">
+            <p class="course__code">MATH 152</p>
+            <p class="course__name">Calculus II</p>
+            <p class="course__credits">4 credits</p>
+          </div>
+          <div class="course course--phys">
+            <p class="course__code">PHYS 141</p>
+            <p class="course__name">Mechanics</p>
+            <p class="course__credits">4 credits</p>
+          </div>
+          <div class="course course--engl">
+            <p class="course__code">ENGL 220</p>
+            <p class="course__name">Writing</p>
+            <p class="course__credits">3 credits</p>
+          </div>
+          <div class="course course--psy">
+            <p class="course__code">PSY 10</p>
+            <p class="course__name">Intro to Psych</p>
+            <p class="course__credits">3 credits</p>
+          </div>
+        </div>
+
+        <div class="week">
+          <div class="week__rows">
+            <div class="week__row" style="top:0px"><span class="week__hour">8 AM</span></div>
+            <div class="week__row" style="top:30px"><span class="week__hour">9 AM</span></div>
+            <div class="week__row" style="top:59px"><span class="week__hour">10 AM</span></div>
+            <div class="week__row" style="top:90px"><span class="week__hour">11 AM</span></div>
+            <div class="week__row" style="top:119px"><span class="week__hour">12 PM</span></div>
+            <div class="week__row" style="top:149px"><span class="week__hour">1 PM</span></div>
+            <div class="week__row" style="top:179px"><span class="week__hour">2 PM</span></div>
+            <div class="week__row" style="top:208px"><span class="week__hour">3 PM</span></div>
+            <div class="week__row" style="top:239px"><span class="week__hour">4 PM</span></div>
+            <div class="week__row" style="top:268px"><span class="week__hour">5 PM</span></div>
+            <div class="week__row" style="top:298px"><span class="week__hour">6 PM</span></div>
+          </div>
+
+          <div class="week__cols">
+            <div class="week__col"></div><div class="week__col"></div><div class="week__col"></div>
+            <div class="week__col"></div><div class="week__col"></div><div class="week__col"></div>
+            <div class="week__col"></div>
+          </div>
+
+          <div class="block block--cs"   style="left:calc(100%/7*1 + 3px);top:60px;height:24px">CS 210</div>
+          <div class="block block--cs"   style="left:calc(100%/7*3 + 3px);top:60px;height:24px">CS 210</div>
+          <div class="block block--cs"   style="left:calc(100%/7*5 + 3px);top:60px;height:24px">CS 210</div>
+
+          <div class="block block--engl" style="left:calc(100%/7*2 + 3px);top:45px;height:37px">ENGL 220</div>
+          <div class="block block--engl" style="left:calc(100%/7*4 + 3px);top:45px;height:37px">ENGL 220</div>
+
+          <div class="block block--phys" style="left:calc(100%/7*1 + 3px);top:149px;height:25px">PHYS 141</div>
+          <div class="block block--phys" style="left:calc(100%/7*3 + 3px);top:149px;height:25px">PHYS 141</div>
+          <div class="block block--phys" style="left:calc(100%/7*5 + 3px);top:149px;height:25px">PHYS 141</div>
+
+          <div class="block block--math" style="left:calc(100%/7*2 + 3px);top:149px;height:37px">MATH 152</div>
+          <div class="block block--math" style="left:calc(100%/7*4 + 3px);top:149px;height:37px">MATH 152</div>
+
+          <div class="block block--psy"  style="left:calc(100%/7*1 + 3px);top:209px;height:24px">PSY 10</div>
+          <div class="block block--psy"  style="left:calc(100%/7*3 + 3px);top:209px;height:24px">PSY 10</div>
+          <div class="block block--psy"  style="left:calc(100%/7*5 + 3px);top:209px;height:24px">PSY 10</div>
+
+          <div class="week__days">
+            <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span>
+            <span>Thu</span><span>Fri</span><span>Sat</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="home-lower">
+
+      <section class="pipeline">
+        <p class="eyebrow" style="letter-spacing:.96px;font-size:12px">Career</p>
+        <h2 class="pipeline__title">Saved &amp; Applied</h2>
+
+        <article class="appl">
+          <div class="appl__head">
+            <div>
+              <p class="appl__title">Software Engineering Intern</p>
+              <p class="appl__meta">Google Inc.&nbsp; ·&nbsp; Remote&nbsp; ·&nbsp; Apply by Sep 15</p>
+            </div>
+            <span class="appl__badge appl__badge--interview">INTERVIEW</span>
+          </div>
+          <div class="stages-row">
+            <div class="stages">
+              <div class="stage is-done"><div class="stage__bar"></div><span class="stage__label">SAVED</span></div>
+              <div class="stage is-done"><div class="stage__bar"></div><span class="stage__label">APPLIED</span></div>
+              <div class="stage is-done"><div class="stage__bar"></div><span class="stage__label">INTERVIEW</span></div>
+              <div class="stage"><div class="stage__bar"></div><span class="stage__label">OFFER</span></div>
+            </div>
+            <p class="reminder reminder--alert"><span class="reminder__dot">!</span>Interview in 3 days — prep notes</p>
+          </div>
+        </article>
+
+        <article class="appl">
+          <div class="appl__head">
+            <div>
+              <p class="appl__title">UX Research Assistant</p>
+              <p class="appl__meta">Startup&nbsp; ·&nbsp; On-site&nbsp; ·&nbsp; Apply by Sep 20</p>
+            </div>
+            <span class="appl__badge appl__badge--applied">APPLIED</span>
+          </div>
+          <div class="stages-row">
+            <div class="stages">
+              <div class="stage is-warm"><div class="stage__bar"></div><span class="stage__label">SAVED</span></div>
+              <div class="stage is-warm"><div class="stage__bar"></div><span class="stage__label">APPLIED</span></div>
+              <div class="stage"><div class="stage__bar"></div><span class="stage__label">INTERVIEW</span></div>
+              <div class="stage"><div class="stage__bar"></div><span class="stage__label">OFFER</span></div>
+            </div>
+            <p class="reminder reminder--warn"><span class="reminder__dot">!</span>No response in 12 days</p>
+          </div>
+        </article>
+
+        <article class="appl">
+          <div class="appl__head">
+            <div>
+              <p class="appl__title">Data Analyst, Summer Program</p>
+              <p class="appl__meta">Apple&nbsp; ·&nbsp; Hybrid&nbsp; ·&nbsp; Apply by Oct 1</p>
+            </div>
+            <span class="appl__badge appl__badge--saved">SAVED</span>
+          </div>
+          <div class="stages-row">
+            <div class="stages">
+              <div class="stage is-cool"><div class="stage__bar"></div><span class="stage__label">SAVED</span></div>
+              <div class="stage"><div class="stage__bar"></div><span class="stage__label">APPLIED</span></div>
+              <div class="stage"><div class="stage__bar"></div><span class="stage__label">INTERVIEW</span></div>
+              <div class="stage"><div class="stage__bar"></div><span class="stage__label">OFFER</span></div>
+            </div>
+            <p class="reminder reminder--alert"><span class="reminder__dot">!</span>Apply by Sep 15 — 5 days left</p>
+          </div>
+        </article>
+
+        <a class="link" href="career.html" style="display:inline-block;margin-top:20px;font-size:14px">View Career Match →</a>
+      </section>
+
+      <section class="goals-panel">
+        <h2 class="goals-panel__title">GOALS THIS<br>SEMESTER</h2>
+        <hr class="divider">
+        <label class="goal-row" data-check-row>
+          <input class="check" type="checkbox" data-check="goal-internships">
+          <span class="goal-row__label">Apply to 3 internships</span>
+        </label>
+        <label class="goal-row" data-check-row>
+          <input class="check" type="checkbox" data-check="goal-gpa">
+          <span class="goal-row__label">4.0 GPA</span>
+        </label>
+        <label class="goal-row" data-check-row>
+          <input class="check" type="checkbox" data-check="goal-fair">
+          <span class="goal-row__label">Attend the Fall Career Fair</span>
+        </label>
+        <label class="goal-row" data-check-row>
+          <input class="check" type="checkbox" data-check="goal-math">
+          <span class="goal-row__label">Finish MATH 152 with an A+</span>
+        </label>
+        <a class="goals-panel__add" href="plan.html">+ Add a goal</a>
+      </section>
+    </div>
+
+    <section class="visa-panel">
+      <p class="eyebrow visa-panel__eyebrow">For international students</p>
+      <h2 class="visa-panel__title">Visa Status</h2>
+      <div class="visa-cols">
+        <div class="visa-col">
+          <div class="visa-col__head"><span class="visa-col__dot"></span><span class="visa-col__label">I-20 STATUS</span></div>
+          <p class="visa-col__value">Active — valid through May 2027</p>
+        </div>
+        <div class="visa-col">
+          <div class="visa-col__head"><span class="visa-col__dot visa-col__dot--warn"></span><span class="visa-col__label">CPT / OPT</span></div>
+          <p class="visa-col__value">Not yet authorized</p>
+        </div>
+        <div class="visa-col">
+          <div class="visa-col__head"><span class="visa-col__dot"></span><span class="visa-col__label">ON-CAMPUS WORK</span></div>
+          <p class="visa-col__value">Eligible — up to 20 hrs/week</p>
+        </div>
+      </div>
+      <a class="visa-panel__link" href="#">Contact International Student Services →</a>
+    </section>
+
+  </main>
+</div>
+
+<!-- pigeon + speech bubble, bottom right of the frame -->
+<div class="mascot">
+  <div class="mascot__bubble" id="pigeonBubble">Tap me any time — I keep the deadlines you would rather forget.</div>
+  <img src="assets/pigeon.png" alt="">
+</div>
+
+<!-- Intake modal — frame 388:1454 -->
+<div class="modal-backdrop" id="intake">
+  <div class="modal intake" role="dialog" aria-modal="true" aria-labelledby="intakeQ">
+    <button class="modal__close" data-modal-close aria-label="Close">×</button>
+    <div class="intake__dots" id="intakeDots"></div>
+    <p class="intake__step" id="intakeStep">QUESTION 1 OF 4</p>
+    <h2 class="intake__q" id="intakeQ"></h2>
+    <div class="intake__options" id="intakeOptions"></div>
+    <div class="intake__nav">
+      <button class="icon-btn" id="intakeBack" aria-label="Previous question">
+        <img src="assets/arrow-up.svg" alt="" style="transform:rotate(-90deg)">
+      </button>
+      <button class="btn" id="intakeNext">Next →</button>
+    </div>
+    <img class="intake__pigeon" src="assets/pigeon.png" alt="">
+  </div>
+</div>
+
+<script type="module" src="js/app.js"></script>
+<script type="module" src="js/home.js"></script>
+</body>
+</html>

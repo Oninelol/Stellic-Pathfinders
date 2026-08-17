@@ -1,0 +1,191 @@
+/* Resume editor — Figma 388:1145 */
+
+.page-resume { background: var(--panel); }
+.page-resume .main { padding: 28px 21px 40px 38px; }
+
+/* --- toolbar --------------------------------------------------------------- */
+
+.rz-back { font-size: 14px; font-weight: 500; color: var(--accent); }
+.rz-back:hover { text-decoration: underline; }
+
+.rz-top { display: flex; align-items: flex-start; gap: 20px; }
+.rz-title { font-family: var(--font-hand); font-size: 45px; font-weight: 400; margin-top: 8px; }
+.rz-actions { margin-left: auto; display: flex; gap: 21px; margin-top: 16px; }
+
+.segmented {
+  display: flex; gap: 0;
+  width: 172px; height: 42px;
+  padding: 2px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.segmented button {
+  flex: 1 1 0;
+  border-radius: 8px;
+  font-size: 14px; font-weight: 600;
+  color: var(--ink-2);
+}
+.segmented button.is-on { background: var(--accent); color: #fff; }
+
+.rz-export { width: 172px; height: 42px; font-size: 14px; }
+
+.rz-divider { margin: 15px 0 32px; }
+
+/* --- card grid ------------------------------------------------------------- */
+
+/* Two columns that split the whole content area end to end.
+   minmax(0, 1fr) so the tracks can shrink past their content's intrinsic width. */
+.rz-cols {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 35px;
+  align-items: start;
+  width: 100%;
+}
+.rz-col { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
+
+.rz-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: var(--sh-2);
+  padding: 17px;
+}
+.rz-card__head { display: flex; align-items: center; gap: 8px; }
+.rz-grip { color: var(--ink-3); font-size: 16px; cursor: grab; letter-spacing: -2px; flex: 0 0 auto; }
+.rz-card__title {
+  font-family: var(--font-serif); font-size: 19px; margin-left: 22px;
+  min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.rz-card__badge {
+  margin-left: auto;
+  flex: 0 0 auto;
+  width: 97px; height: 22px; border-radius: 10px;
+  background: var(--accent-tint); color: var(--accent);
+  font-size: 10px; font-weight: 600; letter-spacing: .5px;
+  display: grid; place-items: center;
+}
+.rz-card__menu, .rz-card__collapse { color: var(--ink-2); width: 24px; flex: 0 0 24px; text-align: center; }
+.rz-card__menu { font-size: 20px; margin-left: 18px; }
+.rz-card__collapse { font-size: 18px; margin-left: 12px; }
+.rz-card__head + .divider { margin: 16px 0; }
+.rz-card.is-collapsed .rz-card__body { display: none; }
+.rz-card.is-collapsed .rz-card__head + .divider { display: none; }
+
+/* --- inputs ---------------------------------------------------------------- */
+
+.rz-input, .rz-textarea {
+  width: 100%;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 13.5px;
+  color: var(--ink);
+}
+.rz-input { height: 32px; }
+.rz-textarea { min-height: 68px; resize: vertical; line-height: 1.55; }
+.rz-textarea--tall { min-height: 80px; }
+.rz-input::placeholder, .rz-textarea::placeholder { color: #9e998f; }
+.rz-input:focus, .rz-textarea:focus { outline: none; border-color: var(--accent-line); }
+
+.rz-entry {
+  position: relative;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px 13px 13px;
+  margin-bottom: 12px;
+}
+.rz-entry__grip { position: absolute; left: 11px; top: 8px; font-size: 13px; color: var(--ink-3); letter-spacing: -2px; }
+.rz-entry__remove {
+  position: absolute; right: 11px; top: 4px;
+  font-size: 16px; color: var(--ink-3); line-height: 1;
+  width: 20px; height: 20px;
+}
+.rz-entry__remove:hover { color: var(--accent); }
+.rz-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 13px; }
+.rz-fields--wide { grid-template-columns: minmax(0, 1fr); }
+.rz-fields > .rz-span2 { grid-column: 1 / -1; }
+
+.rz-add { align-self: flex-start; font-size: 14px; font-weight: 500; color: var(--accent); }
+.rz-add:hover { text-decoration: underline; }
+
+/* --- skills chips ---------------------------------------------------------- */
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 8px;
+  height: 34px; padding: 0 15px;
+  border-radius: 15px;
+  background: var(--accent-tint); color: var(--accent);
+  font-size: 13px; font-weight: 500;
+}
+.chip button { color: inherit; font-size: 13px; line-height: 1; opacity: .8; }
+.chip button:hover { opacity: 1; }
+
+/* --- certifications -------------------------------------------------------- */
+
+.cert-row { display: flex; align-items: center; gap: 9px; margin-bottom: 8px; }
+.cert-row__grip { font-size: 13px; color: var(--ink-3); letter-spacing: -2px; flex: 0 0 auto; }
+/* Name takes the slack, date keeps its frame width. */
+.cert-row .rz-input:first-of-type { flex: 1 1 auto; width: auto; min-width: 0; }
+.cert-row .rz-input:last-of-type { flex: 0 0 140px; width: 140px; }
+
+/* --- add category ---------------------------------------------------------- */
+
+.rz-add-category {
+  height: 56px;
+  width: 100%;
+  border: 1.5px dashed var(--accent);
+  border-radius: 14px;
+  background: var(--bg);
+  color: var(--accent);
+  font-size: 15px; font-weight: 500;
+  transition: background .15s ease;
+}
+.rz-add-category:hover { background: var(--accent-tint); }
+
+/* --- preview mode ---------------------------------------------------------- */
+
+.rz-preview { display: none; }
+.page-resume.is-preview .rz-cols { display: none; }
+.page-resume.is-preview .rz-preview { display: block; }
+
+.rz-paper {
+  max-width: 816px;
+  margin: 0 auto;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: var(--sh-3);
+  padding: 56px 64px;
+  min-height: 1056px;
+}
+.rz-paper h1 { font-family: var(--font-serif); font-size: 30px; }
+.rz-paper h2 {
+  font-size: 12px; font-weight: 700; letter-spacing: 1.4px;
+  text-transform: uppercase; color: var(--ink-2);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 5px; margin: 28px 0 12px;
+}
+.rz-paper p { font-size: 13.5px; color: var(--ink-2); }
+.rz-paper .rz-paper__role { font-size: 14px; font-weight: 600; color: var(--ink); }
+.rz-paper ul { margin: 6px 0 0 18px; list-style: disc; }
+.rz-paper li { font-size: 13.5px; color: var(--ink-2); }
+.rz-paper__tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.rz-paper__tag { font-size: 13px; color: var(--ink-2); }
+
+/* --- narrow ---------------------------------------------------------------- */
+
+@media (max-width: 1100px) {
+  .rz-cols { grid-template-columns: minmax(0, 1fr); }
+  .rz-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 720px) {
+  .rz-top { flex-wrap: wrap; }
+  .rz-actions { margin-left: 0; }
+  .rz-fields { grid-template-columns: minmax(0, 1fr); }
+}

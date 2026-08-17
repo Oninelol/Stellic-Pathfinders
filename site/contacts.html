@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contacts · Stellic Pathfinders</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Inter:wght@400;500;600;700&family=Patrick+Hand&family=Playfair+Display:wght@500;600;700&family=Playpen+Sans:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/profile.css">
+</head>
+<body class="page-contacts">
+
+<div class="app">
+
+  <!-- Canonical sidebar — identical on every page (Figma Home frame 388:1275) -->
+  <aside class="sidebar">
+    <div class="sidebar__mark--box" role="presentation"></div>
+    <p class="sidebar__title">Name of Site</p>
+    <nav class="sidebar__nav">
+      <a class="sidebar__link" href="index.html">Home</a>
+      <a class="sidebar__link" href="planner.html">Planner</a>
+      <a class="sidebar__link" href="plan.html">Goals</a>
+      <a class="sidebar__link" href="career.html">Career</a>
+      <a class="sidebar__link is-active" href="contacts.html" aria-current="page">Contacts</a>
+      <a class="sidebar__link" href="visa.html">Visa</a>
+    </nav>
+    <div class="sidebar__foot">
+      <a class="sidebar__avatar" href="profile.html" aria-label="Your profile">
+        <img src="assets/pigeon-avatar.png" alt="">
+      </a>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <h1 class="hand" style="font-size:45px;line-height:1.05;margin-bottom:6px">Contacts</h1>
+
+    <section class="pf-row2">
+      <article class="advisor">
+        <div class="advisor__left">
+          <p class="eyebrow" style="font-size:12px;letter-spacing:.96px">Academic advisor</p>
+          <div class="advisor__avatar"></div>
+          <h3 class="advisor__name">Advisor Name</h3>
+        </div>
+        <div class="advisor__fields">
+          <p class="advisor__label">EMAIL</p>
+          <p class="advisor__value">advisor@university.edu</p>
+          <p class="advisor__label">PHONE</p>
+          <p class="advisor__value">(555) 012-3456</p>
+          <p class="advisor__label">OFFICE</p>
+          <p class="advisor__value">Some Building, Rm 214</p>
+          <p class="advisor__label">OFFICE HOURS</p>
+          <p class="advisor__value">Tue &amp; Thu, 1:00–3:00 PM</p>
+        </div>
+      </article>
+
+      <article class="advisor">
+        <div class="advisor__left">
+          <p class="eyebrow" style="font-size:12px;letter-spacing:.96px">Academic advisor</p>
+          <div class="advisor__avatar"></div>
+          <h3 class="advisor__name">Office of International Education</h3>
+        </div>
+        <div class="advisor__fields">
+          <p class="advisor__label">EMAIL</p>
+          <p class="advisor__value">advisor@university.edu</p>
+          <p class="advisor__label">PHONE</p>
+          <p class="advisor__value">(555) 012-3456</p>
+          <p class="advisor__label">OFFICE</p>
+          <p class="advisor__value">Some Building, Rm 214</p>
+          <p class="advisor__label">OFFICE HOURS</p>
+          <p class="advisor__value">Tue &amp; Thu, 1:00–3:00 PM</p>
+        </div>
+      </article>
+
+      <button class="advisor-add" id="addContact" aria-label="Add a contact">+</button>
+    </section>
+
+  </main>
+</div>
+
+<script type="module" src="js/app.js"></script>
+<script type="module">
+  /* Same add-a-contact affordance the profile page has. */
+  document.getElementById('addContact').addEventListener('click', () => {
+    const name = prompt('Contact name');
+    if (!name) return;
+    const card = document.createElement('article');
+    card.className = 'advisor';
+    card.innerHTML = `
+      <div class="advisor__left">
+        <p class="eyebrow" style="font-size:12px;letter-spacing:.96px">Contact</p>
+        <div class="advisor__avatar"></div>
+        <h3 class="advisor__name"></h3>
+      </div>
+      <div class="advisor__fields">
+        <p class="advisor__label">EMAIL</p>
+        <p class="advisor__value">—</p>
+        <p class="advisor__label">PHONE</p>
+        <p class="advisor__value">—</p>
+      </div>`;
+    card.querySelector('.advisor__name').textContent = name;
+    document.querySelector('.pf-row2').append(card);
+  });
+</script>
+</body>
+</html>

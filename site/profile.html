@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Profile · Stellic Pathfinders</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Inter:wght@400;500;600;700&family=Patrick+Hand&family=Playfair+Display:wght@500;600;700&family=Playpen+Sans:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/schedule.css">
+<link rel="stylesheet" href="css/profile.css">
+</head>
+<body class="page-profile">
+
+<div class="app">
+
+  <!-- Canonical sidebar — identical on every page (Figma Home frame 388:1275) -->
+  <aside class="sidebar">
+    <div class="sidebar__mark--box" role="presentation"></div>
+    <p class="sidebar__title">Name of Site</p>
+    <nav class="sidebar__nav">
+      <a class="sidebar__link" href="index.html">Home</a>
+      <a class="sidebar__link" href="planner.html">Planner</a>
+      <a class="sidebar__link" href="plan.html">Goals</a>
+      <a class="sidebar__link" href="career.html">Career</a>
+      <a class="sidebar__link" href="contacts.html">Contacts</a>
+      <a class="sidebar__link" href="visa.html">Visa</a>
+    </nav>
+    <div class="sidebar__foot">
+      <a class="sidebar__avatar" href="profile.html" aria-label="Your profile" aria-current="page">
+        <img src="assets/pigeon-avatar.png" alt="">
+      </a>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <section class="pf-row1">
+      <div class="pf-header">
+        <div class="pf-header__top">
+          <div class="pf-header__avatar"></div>
+          <div>
+            <h1 class="pf-header__name">Student Name</h1>
+            <p class="pf-header__meta">Sophomore · Computer Science · Class of 2029</p>
+          </div>
+          <a class="btn pf-header__cta" href="resume.html">Resume →</a>
+        </div>
+
+        <div class="pf-header__body">
+          <div class="pf-ident">
+            <p>ID: 21297374</p>
+            <p>Mailing address<br>phone number<br>email</p>
+          </div>
+
+          <div class="pf-stats">
+            <div class="pf-stat">
+              <div class="pf-stat__head">
+                <span class="pf-stat__num">42</span>
+                <span class="pf-stat__label">CREDITS EARNED</span>
+              </div>
+              <p class="pf-stat__sub">of 120 required</p>
+              <div class="pf-bar"><div class="pf-bar__fill" style="width:35%"></div></div>
+            </div>
+            <div class="pf-stat">
+              <div class="pf-stat__head">
+                <span class="pf-stat__num">35%</span>
+                <span class="pf-stat__label">MAJOR PROGRESS</span>
+              </div>
+              <p class="pf-stat__sub">Computer Science B.S. &amp; Applied Physics B.S.</p>
+              <div class="pf-bar"><div class="pf-bar__fill" style="width:35%"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pf-goals">
+        <h2 class="pf-goals__title">Goals:</h2>
+      </div>
+    </section>
+
+    <section class="pf-row2">
+      <article class="advisor">
+        <div class="advisor__left">
+          <p class="eyebrow" style="font-size:12px;letter-spacing:.96px">Academic advisor</p>
+          <div class="advisor__avatar"></div>
+          <h3 class="advisor__name">Advisor Name</h3>
+        </div>
+        <div class="advisor__fields">
+          <p class="advisor__label">EMAIL</p>
+          <p class="advisor__value">advisor@university.edu</p>
+          <p class="advisor__label">PHONE</p>
+          <p class="advisor__value">(555) 012-3456</p>
+          <p class="advisor__label">OFFICE</p>
+          <p class="advisor__value">Some Building, Rm 214</p>
+          <p class="advisor__label">OFFICE HOURS</p>
+          <p class="advisor__value">Tue &amp; Thu, 1:00–3:00 PM</p>
+        </div>
+      </article>
+
+      <article class="advisor">
+        <div class="advisor__left">
+          <p class="eyebrow" style="font-size:12px;letter-spacing:.96px">Academic advisor</p>
+          <div class="advisor__avatar"></div>
+          <h3 class="advisor__name">Office of International Education</h3>
+        </div>
+        <div class="advisor__fields">
+          <p class="advisor__label">EMAIL</p>
+          <p class="advisor__value">advisor@university.edu</p>
+          <p class="advisor__label">PHONE</p>
+          <p class="advisor__value">(555) 012-3456</p>
+          <p class="advisor__label">OFFICE</p>
+          <p class="advisor__value">Some Building, Rm 214</p>
+          <p class="advisor__label">OFFICE HOURS</p>
+          <p class="advisor__value">Tue &amp; Thu, 1:00–3:00 PM</p>
+        </div>
+      </article>
+
+      <button class="advisor-add" id="addContact" aria-label="Add a contact">+</button>
+    </section>
+
+    <section class="pf-row3">
+      <div class="pf-saved">
+        <p class="eyebrow" style="font-size:12px;letter-spacing:.96px;margin-bottom:18px">Saved listings</p>
+        <div class="pf-saved__item">
+          <p class="pf-saved__title">Product Design Intern</p>
+          <p class="pf-saved__sub">Fielding Studio · Remote</p>
+        </div>
+        <div class="pf-saved__item">
+          <p class="pf-saved__title">Research Assistant, Bio Lab</p>
+          <p class="pf-saved__sub">Dept. of Biology · On-campus</p>
+        </div>
+        <div class="pf-saved__item">
+          <p class="pf-saved__title">Junior Data Analyst</p>
+        </div>
+      </div>
+
+      <div class="pf-exp">
+        <p class="eyebrow pf-exp__eyebrow" style="font-size:12px;letter-spacing:.96px">Current experiences and skills</p>
+
+        <div class="pf-exp__left">
+          <div class="pf-exp__list" id="expList">
+            <div class="pf-exp__item">
+              <h3 class="pf-exp__role">Software Engineering Intern</h3>
+              <p class="pf-exp__meta">TechNova Inc.&nbsp; ·&nbsp; Since Jun 2026</p>
+            </div>
+            <div class="pf-exp__item">
+              <h3 class="pf-exp__role">Club Leader</h3>
+              <p class="pf-exp__meta">Doom Scrolling Club&nbsp; ·&nbsp; Since Aug 2026</p>
+            </div>
+          </div>
+          <button class="pf-exp__add" id="addExperience" style="margin-top:auto;align-self:flex-start">+ Add an experience</button>
+        </div>
+
+        <div class="pf-exp__right">
+          <div class="skills" id="skills">
+            <span class="skill">3D Modelling</span>
+            <span class="skill">Drawing</span>
+            <span class="skill">Skill</span>
+            <span class="skill">Skill</span>
+            <span class="skill">Skill</span>
+            <span class="skill">Something</span>
+            <span class="skill">Skill</span>
+            <span class="skill">Skill</span>
+            <span class="skill">Skill</span>
+          </div>
+          <button class="skills__add" id="addSkill">+ Add a skill</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="pf-schedule-card">
+      <div class="schedule">
+        <div class="courses">
+          <div class="course course--cs">
+            <p class="course__code">CS 210</p>
+            <p class="course__name">Data Structures &amp; Algorithms</p>
+            <p class="course__credits">4 credits</p>
+          </div>
+          <div class="course course--math">
+            <p class="course__code">MATH 152</p>
+            <p class="course__name">Calculus II</p>
+            <p class="course__credits">4 credits</p>
+          </div>
+          <div class="course course--phys">
+            <p class="course__code">PHYS 141</p>
+            <p class="course__name">Mechanics</p>
+            <p class="course__credits">4 credits</p>
+          </div>
+          <div class="course course--engl">
+            <p class="course__code">ENGL 220</p>
+            <p class="course__name">Writing</p>
+            <p class="course__credits">3 credits</p>
+          </div>
+          <div class="course course--psy">
+            <p class="course__code">PSY 10</p>
+            <p class="course__name">Intro to Psych</p>
+            <p class="course__credits">3 credits</p>
+          </div>
+        </div>
+
+        <div class="week">
+          <div class="week__rows">
+            <div class="week__row" style="top:0px"><span class="week__hour">8 AM</span></div>
+            <div class="week__row" style="top:35px"><span class="week__hour">9 AM</span></div>
+            <div class="week__row" style="top:69px"><span class="week__hour">10 AM</span></div>
+            <div class="week__row" style="top:105px"><span class="week__hour">11 AM</span></div>
+            <div class="week__row" style="top:139px"><span class="week__hour">12 PM</span></div>
+            <div class="week__row" style="top:174px"><span class="week__hour">1 PM</span></div>
+            <div class="week__row" style="top:210px"><span class="week__hour">2 PM</span></div>
+            <div class="week__row" style="top:244px"><span class="week__hour">3 PM</span></div>
+            <div class="week__row" style="top:280px"><span class="week__hour">4 PM</span></div>
+            <div class="week__row" style="top:314px"><span class="week__hour">5 PM</span></div>
+            <div class="week__row" style="top:349px"><span class="week__hour">6 PM</span></div>
+          </div>
+
+          <div class="week__cols">
+            <div class="week__col"></div><div class="week__col"></div><div class="week__col"></div>
+            <div class="week__col"></div><div class="week__col"></div><div class="week__col"></div>
+            <div class="week__col"></div>
+          </div>
+
+          <div class="block block--cs"   style="left:calc(100%/7*1 + 3px);top:70px;height:28px">CS 210</div>
+          <div class="block block--cs"   style="left:calc(100%/7*3 + 3px);top:70px;height:28px">CS 210</div>
+          <div class="block block--cs"   style="left:calc(100%/7*5 + 3px);top:70px;height:28px">CS 210</div>
+
+          <div class="block block--engl" style="left:calc(100%/7*2 + 3px);top:52px;height:44px">ENGL 220</div>
+          <div class="block block--engl" style="left:calc(100%/7*4 + 3px);top:52px;height:44px">ENGL 220</div>
+
+          <div class="block block--phys" style="left:calc(100%/7*1 + 3px);top:174px;height:30px">PHYS 141</div>
+          <div class="block block--phys" style="left:calc(100%/7*3 + 3px);top:174px;height:30px">PHYS 141</div>
+          <div class="block block--phys" style="left:calc(100%/7*5 + 3px);top:174px;height:30px">PHYS 141</div>
+
+          <div class="block block--math" style="left:calc(100%/7*2 + 3px);top:174px;height:44px">MATH 152</div>
+          <div class="block block--math" style="left:calc(100%/7*4 + 3px);top:174px;height:44px">MATH 152</div>
+
+          <div class="block block--psy"  style="left:calc(100%/7*1 + 3px);top:245px;height:28px">PSY 10</div>
+          <div class="block block--psy"  style="left:calc(100%/7*3 + 3px);top:245px;height:28px">PSY 10</div>
+          <div class="block block--psy"  style="left:calc(100%/7*5 + 3px);top:245px;height:28px">PSY 10</div>
+
+          <div class="week__days">
+            <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span>
+            <span>Thu</span><span>Fri</span><span>Sat</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<div class="mascot">
+  <div class="mascot__bubble">Office hours are Tuesday and Thursday. I will remind you.</div>
+  <img src="assets/pigeon.png" alt="">
+</div>
+
+<script type="module" src="js/app.js"></script>
+<script type="module" src="js/profile.js"></script>
+</body>
+</html>
