@@ -63,3 +63,50 @@ mapping / determinism tests. `tests/fixtures/edit_plan.json` (JS-captured).
   `requirements.txt`. Do NOT start it until this phase is committed.
 
 ---
+
+## Phase 1 — Read-only API ✅ (complete)
+
+**Built.** FastAPI read-only service, thin shells over the pure modules.
+
+- `app/schemas.py` — pydantic response models **and** the pure builders
+  (`to_health/to_schools/to_coursemap/to_detail`). Endpoints call these, so no domain
+  logic lives in a route body (purity contract).
+- `app/main.py` — `GET /healthz`, `/schools`, `/programs/{id}/coursemap`,
+  `/programs/{id}/courses/{code}`. Catalog warmed once at startup via lifespan
+  (`load_all()` memoised, not defeated in a dependency). CORS = local dev origins only
+  (`localhost`/`127.0.0.1`, GET only) — not `*` (Phase 6 sets the deployed origin).
+- `requirements.txt` — pinned fastapi/uvicorn/pydantic/httpx/pytest.
+- `tests/test_api.py` — 29 tests via `TestClient` (no network/server).
+
+**`/coursemap` is self-contained** — the client holds no school-specific string.
+Payload: program/school names, `unit_label`/`unit_abbr`, `tiers`, `terms`, `groups`,
+`requirements`, `needs_requirements`, `meta` (`done_cr, in_prog_cr, pct, behind_cr,
+grad_term, class_year, key_code, key_name, headline, blurb, snapshot`), `nodes`,
+`edges`. Meta is **derived** at request time (credit sums from `graph.credit_totals`;
+`pct = round(done/total*100)`; `behind_cr = key units + ghost units`), not read from
+the seed. Nodes carry `offering_source`; edges carry `kind ∈ {prereq, anti}`.
+
+**Acceptance — all verified.**
+1. Boots (uvicorn + TestClient) and `/healthz` reports `programs: 9, courses: 267`. ✅
+2. `/schools` returns all nine nested (CMU 2, NYU 7) in one call. ✅
+3. All nine coursemaps complete (`test_coursemap_complete`); NYU→`credits`, CMU→`units`
+   (`test_nyu_credits_cmu_units`). ✅
+4. Detail matches `graph.blocked_by` / `direct_unlocks` / `unlocks` spot-checked per
+   program (`test_detail_matches_graph`, parametrised over nine). ✅
+5. Unknown program → 404 with `known_programs`; unknown course → 404 naming the program
+   with `known_courses`. ✅
+6. Response shape identical across all nine — one top-level/meta/node/edge key set,
+   no program-specific keys (`test_shape_identical_across_all_nine`). ✅
+7. `pytest` → 106 passed (77 prior + 29 API). ✅
+8. Anonymous works end to end — every endpoint responds with no `Authorization` header
+   (verified by curl and the whole test suite, which never sends one). ✅
+
+**Notes for the next phase.**
+- No blocked *real* courses in any published plan (the ghost is separate), so
+  `blocked_by` is `[]` in every coursemap detail — blocking only appears under edits,
+  which is Phase 3 (`/evaluate`).
+- Frontend untouched, as required. Phase 2 is next: make the bundle fetch `/schools`
+  and `/coursemap` (adapter into the existing META/TERMS/COURSES shape) and persist
+  edits to `localStorage`. After Phase 2, `curricula.py` writes seeds only.
+
+---
