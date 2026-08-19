@@ -1,0 +1,650 @@
+{
+  "school": "CMU",
+  "program": {
+    "id": "cmu-me",
+    "name": "Mechanical Engineering, B.S.",
+    "descriptor": "MECHANICAL ENG BS · CIT",
+    "degree": "BS",
+    "catalog_year": "2025",
+    "unit_label": "units",
+    "unit_abbr": "u",
+    "total_units": 380,
+    "tab": "Mechanical Engineering",
+    "tiers": [
+      "FIRST YEAR",
+      "MATH & PHYSICS",
+      "ENGINEERING SCIENCE",
+      "MECHANICS & THERMAL",
+      "DESIGN & CAPSTONE"
+    ],
+    "grad": "Spring 2028",
+    "year": "SOPHOMORE",
+    "key": "24-261",
+    "keyname": "Mechanics I: 2D Design",
+    "headline": "Register for 24-261 — Mechanics II and Mechanical Design are both waiting on it.",
+    "blurb": "Mechanics I is the gate into the design sequence. Until it clears, 24-262 will not register, and the mechanical design capstone behind it slides a year.",
+    "snapshot": "117 of 380 units are in the bank with 32 more in progress. The gap isn't effort, it's sequencing: Mechanics I: 2D Design never made it onto a schedule, and the courses above it are still waiting.",
+    "needs_requirements": true
+  },
+  "terms": [
+    {
+      "index": 0,
+      "key": "F24",
+      "label": "Fall 2024",
+      "tag": "FIRST YEAR",
+      "status": "done"
+    },
+    {
+      "index": 1,
+      "key": "S25",
+      "label": "Spring 2025",
+      "tag": "FIRST YEAR",
+      "status": "done"
+    },
+    {
+      "index": 2,
+      "key": "F25",
+      "label": "Fall 2025",
+      "tag": "SOPHOMORE",
+      "status": "done"
+    },
+    {
+      "index": 3,
+      "key": "S26",
+      "label": "Spring 2026",
+      "tag": "IN PROGRESS",
+      "status": "current"
+    },
+    {
+      "index": 4,
+      "key": "F26",
+      "label": "Fall 2026",
+      "tag": "JUNIOR · DRAFT",
+      "status": "plan"
+    },
+    {
+      "index": 5,
+      "key": "S27",
+      "label": "Spring 2027",
+      "tag": "JUNIOR · DRAFT",
+      "status": "plan"
+    },
+    {
+      "index": 6,
+      "key": "F27",
+      "label": "Fall 2027",
+      "tag": "SENIOR · DRAFT",
+      "status": "plan"
+    },
+    {
+      "index": 7,
+      "key": "S28",
+      "label": "Spring 2028",
+      "tag": "SENIOR · DRAFT",
+      "status": "plan"
+    }
+  ],
+  "groups": [
+    {
+      "group": "major",
+      "name": "Major sequence",
+      "done": 3,
+      "in_progress": 2,
+      "total": 15,
+      "count": "3 of 15 courses",
+      "missing": [
+        "24-261",
+        "24-351",
+        "24-311",
+        "24-262",
+        "24-322"
+      ]
+    },
+    {
+      "group": "math",
+      "name": "Mathematics",
+      "done": 3,
+      "in_progress": 1,
+      "total": 4,
+      "count": "3 of 4 courses",
+      "missing": []
+    },
+    {
+      "group": "sci",
+      "name": "Science",
+      "done": 3,
+      "in_progress": 0,
+      "total": 3,
+      "count": "3 of 3 courses",
+      "missing": []
+    },
+    {
+      "group": "huss",
+      "name": "Humanities & social sciences",
+      "done": 2,
+      "in_progress": 1,
+      "total": 4,
+      "count": "2 of 4 courses",
+      "missing": [
+        "73-102"
+      ]
+    },
+    {
+      "group": "free",
+      "name": "Free electives",
+      "done": 1,
+      "in_progress": 0,
+      "total": 2,
+      "count": "1 of 2 courses",
+      "missing": [
+        "76-272"
+      ]
+    }
+  ],
+  "requirements": [],
+  "courses": [
+    {
+      "c": "21-120",
+      "n": "Differential and Integral Calculus",
+      "cr": 10,
+      "t": 0,
+      "s": "done",
+      "g": "math",
+      "tier": 0,
+      "req": [],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "33-141",
+      "n": "Physics I for Engineering Students",
+      "cr": 12,
+      "t": 0,
+      "s": "done",
+      "g": "sci",
+      "tier": 0,
+      "req": [],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "76-101",
+      "n": "Interpretation and Argument",
+      "cr": 9,
+      "t": 0,
+      "s": "done",
+      "g": "huss",
+      "gen": 1,
+      "req": [],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "99-101",
+      "n": "Computing @ Carnegie Mellon",
+      "cr": 3,
+      "t": 0,
+      "s": "done",
+      "g": "free",
+      "gen": 1,
+      "req": [],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "21-122",
+      "n": "Integration and Approximation",
+      "cr": 10,
+      "t": 1,
+      "s": "done",
+      "g": "math",
+      "tier": 1,
+      "req": [
+        "21-120"
+      ],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "24-101",
+      "n": "Fundamentals of Mechanical Engineering",
+      "cr": 12,
+      "t": 1,
+      "s": "done",
+      "g": "major",
+      "tier": 1,
+      "req": [
+        "21-120"
+      ],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "09-105",
+      "n": "Introduction to Modern Chemistry I",
+      "cr": 10,
+      "t": 1,
+      "s": "done",
+      "g": "sci",
+      "tier": 1,
+      "req": [],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "15-110",
+      "n": "Principles of Computing",
+      "cr": 10,
+      "t": 1,
+      "s": "done",
+      "g": "major",
+      "tier": 1,
+      "req": [],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "21-259",
+      "n": "Calculus in Three Dimensions",
+      "cr": 10,
+      "t": 2,
+      "s": "done",
+      "g": "math",
+      "tier": 2,
+      "req": [
+        "21-122"
+      ],
+      "anti": [],
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "33-142",
+      "n": "Physics II for Engineering Students",
+      "cr": 12,
+      "t": 2,
+      "s": "done",
+      "g": "sci",
+      "tier": 2,
+      "req": [
+        "33-141"
+      ],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "24-221",
+      "n": "Thermodynamics",
+      "cr": 10,
+      "t": 2,
+      "s": "done",
+      "g": "major",
+      "tier": 2,
+      "req": [
+        "24-101",
+        "21-122"
+      ],
+      "anti": [],
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "79-104",
+      "n": "Global Histories",
+      "cr": 9,
+      "t": 2,
+      "s": "done",
+      "g": "huss",
+      "gen": 1,
+      "req": [],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "21-260",
+      "n": "Differential Equations",
+      "cr": 10,
+      "t": 3,
+      "s": "current",
+      "g": "math",
+      "tier": 2,
+      "req": [
+        "21-122"
+      ],
+      "anti": [],
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "24-231",
+      "n": "Fluid Mechanics",
+      "cr": 10,
+      "t": 3,
+      "s": "current",
+      "g": "major",
+      "tier": 3,
+      "req": [
+        "24-101",
+        "21-259"
+      ],
+      "anti": [],
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "24-251",
+      "n": "Electronics for Sensing and Actuation",
+      "cr": 3,
+      "t": 3,
+      "s": "current",
+      "g": "major",
+      "tier": 2,
+      "req": [
+        "24-101"
+      ],
+      "anti": [],
+      "offering": "Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "76-270",
+      "n": "Writing for the Professions",
+      "cr": 9,
+      "t": 3,
+      "s": "current",
+      "g": "huss",
+      "gen": 1,
+      "req": [
+        "76-101"
+      ],
+      "anti": [],
+      "offering": "Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "24-261",
+      "n": "Mechanics I: 2D Design",
+      "cr": 10,
+      "t": 4,
+      "s": "todo",
+      "g": "major",
+      "tier": 2,
+      "req": [
+        "24-101",
+        "21-122"
+      ],
+      "anti": [],
+      "key": 1,
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "24-351",
+      "n": "Dynamics",
+      "cr": 10,
+      "t": 4,
+      "s": "plan",
+      "g": "major",
+      "tier": 3,
+      "req": [
+        "24-101",
+        "21-260"
+      ],
+      "anti": [],
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "24-311",
+      "n": "Numerical Methods",
+      "cr": 12,
+      "t": 4,
+      "s": "plan",
+      "g": "major",
+      "tier": 3,
+      "req": [
+        "21-260",
+        "15-110"
+      ],
+      "anti": [],
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "24-262",
+      "n": "Mechanics II: 3D Design",
+      "cr": 10,
+      "t": 4,
+      "s": "blocked",
+      "g": "major",
+      "ghost": 1,
+      "note": "DEFERRED — NEEDS 24-261 FIRST",
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "24-262",
+      "n": "Mechanics II: 3D Design",
+      "cr": 10,
+      "t": 5,
+      "s": "plan",
+      "g": "major",
+      "tier": 3,
+      "req": [
+        "24-261"
+      ],
+      "anti": [],
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "24-322",
+      "n": "Heat Transfer",
+      "cr": 10,
+      "t": 5,
+      "s": "plan",
+      "g": "major",
+      "tier": 3,
+      "req": [
+        "24-231",
+        "24-221"
+      ],
+      "anti": [],
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "24-352",
+      "n": "Dynamic Systems and Controls",
+      "cr": 12,
+      "t": 5,
+      "s": "plan",
+      "g": "major",
+      "tier": 4,
+      "req": [
+        "24-351",
+        "21-260"
+      ],
+      "anti": [],
+      "offering": "Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "24-321",
+      "n": "Thermal-Fluids Experimentation",
+      "cr": 12,
+      "t": 6,
+      "s": "plan",
+      "g": "major",
+      "tier": 4,
+      "req": [
+        "24-231",
+        "24-221"
+      ],
+      "anti": [],
+      "offering": "Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "24-370",
+      "n": "Mechanical Design: Methods and Applications",
+      "cr": 12,
+      "t": 6,
+      "s": "plan",
+      "g": "major",
+      "tier": 4,
+      "req": [
+        "24-262"
+      ],
+      "anti": [],
+      "offering": "Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "73-102",
+      "n": "Principles of Microeconomics",
+      "cr": 9,
+      "t": 6,
+      "s": "plan",
+      "g": "huss",
+      "gen": 1,
+      "req": [],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "24-441",
+      "n": "Product Design",
+      "cr": 12,
+      "t": 7,
+      "s": "plan",
+      "g": "major",
+      "tier": 4,
+      "req": [
+        "24-370"
+      ],
+      "anti": [
+        "24-671"
+      ],
+      "offering": "Fall",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "24-402",
+      "n": "Mechanical Engineering Elective",
+      "cr": 9,
+      "t": 7,
+      "s": "plan",
+      "g": "major",
+      "tier": 4,
+      "req": [
+        "24-262"
+      ],
+      "anti": [],
+      "offering": "Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "76-272",
+      "n": "Free Elective",
+      "cr": 9,
+      "t": 7,
+      "s": "plan",
+      "g": "free",
+      "gen": 1,
+      "req": [],
+      "anti": [],
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "24-671",
+      "n": "Electromechanical Systems Design",
+      "cr": 12,
+      "t": -1,
+      "s": "alt",
+      "g": "major",
+      "tier": 4,
+      "req": [
+        "24-370"
+      ],
+      "anti": [
+        "24-441"
+      ],
+      "alt": 1,
+      "offering": "Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    }
+  ]
+}

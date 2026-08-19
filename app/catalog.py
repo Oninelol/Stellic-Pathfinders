@@ -71,6 +71,22 @@ class Program:
     unit_label: str
     unit_abbr: str
     total_units: int
+    descriptor: str = ""  # the '<CODE BA · CAMPUS>' sidebar mark
+    # presentation copy + derived claims carried from the frontend curriculum
+    tab: str = ""
+    tiers: tuple[str, ...] = ()
+    grad: str = ""
+    year: str = ""
+    # `key` and the copy below reference the bottleneck course. They are AUTHORED;
+    # `app.graph.key_course()` computes it independently. The validator flags a
+    # disagreement rather than either side silently overwriting the other.
+    key: Optional[str] = None
+    keyname: str = ""
+    headline: str = ""
+    blurb: str = ""
+    snapshot: str = ""
+    # True when no real requirement matchers have been authored for this program.
+    needs_requirements: bool = False
 
 
 @dataclass(frozen=True)
@@ -85,6 +101,7 @@ class Course:
     req: tuple[str, ...] = ()
     anti: tuple[str, ...] = ()
     offering: str = "UNKNOWN"
+    offering_source: str = "catalog"  # "derived" (hashed) | "catalog" (real)
     needs_review: bool = False
     review_note: Optional[str] = None
     is_gen: bool = False
@@ -103,6 +120,7 @@ class Catalog:
     ghosts: tuple[Course, ...]        # ghost placeholder rows
     terms: tuple[Term, ...]
     rows: tuple[dict, ...]            # every raw row (incl. ghosts), graph-shaped
+    groups: tuple[dict, ...] = ()     # derived g-buckets (reproduces the frontend REQS)
 
     @property
     def program_id(self) -> str:
@@ -117,7 +135,7 @@ class Catalog:
 # parsing
 # --------------------------------------------------------------------------- #
 
-_GRAPH_KEYS = ("tier", "req", "anti", "gen", "key", "alt", "ghost", "note")
+_GRAPH_KEYS = ("g", "tier", "req", "anti", "gen", "key", "alt", "ghost", "note")
 
 
 def _course_from(raw: dict) -> Course:
@@ -132,6 +150,7 @@ def _course_from(raw: dict) -> Course:
         req=tuple(raw.get("req", ())),
         anti=tuple(raw.get("anti", ())),
         offering=raw.get("offering", "UNKNOWN"),
+        offering_source=raw.get("offering_source", "catalog"),
         needs_review=bool(raw.get("needs_review", False)),
         review_note=raw.get("review_note"),
         is_gen=bool(raw.get("gen")),
@@ -162,6 +181,13 @@ def _parse(payload: dict, source: str) -> Catalog:
             catalog_year=str(p.get("catalog_year", "")),
             unit_label=p["unit_label"], unit_abbr=p.get("unit_abbr", ""),
             total_units=int(p["total_units"]),
+            descriptor=p.get("descriptor", ""),
+            tab=p.get("tab", ""), tiers=tuple(p.get("tiers", ())),
+            grad=p.get("grad", ""), year=p.get("year", ""),
+            key=p.get("key"), keyname=p.get("keyname", ""),
+            headline=p.get("headline", ""), blurb=p.get("blurb", ""),
+            snapshot=p.get("snapshot", ""),
+            needs_requirements=bool(p.get("needs_requirements", False)),
         )
         requirements = tuple(
             Requirement(id=r["id"], name=r["name"],
@@ -198,6 +224,7 @@ def _parse(payload: dict, source: str) -> Catalog:
         ghosts=tuple(ghosts),
         terms=terms,
         rows=rows,
+        groups=tuple(payload.get("groups", [])),
     )
 
 
@@ -255,6 +282,7 @@ def schools() -> list[dict]:
             "catalog_year": cat.program.catalog_year,
             "unit_label": cat.program.unit_label,
             "total_units": cat.program.total_units,
+            "tab": cat.program.tab,
         })
     for entry in by_school.values():
         entry["programs"].sort(key=lambda p: p["id"])

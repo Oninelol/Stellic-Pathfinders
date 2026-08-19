@@ -1,0 +1,175 @@
+{
+  "note": "base/terms/edits with the JS get COURSES() output captured as `expected`. Regenerate with scripts jsedits.js if the JS rule changes.",
+  "terms": [
+    {
+      "st": "done"
+    },
+    {
+      "st": "done"
+    },
+    {
+      "st": "done"
+    },
+    {
+      "st": "current"
+    },
+    {
+      "st": "plan"
+    },
+    {
+      "st": "plan"
+    }
+  ],
+  "base": [
+    {
+      "c": "A 1",
+      "n": "a",
+      "cr": 4,
+      "t": 0,
+      "s": "done",
+      "tier": 0,
+      "req": [],
+      "anti": []
+    },
+    {
+      "c": "B 2",
+      "n": "b",
+      "cr": 4,
+      "t": 3,
+      "s": "current",
+      "tier": 1,
+      "req": [
+        "A 1"
+      ],
+      "anti": []
+    },
+    {
+      "c": "K 9",
+      "n": "k",
+      "cr": 4,
+      "t": 4,
+      "s": "todo",
+      "tier": 1,
+      "req": [],
+      "anti": [],
+      "key": 1
+    },
+    {
+      "c": "G 3",
+      "n": "g",
+      "cr": 4,
+      "t": 4,
+      "s": "blocked",
+      "ghost": 1,
+      "note": "x"
+    },
+    {
+      "c": "G 3",
+      "n": "g",
+      "cr": 4,
+      "t": 5,
+      "s": "plan",
+      "tier": 2,
+      "req": [
+        "K 9"
+      ],
+      "anti": []
+    },
+    {
+      "c": "E 1",
+      "n": "e",
+      "cr": 4,
+      "t": 5,
+      "s": "plan",
+      "gen": 1
+    }
+  ],
+  "edits": {
+    "moved": {
+      "B 2": 5,
+      "G 3#g": 2,
+      "K 9": 4
+    },
+    "added": [
+      {
+        "c": "NEW 1",
+        "n": "new",
+        "cr": 3,
+        "t": 4,
+        "s": "plan",
+        "tier": 2,
+        "req": [],
+        "anti": []
+      }
+    ],
+    "removed": [
+      "E 1"
+    ]
+  },
+  "expected": [
+    {
+      "c": "A 1",
+      "n": "a",
+      "cr": 4,
+      "t": 0,
+      "s": "done",
+      "tier": 0,
+      "req": [],
+      "anti": []
+    },
+    {
+      "c": "B 2",
+      "n": "b",
+      "cr": 4,
+      "t": 5,
+      "s": "plan",
+      "tier": 1,
+      "req": [
+        "A 1"
+      ],
+      "anti": []
+    },
+    {
+      "c": "K 9",
+      "n": "k",
+      "cr": 4,
+      "t": 4,
+      "s": "todo",
+      "tier": 1,
+      "req": [],
+      "anti": [],
+      "key": 1
+    },
+    {
+      "c": "G 3",
+      "n": "g",
+      "cr": 4,
+      "t": 2,
+      "s": "blocked",
+      "ghost": 1,
+      "note": "x"
+    },
+    {
+      "c": "G 3",
+      "n": "g",
+      "cr": 4,
+      "t": 5,
+      "s": "plan",
+      "tier": 2,
+      "req": [
+        "K 9"
+      ],
+      "anti": []
+    },
+    {
+      "c": "NEW 1",
+      "n": "new",
+      "cr": 3,
+      "t": 4,
+      "s": "plan",
+      "tier": 2,
+      "req": [],
+      "anti": []
+    }
+  ]
+}

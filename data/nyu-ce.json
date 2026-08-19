@@ -1,0 +1,649 @@
+{
+  "school": "NYU",
+  "program": {
+    "id": "nyu-ce",
+    "name": "Civil Engineering, B.S.",
+    "descriptor": "CIVIL ENG BS · TANDON",
+    "degree": "BS",
+    "catalog_year": "2026",
+    "unit_label": "credits",
+    "unit_abbr": "cr",
+    "total_units": 129,
+    "tab": "Civil Engineering",
+    "tiers": [
+      "FIRST YEAR",
+      "MATH & PHYSICS",
+      "STRUCTURAL SCIENCE",
+      "CIVIL SYSTEMS",
+      "CAPSTONE & ELECTIVES"
+    ],
+    "grad": "Spring 2028",
+    "year": "SOPHOMORE",
+    "key": "CE-UY 2112",
+    "keyname": "Structural Statics",
+    "headline": "Register for CE-UY 2112 — Strength of Materials and Analysis of Determinate Structures are both waiting on it.",
+    "blurb": "Structural Statics is the gate into the structures sequence. Until it clears, Strength of Materials will not register, and Structural Engineering behind it slides a year.",
+    "snapshot": "45 of 129 credits are in the bank with 14 more in progress. The gap isn't effort, it's sequencing: Structural Statics never made it onto a schedule, and the courses above it are still waiting.",
+    "needs_requirements": true
+  },
+  "terms": [
+    {
+      "index": 0,
+      "key": "F24",
+      "label": "Fall 2024",
+      "tag": "FRESHMAN",
+      "status": "done"
+    },
+    {
+      "index": 1,
+      "key": "S25",
+      "label": "Spring 2025",
+      "tag": "FRESHMAN",
+      "status": "done"
+    },
+    {
+      "index": 2,
+      "key": "F25",
+      "label": "Fall 2025",
+      "tag": "SOPHOMORE",
+      "status": "done"
+    },
+    {
+      "index": 3,
+      "key": "S26",
+      "label": "Spring 2026",
+      "tag": "IN PROGRESS",
+      "status": "current"
+    },
+    {
+      "index": 4,
+      "key": "F26",
+      "label": "Fall 2026",
+      "tag": "JUNIOR · DRAFT",
+      "status": "plan"
+    },
+    {
+      "index": 5,
+      "key": "S27",
+      "label": "Spring 2027",
+      "tag": "JUNIOR · DRAFT",
+      "status": "plan"
+    },
+    {
+      "index": 6,
+      "key": "F27",
+      "label": "Fall 2027",
+      "tag": "SENIOR · DRAFT",
+      "status": "plan"
+    },
+    {
+      "index": 7,
+      "key": "S28",
+      "label": "Spring 2028",
+      "tag": "SENIOR · DRAFT",
+      "status": "plan"
+    }
+  ],
+  "groups": [
+    {
+      "group": "major",
+      "name": "Major sequence",
+      "done": 4,
+      "in_progress": 2,
+      "total": 17,
+      "count": "4 of 17 courses",
+      "missing": [
+        "CE-UY 2112",
+        "CE-UY 3223",
+        "CE-UY 3013",
+        "CE-UY 2122",
+        "CE-UY 2143"
+      ]
+    },
+    {
+      "group": "math",
+      "name": "Mathematics",
+      "done": 3,
+      "in_progress": 1,
+      "total": 4,
+      "count": "3 of 4 courses",
+      "missing": []
+    },
+    {
+      "group": "sci",
+      "name": "Science",
+      "done": 3,
+      "in_progress": 0,
+      "total": 3,
+      "count": "3 of 3 courses",
+      "missing": []
+    },
+    {
+      "group": "huss",
+      "name": "Humanities & social sciences",
+      "done": 3,
+      "in_progress": 1,
+      "total": 5,
+      "count": "3 of 5 courses",
+      "missing": [
+        "HUSS-UY 3"
+      ]
+    },
+    {
+      "group": "free",
+      "name": "Free electives",
+      "done": 0,
+      "in_progress": 0,
+      "total": 1,
+      "count": "0 of 1 courses",
+      "missing": [
+        "FREE-UY 1"
+      ]
+    }
+  ],
+  "requirements": [],
+  "courses": [
+    {
+      "c": "MA-UY 1024",
+      "n": "Calculus I for Engineers",
+      "cr": 4,
+      "t": 0,
+      "s": "done",
+      "g": "math",
+      "tier": 0,
+      "req": [],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "EG-UY 1004",
+      "n": "Introduction to Engineering and Design",
+      "cr": 4,
+      "t": 0,
+      "s": "done",
+      "g": "major",
+      "tier": 0,
+      "req": [],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "EXPOS-UA 1",
+      "n": "Writing as Inquiry",
+      "cr": 4,
+      "t": 0,
+      "s": "done",
+      "g": "huss",
+      "gen": 1,
+      "req": [],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "MA-UY 1124",
+      "n": "Calculus II for Engineers",
+      "cr": 4,
+      "t": 1,
+      "s": "done",
+      "g": "math",
+      "tier": 1,
+      "req": [
+        "MA-UY 1024"
+      ],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "PH-UY 1013",
+      "n": "Mechanics",
+      "cr": 3,
+      "t": 1,
+      "s": "done",
+      "g": "sci",
+      "tier": 1,
+      "req": [
+        "MA-UY 1024"
+      ],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "EXPOS-UA 22",
+      "n": "Advanced Writing for Engineers",
+      "cr": 4,
+      "t": 1,
+      "s": "done",
+      "g": "huss",
+      "gen": 1,
+      "req": [
+        "EXPOS-UA 1"
+      ],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "CE-UY 1002",
+      "n": "Intro to Civil and Environmental Engineering",
+      "cr": 2,
+      "t": 1,
+      "s": "done",
+      "g": "major",
+      "tier": 1,
+      "req": [],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "CM-UY 1003",
+      "n": "General Chemistry for Engineers",
+      "cr": 3,
+      "t": 0,
+      "s": "done",
+      "g": "sci",
+      "gen": 1,
+      "req": [],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "CS-UY 1113",
+      "n": "Problem Solving and Programming I",
+      "cr": 3,
+      "t": 1,
+      "s": "done",
+      "g": "major",
+      "tier": 1,
+      "req": [],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "MA-UY 2034",
+      "n": "Linear Algebra and Differential Equations",
+      "cr": 4,
+      "t": 2,
+      "s": "done",
+      "g": "math",
+      "tier": 2,
+      "req": [
+        "MA-UY 1124"
+      ],
+      "anti": [],
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "PH-UY 2023",
+      "n": "Electricity, Magnetism, & Fluids",
+      "cr": 3,
+      "t": 2,
+      "s": "done",
+      "g": "sci",
+      "tier": 2,
+      "req": [
+        "PH-UY 1013"
+      ],
+      "anti": [],
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "CE-UY 2533",
+      "n": "Construction Project Management",
+      "cr": 3,
+      "t": 2,
+      "s": "done",
+      "g": "major",
+      "tier": 2,
+      "req": [],
+      "anti": [],
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "HUSS-UY 1",
+      "n": "Humanities & Social Sciences Elective",
+      "cr": 4,
+      "t": 2,
+      "s": "done",
+      "g": "huss",
+      "gen": 1,
+      "req": [],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "MA-UY 2224",
+      "n": "Probability and Statistics for Engineers",
+      "cr": 4,
+      "t": 3,
+      "s": "current",
+      "g": "math",
+      "tier": 2,
+      "req": [
+        "MA-UY 1124"
+      ],
+      "anti": [],
+      "offering": "Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "CE-UY 2213",
+      "n": "Fluid Mechanics and Hydraulics",
+      "cr": 3,
+      "t": 3,
+      "s": "current",
+      "g": "major",
+      "tier": 3,
+      "req": [
+        "PH-UY 1013"
+      ],
+      "anti": [],
+      "offering": "Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "CE-UY 2343",
+      "n": "Transportation Engineering",
+      "cr": 3,
+      "t": 3,
+      "s": "current",
+      "g": "major",
+      "tier": 3,
+      "req": [],
+      "anti": [],
+      "offering": "Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "HUSS-UY 2",
+      "n": "Humanities & Social Sciences Elective",
+      "cr": 4,
+      "t": 3,
+      "s": "current",
+      "g": "huss",
+      "gen": 1,
+      "req": [],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "CE-UY 2112",
+      "n": "Structural Statics",
+      "cr": 2,
+      "t": 4,
+      "s": "todo",
+      "g": "major",
+      "tier": 2,
+      "req": [
+        "PH-UY 1013",
+        "MA-UY 1124"
+      ],
+      "anti": [],
+      "key": 1,
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "CE-UY 3223",
+      "n": "Fundamentals of Environmental Engineering",
+      "cr": 3,
+      "t": 4,
+      "s": "plan",
+      "g": "major",
+      "tier": 3,
+      "req": [
+        "CM-UY 1003"
+      ],
+      "anti": [],
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "CE-UY 3013",
+      "n": "Computing in Civil Engineering",
+      "cr": 3,
+      "t": 4,
+      "s": "plan",
+      "g": "major",
+      "tier": 3,
+      "req": [
+        "CS-UY 1113"
+      ],
+      "anti": [],
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "CE-UY 2143",
+      "n": "Analysis of Determinate Structures",
+      "cr": 3,
+      "t": 4,
+      "s": "blocked",
+      "g": "major",
+      "ghost": 1,
+      "note": "DEFERRED — NEEDS CE-UY 2112 FIRST",
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "CE-UY 2122",
+      "n": "Strength of Materials",
+      "cr": 2,
+      "t": 5,
+      "s": "plan",
+      "g": "major",
+      "tier": 3,
+      "req": [
+        "CE-UY 2112"
+      ],
+      "anti": [],
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "CE-UY 2143",
+      "n": "Analysis of Determinate Structures",
+      "cr": 3,
+      "t": 5,
+      "s": "plan",
+      "g": "major",
+      "tier": 3,
+      "req": [
+        "CE-UY 2112"
+      ],
+      "anti": [],
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "CE-UY 3243",
+      "n": "Water Resources Engineering",
+      "cr": 3,
+      "t": 5,
+      "s": "plan",
+      "g": "major",
+      "tier": 3,
+      "req": [
+        "CE-UY 2213"
+      ],
+      "anti": [],
+      "offering": "Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "CE-UY 3183",
+      "n": "Structural Engineering",
+      "cr": 3,
+      "t": 6,
+      "s": "plan",
+      "g": "major",
+      "tier": 4,
+      "req": [
+        "CE-UY 2143",
+        "CE-UY 2122"
+      ],
+      "anti": [],
+      "offering": "Fall",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "CE-UY 3153",
+      "n": "Geotechnical Engineering",
+      "cr": 3,
+      "t": 6,
+      "s": "plan",
+      "g": "major",
+      "tier": 4,
+      "req": [
+        "CE-UY 2122"
+      ],
+      "anti": [],
+      "offering": "Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "CE-UY 3163",
+      "n": "Materials for Built Environment",
+      "cr": 3,
+      "t": 6,
+      "s": "plan",
+      "g": "major",
+      "tier": 4,
+      "req": [
+        "CE-UY 2122"
+      ],
+      "anti": [],
+      "offering": "Fall",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "CE-UY 4092",
+      "n": "Leadership, Business, Policy & Ethics",
+      "cr": 2,
+      "t": 7,
+      "s": "plan",
+      "g": "major",
+      "tier": 4,
+      "req": [],
+      "anti": [],
+      "offering": "Fall",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "CE-UY 4803",
+      "n": "Civil Engineering Capstone",
+      "cr": 3,
+      "t": 7,
+      "s": "plan",
+      "g": "major",
+      "tier": 4,
+      "req": [
+        "CE-UY 3183",
+        "CE-UY 3153"
+      ],
+      "anti": [],
+      "offering": "Fall",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "HUSS-UY 3",
+      "n": "Humanities & Social Sciences Elective",
+      "cr": 4,
+      "t": 7,
+      "s": "plan",
+      "g": "huss",
+      "gen": 1,
+      "req": [],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "FREE-UY 1",
+      "n": "Free Elective",
+      "cr": 3,
+      "t": 7,
+      "s": "plan",
+      "g": "free",
+      "gen": 1,
+      "req": [],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    }
+  ]
+}

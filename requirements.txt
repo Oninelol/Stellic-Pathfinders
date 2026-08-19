@@ -1,0 +1,14 @@
+# API
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+pydantic==2.13.4
+email-validator==2.3.0
+
+# Auth + user data (SQLite; Postgres is a DATABASE_URL change)
+SQLAlchemy==2.0.52
+alembic==1.19.1
+PyJWT==2.12.1
+
+# Tests
+pytest==8.3.4
+httpx==0.28.1

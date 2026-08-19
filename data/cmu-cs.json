@@ -1,13 +1,30 @@
 {
   "school": "CMU",
   "program": {
-    "id": "cmu-bscs-2025",
+    "id": "cmu-cs",
     "name": "Computer Science, B.S.",
+    "descriptor": "CS BS · SCS",
     "degree": "BS",
     "catalog_year": "2025",
     "unit_label": "units",
     "unit_abbr": "u",
-    "total_units": 360
+    "total_units": 360,
+    "tab": "Computer Science",
+    "tiers": [
+      "IMPERATIVE START",
+      "CORE SEQUENCE",
+      "SYSTEMS & MATRICES",
+      "THEORY & ALGORITHMS",
+      "ADVANCED ELECTIVES"
+    ],
+    "grad": "Spring 2028",
+    "year": "SOPHOMORE",
+    "key": "15-251",
+    "keyname": "Great Ideas in Theoretical Computer Science",
+    "headline": "Register for 15-251 — Algorithm Design and Complexity Theory are both waiting on it.",
+    "blurb": "Great Ideas is the gate into the theory sequence. Until it clears, 15-451 will not register, and the complexity elective stacked behind it has nowhere to go.",
+    "snapshot": "104 of 360 units are in the bank with 33 more in progress. The gap isn't effort, it's sequencing: Great Ideas in Theoretical Computer Science never made it onto a schedule, and the courses above it are still waiting.",
+    "needs_requirements": false
   },
   "terms": [
     {
@@ -42,29 +59,90 @@
       "index": 4,
       "key": "F26",
       "label": "Fall 2026",
-      "tag": "JUNIOR \u00b7 DRAFT",
+      "tag": "JUNIOR · DRAFT",
       "status": "plan"
     },
     {
       "index": 5,
       "key": "S27",
       "label": "Spring 2027",
-      "tag": "JUNIOR \u00b7 DRAFT",
+      "tag": "JUNIOR · DRAFT",
       "status": "plan"
     },
     {
       "index": 6,
       "key": "F27",
       "label": "Fall 2027",
-      "tag": "SENIOR \u00b7 DRAFT",
+      "tag": "SENIOR · DRAFT",
       "status": "plan"
     },
     {
       "index": 7,
       "key": "S28",
       "label": "Spring 2028",
-      "tag": "SENIOR \u00b7 DRAFT",
+      "tag": "SENIOR · DRAFT",
       "status": "plan"
+    }
+  ],
+  "groups": [
+    {
+      "group": "major",
+      "name": "Major sequence",
+      "done": 4,
+      "in_progress": 2,
+      "total": 13,
+      "count": "4 of 13 courses",
+      "missing": [
+        "15-251",
+        "15-451",
+        "15-410",
+        "10-315",
+        "15-411"
+      ]
+    },
+    {
+      "group": "math",
+      "name": "Mathematics",
+      "done": 3,
+      "in_progress": 0,
+      "total": 5,
+      "count": "3 of 5 courses",
+      "missing": [
+        "21-241",
+        "15-259"
+      ]
+    },
+    {
+      "group": "sci",
+      "name": "Science",
+      "done": 1,
+      "in_progress": 0,
+      "total": 2,
+      "count": "1 of 2 courses",
+      "missing": [
+        "09-105"
+      ]
+    },
+    {
+      "group": "huss",
+      "name": "Humanities & social sciences",
+      "done": 2,
+      "in_progress": 1,
+      "total": 5,
+      "count": "2 of 5 courses",
+      "missing": [
+        "73-102",
+        "76-271"
+      ]
+    },
+    {
+      "group": "free",
+      "name": "Free electives",
+      "done": 1,
+      "in_progress": 0,
+      "total": 1,
+      "count": "1 of 1 courses",
+      "missing": []
     }
   ],
   "requirements": [
@@ -153,11 +231,12 @@
       "cr": 12,
       "t": 0,
       "s": "done",
+      "g": "major",
       "tier": 0,
       "req": [],
       "anti": [],
-      "g": "major",
-      "offering": "Summer \u00b7 Fall \u00b7 Spring",
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -167,11 +246,12 @@
       "cr": 10,
       "t": 0,
       "s": "done",
+      "g": "math",
       "tier": 0,
       "req": [],
       "anti": [],
-      "g": "math",
-      "offering": "Summer \u00b7 Fall \u00b7 Spring",
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -181,9 +261,12 @@
       "cr": 9,
       "t": 0,
       "s": "done",
-      "gen": 1,
       "g": "huss",
-      "offering": "Fall",
+      "gen": 1,
+      "req": [],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -193,9 +276,12 @@
       "cr": 3,
       "t": 0,
       "s": "done",
-      "gen": 1,
       "g": "free",
-      "offering": "Spring",
+      "gen": 1,
+      "req": [],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -205,13 +291,14 @@
       "cr": 12,
       "t": 1,
       "s": "done",
+      "g": "major",
       "tier": 1,
       "req": [
         "15-112"
       ],
       "anti": [],
-      "g": "major",
-      "offering": "Fall",
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -221,13 +308,14 @@
       "cr": 10,
       "t": 1,
       "s": "done",
+      "g": "math",
       "tier": 1,
       "req": [
         "21-120"
       ],
       "anti": [],
-      "g": "math",
-      "offering": "Summer \u00b7 Fall \u00b7 Spring",
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -237,9 +325,12 @@
       "cr": 3,
       "t": 1,
       "s": "done",
-      "gen": 1,
       "g": "major",
-      "offering": "Fall",
+      "gen": 1,
+      "req": [],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -249,9 +340,12 @@
       "cr": 9,
       "t": 1,
       "s": "done",
-      "gen": 1,
       "g": "huss",
-      "offering": "Fall",
+      "gen": 1,
+      "req": [],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -261,13 +355,14 @@
       "cr": 12,
       "t": 2,
       "s": "done",
+      "g": "major",
       "tier": 2,
       "req": [
         "15-122"
       ],
       "anti": [],
-      "g": "major",
-      "offering": "Spring",
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -277,13 +372,14 @@
       "cr": 12,
       "t": 2,
       "s": "done",
+      "g": "math",
       "tier": 1,
       "req": [],
       "anti": [
         "15-151"
       ],
-      "g": "math",
-      "offering": "Summer \u00b7 Fall \u00b7 Spring",
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -293,9 +389,12 @@
       "cr": 12,
       "t": 2,
       "s": "done",
-      "gen": 1,
       "g": "sci",
-      "offering": "Spring",
+      "gen": 1,
+      "req": [],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -305,13 +404,14 @@
       "cr": 12,
       "t": 3,
       "s": "current",
+      "g": "major",
       "tier": 2,
       "req": [
         "15-122"
       ],
       "anti": [],
-      "g": "major",
-      "offering": "Spring",
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -321,14 +421,15 @@
       "cr": 12,
       "t": 3,
       "s": "current",
+      "g": "major",
       "tier": 3,
       "req": [
         "15-150",
         "15-122"
       ],
       "anti": [],
-      "g": "major",
-      "offering": "Fall",
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -338,9 +439,14 @@
       "cr": 9,
       "t": 3,
       "s": "current",
-      "gen": 1,
       "g": "huss",
+      "gen": 1,
+      "req": [
+        "76-101"
+      ],
+      "anti": [],
       "offering": "Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -350,6 +456,7 @@
       "cr": 12,
       "t": 4,
       "s": "todo",
+      "g": "major",
       "tier": 3,
       "req": [
         "15-122",
@@ -357,8 +464,8 @@
       ],
       "anti": [],
       "key": 1,
-      "g": "major",
       "offering": "Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -368,13 +475,14 @@
       "cr": 11,
       "t": 4,
       "s": "plan",
+      "g": "math",
       "tier": 2,
       "req": [
         "21-122"
       ],
       "anti": [],
-      "g": "math",
-      "offering": "Summer \u00b7 Fall \u00b7 Spring",
+      "offering": "Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -384,9 +492,12 @@
       "cr": 10,
       "t": 4,
       "s": "plan",
-      "gen": 1,
       "g": "sci",
-      "offering": "Fall",
+      "gen": 1,
+      "req": [],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -396,10 +507,11 @@
       "cr": 12,
       "t": 4,
       "s": "blocked",
-      "ghost": 1,
-      "note": "DEFERRED \u2014 NEEDS 15-251 FIRST",
       "g": "major",
+      "ghost": 1,
+      "note": "DEFERRED — NEEDS 15-251 FIRST",
       "offering": "Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -409,14 +521,15 @@
       "cr": 12,
       "t": 5,
       "s": "plan",
+      "g": "major",
       "tier": 4,
       "req": [
         "15-210",
         "15-251"
       ],
       "anti": [],
-      "g": "major",
       "offering": "Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -426,6 +539,7 @@
       "cr": 12,
       "t": 5,
       "s": "plan",
+      "g": "math",
       "tier": 3,
       "req": [
         "21-127"
@@ -433,8 +547,8 @@
       "anti": [
         "36-218"
       ],
-      "g": "math",
-      "offering": "UNKNOWN",
+      "offering": "Spring",
+      "offering_source": "derived",
       "needs_review": true,
       "review_note": "Prereq collapsed from CMU's OR-list (21-127 / 15-251 / 21-128 / 15-151) to the sample-sequence course; grades dropped."
     },
@@ -444,9 +558,12 @@
       "cr": 9,
       "t": 5,
       "s": "plan",
-      "gen": 1,
       "g": "huss",
-      "offering": "Fall \u00b7 Spring",
+      "gen": 1,
+      "req": [],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -456,14 +573,15 @@
       "cr": 15,
       "t": 6,
       "s": "plan",
+      "g": "major",
       "tier": 4,
       "req": [
         "15-213",
         "15-210"
       ],
       "anti": [],
-      "g": "major",
       "offering": "Fall",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -473,14 +591,15 @@
       "cr": 12,
       "t": 6,
       "s": "plan",
+      "g": "major",
       "tier": 4,
       "req": [
         "21-241",
         "15-259"
       ],
       "anti": [],
-      "g": "major",
-      "offering": "UNKNOWN",
+      "offering": "Spring",
+      "offering_source": "derived",
       "needs_review": true,
       "review_note": "Prerequisites inferred from sample-sequence order; program page printed none."
     },
@@ -490,9 +609,12 @@
       "cr": 9,
       "t": 6,
       "s": "plan",
-      "gen": 1,
       "g": "huss",
-      "offering": "Fall",
+      "gen": 1,
+      "req": [],
+      "anti": [],
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -502,14 +624,15 @@
       "cr": 15,
       "t": 7,
       "s": "plan",
+      "g": "major",
       "tier": 4,
       "req": [
         "15-213",
         "15-210"
       ],
       "anti": [],
-      "g": "major",
       "offering": "Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -519,13 +642,14 @@
       "cr": 12,
       "t": 7,
       "s": "plan",
+      "g": "major",
       "tier": 4,
       "req": [
         "15-251"
       ],
       "anti": [],
-      "g": "major",
       "offering": "Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -535,13 +659,14 @@
       "cr": 12,
       "t": 7,
       "s": "plan",
+      "g": "major",
       "tier": 4,
       "req": [
         "15-213"
       ],
       "anti": [],
-      "g": "major",
       "offering": "Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -551,14 +676,15 @@
       "cr": 12,
       "t": -1,
       "s": "alt",
+      "g": "math",
       "tier": 1,
       "req": [],
       "anti": [
         "21-127"
       ],
       "alt": 1,
-      "g": "math",
-      "offering": "Fall",
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -568,6 +694,7 @@
       "cr": 9,
       "t": -1,
       "s": "alt",
+      "g": "math",
       "tier": 3,
       "req": [
         "21-122"
@@ -576,8 +703,8 @@
         "15-259"
       ],
       "alt": 1,
-      "g": "math",
-      "offering": "Spring",
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     }
