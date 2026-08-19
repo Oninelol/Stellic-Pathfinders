@@ -135,7 +135,7 @@ class Catalog:
 # parsing
 # --------------------------------------------------------------------------- #
 
-_GRAPH_KEYS = ("tier", "req", "anti", "gen", "key", "alt", "ghost", "note")
+_GRAPH_KEYS = ("g", "tier", "req", "anti", "gen", "key", "alt", "ghost", "note")
 
 
 def _course_from(raw: dict) -> Course:

@@ -271,3 +271,141 @@ def to_detail(cat: catalog.Catalog, c: catalog.Course) -> dict:
         "direct_unlocks": sorted(graph.direct_unlocks(rows, c.code)),
         "unlocks": sorted(graph.unlocks(rows, c.code)),
     }
+
+
+# --------------------------------------------------------------------------- #
+# Phase 3 — stateless evaluation
+# --------------------------------------------------------------------------- #
+
+class Edits(BaseModel):
+    """The client's edit model, exactly as the board holds it."""
+    moved: dict[str, int] = {}
+    added: list[dict] = []
+    removed: list[str] = []
+
+
+class EvaluateRequest(BaseModel):
+    edits: Edits = Edits()
+
+
+class BlockedItem(BaseModel):
+    code: str
+    term: int
+    missing: list[str]
+
+
+class ConflictItem(BaseModel):
+    a: str
+    b: str
+    one_sided: bool
+
+
+class Totals(BaseModel):
+    per_term: list[dict]
+    done: int
+    current: int
+    planned: int
+    remaining: int
+    total: int
+
+
+class EvaluateResponse(BaseModel):
+    blocked: list[BlockedItem]
+    conflicts: list[ConflictItem]
+    totals: Totals
+    key_course: Optional[str]
+    groups: list[Group]
+    unknown_codes: list[str]
+
+
+GROUP_LABELS = {
+    "major": "Major sequence", "math": "Mathematics", "sci": "Science",
+    "huss": "Humanities & social sciences", "free": "Free electives",
+}
+_GROUP_ORDER = ["major", "math", "sci", "huss", "free"]
+
+
+def _groups_from_rows(rows: list[dict], terms: list[dict]) -> list[dict]:
+    """Requirement group buckets recomputed from the live plan.
+
+    Mirrors ``curricula.derive_groups`` but over evaluated rows, so the buckets
+    reflect the student's edits rather than the published curriculum.
+    """
+    out = []
+    for g in _GROUP_ORDER:
+        members = [r for r in rows if r.get("g") == g and not r.get("ghost") and not r.get("alt")]
+        if not members:
+            continue
+        done = sum(1 for r in members if r["s"] == "done")
+        prog = sum(1 for r in members if r["s"] == "current")
+        missing = [r["c"] for r in members if r["s"] in ("todo", "plan")][:5]
+        out.append({
+            "group": g, "name": GROUP_LABELS[g], "done": done, "in_progress": prog,
+            "total": len(members), "count": f"{done} of {len(members)} courses",
+            "missing": missing,
+        })
+    return out
+
+
+def to_evaluate(cat: catalog.Catalog, rows: list[dict]) -> dict:
+    """Evaluate an already-edited plan. Pure: rows in, verdict out.
+
+    ``rows`` is the output of ``plan.apply_edits`` — statuses are recomputed from term
+    position via ``graph.status_for`` so a moved course reflects its new term rather
+    than the status baked into the seed.
+    """
+    terms = [{"st": t.status} for t in cat.terms]
+    live: list[dict] = []
+    for r in rows:
+        row = dict(r)
+        row["s"] = graph.status_for(terms, row.get("t", -1), row)
+        live.append(row)
+
+    known = set(cat.courses) | {g.code for g in cat.ghosts}
+    unknown = sorted({r["c"] for r in live if r["c"] not in known})
+
+    blocked = []
+    for r in live:
+        if r.get("ghost") or r.get("t", -1) < 0:
+            continue
+        missing = graph.blocked_by(live, r["c"])
+        if missing:
+            blocked.append({"code": r["c"], "term": r["t"], "missing": missing})
+    blocked.sort(key=lambda b: (b["term"], b["code"]))
+
+    return {
+        "blocked": blocked,
+        "conflicts": graph.conflicts(live),
+        "totals": graph.credit_totals(live, list(cat.terms), cat.program.total_units),
+        "key_course": graph.key_course(live),
+        "groups": _groups_from_rows(live, terms),
+        "unknown_codes": unknown,
+    }
+
+
+def evaluate_edits(cat: catalog.Catalog, edits: dict) -> dict:
+    """Apply ``edits`` to the published curriculum and evaluate the result.
+
+    The ONE code path for evaluation. Both ``POST /programs/{id}/evaluate`` and
+    ``GET /me/plans/{id}/evaluate`` call this, so the two can never diverge.
+    """
+    from app import plan as plan_mod
+    rows = plan_mod.apply_edits(cat.graph_courses(), edits or {})
+    return to_evaluate(cat, rows)
+
+
+def term_range_error(cat: catalog.Catalog, edits: dict) -> Optional[str]:
+    """A message naming the valid range if any edit targets a term outside it."""
+    n = len(cat.terms)
+    bad: list[str] = []
+    for rid, t in (edits.get("moved") or {}).items():
+        if not isinstance(t, int) or not (-1 <= t < n):
+            bad.append(f"{rid}->{t}")
+    for a in (edits.get("added") or []):
+        t = a.get("t")
+        if not isinstance(t, int) or not (-1 <= t < n):
+            bad.append(f"{a.get('c')}->{t}")
+    if not bad:
+        return None
+    return (f"term index out of range for {', '.join(bad)}; "
+            f"valid terms are 0..{n - 1} (or -1 for unscheduled)")

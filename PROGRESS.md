@@ -155,3 +155,77 @@ the seed. Nodes carry `offering_source`; edges carry `kind ∈ {prereq, anti}`.
   cross-check during dev.
 
 ---
+
+## Phase 3 — Stateless evaluation ✅ (complete)
+
+**Built.** `POST /programs/{id}/evaluate` — body `{"edits": {moved, added, removed}}`,
+response `{blocked, conflicts, totals, key_course, groups, unknown_codes}`.
+The client posts *edits*, not a reconstructed plan; the server applies them with
+`plan.apply_edits`. Statuses are recomputed by `graph.status_for`, so a moved course
+reflects its new term rather than the seed's baked status. Assembly lives in
+`schemas.evaluate_edits()` — the ONE evaluation code path, shared with
+`GET /me/plans/{id}/evaluate` so the two can never diverge.
+
+**Acceptance.** Empty edits reproduce every seed's derived groups/totals/key for all
+nine ✅ · moving a course before its prereq blocks it with the right codes and moving
+back clears it ✅ · unknown codes land in `unknown_codes` with a 200 (a transfer credit
+gets an answer, not a 422) ✅ · out-of-range term → 422 naming `0..7` ✅ · stateless and
+repeatable, no residue between calls ✅ · conflicts surface at plan level ✅.
+
+**⚠ Real data defect found by /evaluate (reported, NOT silently fixed).**
+Two published curricula schedule a course in the SAME term as its prerequisite:
+- `nyu-me`: **ME-UY 2223 Dynamics** (term 4) requires **ME-UY 2213 Statics** (term 4)
+- `nyu-enve`: **CE-UY 2253 Hydrology** (term 4) requires **CE-UY 2213 Fluid Mechanics** (term 4)
+
+The computed result (blocked) is correct; the authored course placement in
+`scripts/curricula.py` is what is wrong. Fixing it means moving the dependent course
+to term 5 — a data change that shifts that program's credit distribution, so it is
+left for a decision rather than silently applied. Recorded in
+`tests/test_evaluate.py::KNOWN_SAME_TERM_DEFECTS`; the other seven are clean.
+
+---
+
+## Phase 3.5/3.6 (adapted) — Accounts and per-user data ✅ (complete)
+
+**Deviation from the original plan, on explicit instruction.** The plan said "use Clerk
+or Supabase; do not roll your own". The user asked for a self-hosted sign-up/login, so
+this is email + password built on standard primitives rather than hand-rolled crypto:
+`hashlib.scrypt` (stdlib, memory-hard) with a per-user 16-byte salt and
+`hmac.compare_digest`; stateless HS256 JWTs via PyJWT. No plaintext is ever stored.
+
+**Built.**
+- `app/db.py` (SQLite engine + session dep, FK pragma on), `app/models.py`
+  (User, Plan, PlanEntry), `app/auth.py` (hashing, tokens, `current_user`/`optional_user`),
+  `app/routes_user.py` (auth + plans), `alembic/` with `0001_users` → `0002_user_data`.
+- Endpoints: `POST /auth/signup`, `POST /auth/login`, `GET /me`,
+  `POST /auth/logout-everywhere`, `GET|POST /me/plans`,
+  `GET|PATCH|DELETE /me/plans/{id}`, `PUT /me/plans/{id}/entries`,
+  `PATCH /me/plans/{id}/entries/{code}`, `GET /me/plans/{id}/evaluate`.
+- **Stay signed in** is the token lifetime, not a second mechanism: 12h normally,
+  90 days with `remember`. The client keeps it in `localStorage` when remembered and
+  `sessionStorage` otherwise, and `restoreSession()` auto-logs-in on load.
+- Frontend: sign-in/sign-up modal, sidebar account block with SYNCED badge + sign out,
+  debounced (600ms) plan push, server-first restore on login.
+
+**Acceptance.** Signup→`/me` works and reuses the row ✅ · no token vs malformed token
+are distinguishable 401s (`no_token` / `token_invalid` / `token_expired` /
+`token_revoked`) ✅ · every catalog + evaluate endpoint still works with no
+Authorization header (asserted by name in `test_catalog_and_evaluate_stay_public`) ✅ ·
+tests run with no network ✅ · `alembic upgrade 0001_users` creates only `users`;
+`upgrade head` adds plans/plan_entries; `downgrade 0001_users` leaves users intact;
+`downgrade base` reverses cleanly ✅ · another user's plan is **404, not 403**, on every
+endpoint ✅ · delete cascades with no orphans ✅ · second primary unsets the first ✅ ·
+unknown course saves and surfaces in `unknown_codes` ✅ · grades round-trip with basis ✅ ·
+`GET /me/plans/{id}/evaluate` == `POST /programs/{id}/evaluate` for the same entries ✅.
+
+**Verified in-browser (fresh DB):** signed up `maya@nyu.edu` → token in localStorage →
+added CSCI-UA 480 → server stored 28 entries → cleared the local plan cache and
+reloaded → still signed in and the plan **restored from the server** at Spring 2027 →
+second account `jordan@cmu.edu` saw **0 plans** (isolated) → signing back in as maya
+returned her plan → wrong password 401.
+
+**Deferred.** Profile/goals/wins tables and the localStorage→server import prompt
+(the remaining 3.6 surface); Phase 4 audit; Phase 5 planner. `grade`/`grading_basis`
+columns exist and round-trip, unused until Phase 4.
+
+---
