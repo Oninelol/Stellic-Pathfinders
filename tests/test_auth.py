@@ -304,3 +304,76 @@ def test_name_is_optional_and_initials_fall_back_to_email():
     u = r.json()["user"]
     assert u["first_name"] == "" and u["last_name"] == "" and u["full_name"] == ""
     assert u["initials"] == "SO"       # from the email local part
+
+
+# --------------------------------------------------------------------------- #
+# settings: profile picture, school/major, graduation year, password
+# --------------------------------------------------------------------------- #
+
+_PNG = ("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJ"
+        "AAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==")
+
+
+def test_profile_update_program_and_grad_year():
+    _, headers, _ = new_user()
+    r = client.patch("/me/profile", headers=headers,
+                     json={"program_id": "cmu-me", "grad_year": 2031})
+    assert r.status_code == 200
+    assert r.json()["program_id"] == "cmu-me"
+    assert r.json()["grad_year"] == 2031
+
+
+def test_profile_rejects_unknown_program_and_bad_year():
+    _, headers, _ = new_user()
+    assert client.patch("/me/profile", headers=headers,
+                        json={"program_id": "nope"}).status_code == 422
+    assert client.patch("/me/profile", headers=headers,
+                        json={"grad_year": 1200}).status_code == 422
+
+
+def test_avatar_set_and_cleared():
+    _, headers, _ = new_user()
+    r = client.patch("/me/profile", headers=headers, json={"avatar": _PNG})
+    assert r.status_code == 200 and r.json()["avatar"] == _PNG
+    # an empty string clears it
+    r = client.patch("/me/profile", headers=headers, json={"avatar": ""})
+    assert r.status_code == 200 and r.json()["avatar"] is None
+
+
+def test_avatar_must_be_an_image_and_bounded():
+    _, headers, _ = new_user()
+    assert client.patch("/me/profile", headers=headers,
+                        json={"avatar": "data:text/html,<script>"}).status_code == 422
+    huge = "data:image/png;base64," + ("A" * 400_000)
+    assert client.patch("/me/profile", headers=headers,
+                        json={"avatar": huge}).status_code == 413
+
+
+def test_password_change_requires_current_and_revokes_tokens():
+    _, headers, body = new_user()
+    email = body["user"]["email"]
+    # wrong current password is refused
+    assert client.patch("/me/password", headers=headers,
+                        json={"current_password": "nope",
+                              "new_password": "brandnewpass2026"}).status_code == 403
+    # correct current password succeeds
+    assert client.patch("/me/password", headers=headers,
+                        json={"current_password": "hunter2hunter2",
+                              "new_password": "brandnewpass2026"}).status_code == 200
+    # the old token no longer verifies, and the new password works
+    assert client.get("/me", headers=headers).status_code == 401
+    assert client.post("/auth/login", json={"email": email,
+                                            "password": "brandnewpass2026"}).status_code == 200
+
+
+def test_password_change_rejects_a_weak_new_password():
+    _, headers, _ = new_user()
+    r = client.patch("/me/password", headers=headers,
+                     json={"current_password": "hunter2hunter2", "new_password": "short"})
+    assert r.status_code == 422
+
+
+def test_settings_endpoints_require_auth():
+    assert client.patch("/me/profile", json={"grad_year": 2030}).status_code == 401
+    assert client.patch("/me/password", json={"current_password": "a",
+                                              "new_password": "b"}).status_code == 401

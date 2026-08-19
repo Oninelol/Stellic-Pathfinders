@@ -31,6 +31,10 @@ class User(Base):
     # and the sidebar identity block. No demo persona is shown for a real account.
     first_name: Mapped[str | None] = mapped_column(String(80), nullable=True)
     last_name: Mapped[str | None] = mapped_column(String(80), nullable=True)
+    # Profile picture as a data: URL (see AVATAR_MAX_BYTES) and the student's own
+    # graduation year, which overrides the program default when set.
+    avatar: Mapped[str | None] = mapped_column(Text, nullable=True)
+    grad_year: Mapped[int | None] = mapped_column(Integer, nullable=True)
     # The school + major chosen at sign-up. A plain string id (e.g. "nyu-cs"),
     # validated against the seed catalog at write time, never a foreign key.
     program_id: Mapped[str | None] = mapped_column(String(64), nullable=True)

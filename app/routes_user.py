@@ -53,6 +53,8 @@ class UserOut(BaseModel):
     first_name: str = ""
     last_name: str = ""
     full_name: str = ""
+    avatar: str | None = None
+    grad_year: int | None = None
 
 
 class TokenOut(BaseModel):
@@ -99,7 +101,8 @@ def _user_out(u: User) -> dict:
     return {"id": u.id, "email": u.email, "display_name": u.display_name or "",
             "program_id": u.program_id, "initials": _initials(u),
             "first_name": first, "last_name": last,
-            "full_name": " ".join(p for p in (first, last) if p)}
+            "full_name": " ".join(p for p in (first, last) if p),
+            "avatar": u.avatar, "grad_year": u.grad_year}
 
 
 def _initials(u: User) -> str:
@@ -192,6 +195,83 @@ def login(body: LoginIn, db: Session = Depends(get_db)) -> dict:
     token, ttl = auth.create_token(user, body.remember)
     return {"token": token, "expires_in": ttl, "remember": body.remember,
             "user": _user_out(user)}
+
+
+class ProfileIn(BaseModel):
+    """Every field optional — the settings panel sends only what changed."""
+    first_name: str | None = None
+    last_name: str | None = None
+    program_id: str | None = None
+    grad_year: int | None = None
+    avatar: str | None = None       # data: URL, or "" to clear the picture
+
+
+class PasswordIn(BaseModel):
+    current_password: str
+    new_password: str
+
+
+# A profile picture is stored inline as a data: URL. Cap it so the row (and every
+# /me response) stays small; the client downscales before upload.
+AVATAR_MAX_BYTES = 300_000
+GRAD_YEAR_RANGE = (1950, 2100)
+
+
+@router.patch("/me/profile", response_model=UserOut)
+def update_profile(body: ProfileIn, user: User = Depends(auth.current_user),
+                   db: Session = Depends(get_db)) -> dict:
+    """Update the signed-in student's own details. Nothing here touches the catalog."""
+    if body.program_id is not None:
+        _check_program(body.program_id)      # 422 listing known ids if unknown
+        user.program_id = body.program_id
+    if body.grad_year is not None:
+        lo, hi = GRAD_YEAR_RANGE
+        if not (lo <= body.grad_year <= hi):
+            raise HTTPException(status_code=422, detail={
+                "error": "bad_grad_year",
+                "message": f"Graduation year must be between {lo} and {hi}."})
+        user.grad_year = body.grad_year
+    if body.avatar is not None:
+        av = body.avatar.strip()
+        if av == "":
+            user.avatar = None               # explicit clear
+        else:
+            if not av.startswith("data:image/"):
+                raise HTTPException(status_code=422, detail={
+                    "error": "bad_avatar", "message": "Profile picture must be an image."})
+            if len(av) > AVATAR_MAX_BYTES:
+                raise HTTPException(status_code=413, detail={
+                    "error": "avatar_too_large",
+                    "message": "That image is too large — please pick one under ~200 KB."})
+            user.avatar = av
+    if body.first_name is not None:
+        user.first_name = body.first_name.strip() or None
+    if body.last_name is not None:
+        user.last_name = body.last_name.strip() or None
+    if body.first_name is not None or body.last_name is not None:
+        user.display_name = " ".join(
+            p for p in ((user.first_name or ""), (user.last_name or "")) if p)
+    db.commit()
+    db.refresh(user)
+    return _user_out(user)
+
+
+@router.patch("/me/password", response_model=UserOut)
+def change_password(body: PasswordIn, user: User = Depends(auth.current_user),
+                    db: Session = Depends(get_db)) -> dict:
+    """Change the password. Requires the current one, and revokes existing tokens."""
+    if not auth.verify_password(body.current_password, user.password_hash):
+        raise HTTPException(status_code=403, detail={
+            "error": "wrong_password", "message": "That is not your current password."})
+    problem = auth.password_problem(body.new_password)
+    if problem:
+        raise HTTPException(status_code=422, detail={"error": "weak_password", "message": problem})
+    user.password_hash = auth.hash_password(body.new_password)
+    # Bumping the version invalidates tokens minted before the change.
+    user.token_version = (user.token_version or 0) + 1
+    db.commit()
+    db.refresh(user)
+    return _user_out(user)
 
 
 @router.get("/me", response_model=UserOut)

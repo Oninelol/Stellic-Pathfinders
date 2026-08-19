@@ -302,3 +302,46 @@ edits (`make api` runs with `--reload`).
 `alembic downgrade 0003_user_program` and back up verified clean.
 
 ---
+
+## Settings panel ✅
+
+**Built.** A **Settings** entry in the top-right account menu opens a panel with four
+sections, all backed by real endpoints.
+
+- **Profile picture.** Choose an image → the client centre-crops and downscales it to a
+  256px JPEG before upload, so the row and every `/me` response stay small. Stored as a
+  data: URL on `users.avatar` (migration `0005_user_settings`); `PATCH /me/profile`
+  rejects non-images (422) and anything over ~300 KB (413), and `""` clears it. The
+  picture replaces the initials **everywhere** they appeared — sidebar (32px), Home
+  header (66px), account pill (34px) and the settings preview.
+- **School & major.** Grouped select; validated server-side (422 listing known ids).
+  Saving switches the whole app to that program.
+- **Year of graduation.** Stored on `users.grad_year` (range-checked 1950–2100) and
+  overrides the program default wherever the term is shown — "Class of 2031" on Home
+  and "Spring 2031 · projected graduation" on Overview, via one `effGradTerm()` helper.
+- **Change password.** Requires the current password (403 if wrong), enforces the same
+  strength rule as sign-up (422), and **bumps `token_version`** so existing tokens stop
+  verifying; the client then signs out and asks for the new password.
+
+**Two real bugs found and fixed while testing.**
+1. *Data URL truncated in CSS.* The avatar was first applied as
+   `background-image:url(<data-url>)` in a style **string**. The runtime turns style
+   strings into objects by splitting on `;` and `:` — which a data: URL is full of — so
+   the value arrived as `url("data:image/png")` and nothing rendered. Quoting did not
+   help; the picture is now an `<img src>` (attribute, not CSS) with the circle styling
+   on the element, and all sites render.
+2. *Graduation year saved but not shown.* `grad_year` reached the database while the UI
+   still read the program's `META.gradTerm`. Added `effGradTerm()` and routed the two
+   display sites plus `homeSub` through it.
+
+**Verified in-browser.** Uploaded a picture → appears in all four places, persists over
+sign-out/in. Changed program cmu-me → nyu-ee (sidebar reads ELECTRICAL ENG BS · TANDON)
+and year 2029 → 2031 (Class of 2031, Spring 2031 projected). Wrong current password
+refused; correct one succeeded, session revoked, new password signs in and avatar,
+program and year are all still there.
+
+**Tests.** 165 passed (+7 covering profile update, validation, avatar set/clear/limits,
+password change with revocation, weak-password rejection, and auth on both endpoints).
+`alembic downgrade 0004_user_names` and back up verified clean.
+
+---
