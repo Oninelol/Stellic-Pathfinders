@@ -27,6 +27,10 @@ class User(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     email: Mapped[str] = mapped_column(String(320), unique=True, nullable=False, index=True)
     display_name: Mapped[str] = mapped_column(String(120), default="")
+    # Collected on the sign-up form; the source of the greeting, avatar initials
+    # and the sidebar identity block. No demo persona is shown for a real account.
+    first_name: Mapped[str | None] = mapped_column(String(80), nullable=True)
+    last_name: Mapped[str | None] = mapped_column(String(80), nullable=True)
     # The school + major chosen at sign-up. A plain string id (e.g. "nyu-cs"),
     # validated against the seed catalog at write time, never a foreign key.
     program_id: Mapped[str | None] = mapped_column(String(64), nullable=True)

@@ -269,3 +269,38 @@ def test_login_returns_program_and_initials():
     assert r.status_code == 200
     assert r.json()["user"]["program_id"] == "cmu-me"
     assert r.json()["user"]["initials"] == "DW"
+
+
+# --------------------------------------------------------------------------- #
+# the student's name, collected on the sign-up form
+# --------------------------------------------------------------------------- #
+
+def test_signup_captures_first_and_last_name():
+    r = client.post("/auth/signup", json={
+        "email": "ada.lovelace@nyu.edu", "password": "compass2026pass",
+        "first_name": "Ada", "last_name": "Lovelace", "program_id": "nyu-cbe"})
+    assert r.status_code == 201
+    u = r.json()["user"]
+    assert (u["first_name"], u["last_name"], u["full_name"]) == ("Ada", "Lovelace", "Ada Lovelace")
+    # initials come from the real name, not the email
+    assert u["initials"] == "AL"
+    assert u["display_name"] == "Ada Lovelace"
+
+
+def test_me_returns_the_name_for_the_identity_block():
+    r = client.post("/auth/signup", json={
+        "email": "grace.hopper@cmu.edu", "password": "compass2026pass",
+        "first_name": "Grace", "last_name": "Hopper", "program_id": "cmu-cs"})
+    headers = {"Authorization": f"Bearer {r.json()['token']}"}
+    me = client.get("/me", headers=headers).json()
+    assert me["full_name"] == "Grace Hopper"
+    assert me["initials"] == "GH"
+    assert me["program_id"] == "cmu-cs"
+
+
+def test_name_is_optional_and_initials_fall_back_to_email():
+    r = client.post("/auth/signup", json={
+        "email": "solo@nyu.edu", "password": "compass2026pass"})
+    u = r.json()["user"]
+    assert u["first_name"] == "" and u["last_name"] == "" and u["full_name"] == ""
+    assert u["initials"] == "SO"       # from the email local part

@@ -34,6 +34,8 @@ class SignupIn(BaseModel):
     display_name: str = ""
     remember: bool = False
     program_id: str | None = None   # school + major, chosen on the sign-up form
+    first_name: str = ""
+    last_name: str = ""
 
 
 class LoginIn(BaseModel):
@@ -48,6 +50,9 @@ class UserOut(BaseModel):
     display_name: str
     program_id: str | None = None
     initials: str = ""
+    first_name: str = ""
+    last_name: str = ""
+    full_name: str = ""
 
 
 class TokenOut(BaseModel):
@@ -89,13 +94,22 @@ class PlanOut(BaseModel):
 
 
 def _user_out(u: User) -> dict:
+    first = (u.first_name or "").strip()
+    last = (u.last_name or "").strip()
     return {"id": u.id, "email": u.email, "display_name": u.display_name or "",
-            "program_id": u.program_id, "initials": _initials(u)}
+            "program_id": u.program_id, "initials": _initials(u),
+            "first_name": first, "last_name": last,
+            "full_name": " ".join(p for p in (first, last) if p)}
 
 
 def _initials(u: User) -> str:
-    """Two letters for the avatar: from the display name if given, else the email."""
-    src = (u.display_name or "").strip() or (u.email or "").split("@")[0]
+    """Two letters for the avatar: the student's real initials when we have a name,
+    otherwise derived from the display name or email local part."""
+    first = (u.first_name or "").strip()
+    last = (u.last_name or "").strip()
+    if first and last:
+        return (first[0] + last[0]).upper()
+    src = first or (u.display_name or "").strip() or (u.email or "").split("@")[0]
     parts = [p for p in src.replace(".", " ").replace("_", " ").replace("-", " ").split() if p]
     if len(parts) >= 2:
         return (parts[0][0] + parts[1][0]).upper()
@@ -145,7 +159,11 @@ def signup(body: SignupIn, db: Session = Depends(get_db)) -> dict:
     program_id = (body.program_id or "").strip() or None
     if program_id:
         _check_program(program_id)            # 422 listing known ids if unknown
-    user = User(email=email, display_name=(body.display_name or "").strip(),
+    first = (body.first_name or "").strip()
+    last = (body.last_name or "").strip()
+    user = User(email=email,
+                display_name=(body.display_name or "").strip() or " ".join(p for p in (first, last) if p),
+                first_name=first or None, last_name=last or None,
                 program_id=program_id,
                 password_hash=auth.hash_password(body.password))
     db.add(user)

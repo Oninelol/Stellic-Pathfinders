@@ -267,3 +267,38 @@ leaves `compass.db` empty, and the suite is repeatable.
 plan, unknown-program rejection, and initials on login).
 
 ---
+
+## Login gate + student identity from the account ✅
+
+**Built.**
+- **The app is gated.** A full-screen login page is the first thing rendered; nothing
+  else is usable until a user signs in. `authGate` is `!user && !sessionChecking`, and
+  `sessionChecking` is seeded from a stored token at construction, so a returning user
+  never sees the gate flash before `/me` answers.
+- **Sign-up asks for the name first.** Two steps: *"Tell us your name"* (first + last,
+  validated — Continue refuses an empty name) → *"Create your account"* (username/email,
+  password, school & major, keep-me-signed-in), with a Back link. Log-in shows only
+  username and password.
+- **Names are stored** (`users.first_name` / `last_name`, migration `0004_user_names`).
+  `_user_out` returns `first_name`, `last_name`, `full_name` and derives `initials`
+  from the real name (`Ada Lovelace` → `AL`), falling back to the email local part when
+  no name was given.
+- **Student information comes from the account only.** The greeting, the large Home
+  avatar, the sidebar avatar and the sidebar name all read the signed-in user; the
+  hard-coded "Maya Okonkwo" / "MO" demo persona is gone (empty when there is no user).
+
+**Verified in-browser.** Fresh state → login page alone (only *Username or email* and
+*Password*). Create an account → step 1 name (blocks empty), step 2 credentials +
+program → lands signed in as **Priya Raman**, initials `PR`, greeting "Welcome back,
+Priya", board on **nyu-cbe** reporting credits. Reload → still signed in, no gate
+flash, program restored. Sign out → gate returns, token cleared.
+
+**Bug caught during testing:** the running uvicorn still held pre-migration code, so
+the first UI sign-up returned no `full_name` and ignored the chosen program. Restarting
+the API fixed it — worth remembering that `make run` must be restarted after backend
+edits (`make api` runs with `--reload`).
+
+**Tests.** 158 passed (+3: name capture, `/me` identity block, optional-name fallback).
+`alembic downgrade 0003_user_program` and back up verified clean.
+
+---
