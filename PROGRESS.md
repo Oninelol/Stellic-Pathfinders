@@ -345,3 +345,44 @@ password change with revocation, weak-password rejection, and auth on both endpo
 `alembic downgrade 0004_user_names` and back up verified clean.
 
 ---
+
+## Per-user isolation audit ✅
+
+**What was tested.** Two accounts (Alice/nyu-cs, Bob/cmu-me), against both the
+TestClient and the live server, plus the real browser UI.
+
+- **Positive half:** each account's plans, entries, profile, program, graduation year
+  and identity are its own and differ; plan ids never overlap; one user's profile edit
+  does not appear on the other.
+- **Negative half:** every id-scoped route (`GET/PATCH/DELETE /me/plans/{id}`,
+  `PUT .../entries`, `PATCH .../entries/{code}`, `GET .../evaluate`) returns **404 —
+  never 403** — for a non-owner, and the owner's data is byte-identical afterwards.
+  Plan-id enumeration over a range only ever returns the caller's own rows.
+- **Credentials:** every `/me*` route is 401 without a token and 401 with a garbage
+  token; a token forged with the wrong signing key is rejected; a password change
+  revokes only that user's sessions (the other stays signed in); `logout-everywhere`
+  is scoped to the caller.
+- **Structural guard:** a test walks the live route table and asserts every registered
+  `/me*` method rejects an unauthenticated request, so a future endpoint that forgets
+  the `current_user` dependency fails in CI rather than in production.
+
+Server-side scoping is centralised in `_own_plan(plan_id, user, db)` — every id-route
+goes through it, which is why the surface is uniform.
+
+**One real leak found — client-side, now fixed.** The API never leaked, but the bundle
+did: `signOut` left `state.edits` and its localStorage copy in place, and
+`syncPlansFromServer` *merged* the incoming user's plans onto whatever was already
+there. Signing in as Bob on a device Alice had used showed Alice's edits for any
+program Bob had no plan for. Reproduced in the browser (ECE-UY 3604 sitting in Spring
+2025 instead of its published Fall 2027 under Bob's account), then fixed: sign-out
+clears the edits in memory and in storage, and sign-in **replaces** rather than merges.
+Re-verified both directions in the browser, with a regression guard asserted against
+the shipped bundle.
+
+**Note:** because there is no localStorage→server import flow yet, edits made while
+signed out are discarded on sign-in rather than merged. That is the safe side of the
+trade; an explicit, one-way import is the follow-up.
+
+**Tests.** 201 passed (+36: `tests/test_isolation.py`).
+
+---
