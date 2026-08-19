@@ -37,6 +37,7 @@ __all__ = [
     "credit_totals",
     "conflicts",
     "key_course",
+    "status_for",
 ]
 
 
@@ -314,3 +315,26 @@ def key_course(courses: list[dict]) -> Optional[str]:
         return None
     scored.sort(key=lambda x: (-x[0], x[1], x[2]))
     return scored[0][2]
+
+
+def status_for(terms: list[dict], term_index: int, course: dict) -> str:
+    """Derive a course's status from the term it sits in — mirroring the JS exactly.
+
+    A ghost placeholder is ``blocked``; an unscheduled row (``term_index < 0``) is
+    ``alt``; before the current term is ``done``, at it ``current``, after it ``plan``
+    — except a ``key`` course after the current term is ``todo``. ``terms`` items carry
+    an ``st`` field; the current term is the one with ``st == "current"``.
+
+    The seed emitter calls this so status is generated from the plan, never a second
+    hand-maintained copy of the rule.
+    """
+    if course.get("ghost"):
+        return "blocked"
+    if term_index < 0:
+        return "alt"
+    cur = next((i for i, t in enumerate(terms) if t.get("st") == "current"), -1)
+    if term_index < cur:
+        return "done"
+    if term_index == cur:
+        return "current"
+    return "todo" if course.get("key") else "plan"

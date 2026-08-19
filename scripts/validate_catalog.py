@@ -9,10 +9,14 @@ Hard errors (exit 1, every offending row printed — not just the first):
   * a duplicate course code within one program (real rows)
   * `t` outside the range of that program's terms (−1 unscheduled is allowed)
   * a ghost row with no corresponding real course
+  * a `g` value outside the five known groups
+  * an authored `key` that disagrees with graph.key_course()
 
 Warnings (printed with a count, do not affect exit code):
   * needs_review: true courses
-  * courses reachable from no requirement
+  * needs_requirements: true (no real matchers authored)
+  * courses reachable from no requirement (only when matchers exist)
+  * derived offerings (hash-fabricated, not real catalog data)
   * offering: UNKNOWN
 
 Depends on Stage 1 (`app.graph`) for cycle detection and Stage 2 (`app.catalog`)
@@ -151,6 +155,59 @@ def check_ghost_has_real(cat: Catalog, rep: Report) -> None:
             )
 
 
+_KNOWN_GROUPS = {"major", "math", "sci", "huss", "free"}
+
+
+def check_group_values(cat: Catalog, rep: Report) -> None:
+    for c in list(cat.courses.values()) + list(cat.ghosts):
+        if c.group not in _KNOWN_GROUPS:
+            rep.error(
+                f"{c.code} has group {c.group!r}, outside the five known groups "
+                f"{sorted(_KNOWN_GROUPS)}"
+            )
+
+
+def check_key_agreement(cat: Catalog, rep: Report) -> None:
+    """The authored bottleneck must match what graph.key_course() computes.
+
+    One of them is wrong if they differ, and which matters — so this is a hard error,
+    not something to paper over by editing either value.
+    """
+    authored = cat.program.key
+    try:
+        computed = graph.key_course(cat.graph_courses())
+    except graph.CatalogError as e:
+        rep.error(f"key_course() could not run: {e}")
+        return
+    if authored != computed:
+        rep.error(
+            f"authored key {authored!r} disagrees with graph.key_course() "
+            f"= {computed!r} — one of them is wrong"
+        )
+
+
+# --------------------------------------------------------------------------- #
+# warning checks
+# --------------------------------------------------------------------------- #
+
+def check_needs_requirements(cat: Catalog, rep: Report) -> None:
+    if cat.program.needs_requirements:
+        rep.warn(
+            "needs_requirements: no degree-requirement matchers authored yet "
+            "(group buckets are display groupings, not degree rules)"
+        )
+
+
+def check_derived_offerings(cat: Catalog, rep: Report) -> None:
+    n = sum(1 for c in cat.courses.values() if c.offering_source == "derived")
+    total = len(cat.courses)
+    if n:
+        rep.warn(
+            f"derived offerings: {n} of {total} courses carry a fabricated "
+            f"(hash-derived) offering, not real catalog data"
+        )
+
+
 # --------------------------------------------------------------------------- #
 # warning checks
 # --------------------------------------------------------------------------- #
@@ -163,6 +220,10 @@ def check_needs_review(cat: Catalog, rep: Report) -> None:
 
 
 def check_unreachable(cat: Catalog, rep: Report) -> None:
+    # Only meaningful when real matchers exist; programs with none are covered by the
+    # needs_requirements warning instead of flooding with per-course warnings.
+    if not cat.requirements:
+        return
     covered: set[str] = set()
     for req in cat.requirements:
         covered.update(req.named_codes)
@@ -193,9 +254,13 @@ def validate(cat: Catalog) -> Report:
     check_duplicate_codes(rows, rep)
     check_term_range(cat, rep)
     check_ghost_has_real(cat, rep)
+    check_group_values(cat, rep)
+    check_key_agreement(cat, rep)
     check_needs_review(cat, rep)
+    check_needs_requirements(cat, rep)
     check_unreachable(cat, rep)
     check_offering_unknown(cat, rep)
+    check_derived_offerings(cat, rep)
     return rep
 
 

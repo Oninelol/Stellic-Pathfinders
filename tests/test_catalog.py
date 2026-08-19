@@ -7,6 +7,7 @@ failure points at exactly one rule.
 
 import importlib.util
 import json
+import sys
 from pathlib import Path
 
 import pytest
@@ -14,6 +15,12 @@ import pytest
 from app import catalog, graph
 
 ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT / "scripts") not in sys.path:
+    sys.path.insert(0, str(ROOT / "scripts"))
+
+import curricula  # noqa: E402  (the single source of the nine tuple tables)
+import emit_frontend  # noqa: E402
+import emit_seeds  # noqa: E402
 
 # import scripts/validate_catalog.py by path (it is a script, not a package module)
 _spec = importlib.util.spec_from_file_location(
@@ -21,6 +28,9 @@ _spec = importlib.util.spec_from_file_location(
 )
 validate_catalog = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(validate_catalog)
+
+# The nine program ids are the frontend keys (identity mapping).
+NINE = set(curricula.PROGRAMS)
 
 
 # --------------------------------------------------------------------------- #
@@ -69,10 +79,22 @@ def _validate(tmp_path: Path, seed: dict) -> validate_catalog.Report:
 # loading API  (acceptance 3, 4, 5)
 # --------------------------------------------------------------------------- #
 
-def test_load_all_returns_two_catalogs():
+def test_load_all_returns_nine_catalogs():
     catalog.load_all.cache_clear()
     cats = catalog.load_all()
-    assert set(cats) == {"nyu-bacs-2026", "cmu-bscs-2025"}
+    assert set(cats) == NINE
+    assert len(cats) == 9
+
+
+def test_every_frontend_key_maps_to_exactly_one_seed():
+    # Acceptance 5: the seed program ids ARE the frontend keys (identity mapping).
+    catalog.load_all.cache_clear()
+    cats = catalog.load_all()
+    for key in curricula.PROGRAMS:
+        seed = ROOT / "data" / f"{key}.json"
+        assert seed.exists(), f"no seed file for frontend key {key!r}"
+        assert key in cats
+        assert cats[key].program.id == key
 
 
 def test_load_all_is_memoised():
@@ -81,8 +103,15 @@ def test_load_all_is_memoised():
 
 
 def test_nyu_credits_cmu_units():
-    assert catalog.get("nyu-bacs-2026").program.unit_label == "credits"
-    assert catalog.get("cmu-bscs-2025").program.unit_label == "units"
+    assert catalog.get("nyu-cs").program.unit_label == "credits"
+    assert catalog.get("cmu-cs").program.unit_label == "units"
+
+
+def test_key_course_runs_on_all_nine():
+    # Acceptance 4: graph.key_course runs on every loaded catalog without raising.
+    catalog.load_all.cache_clear()
+    for cat in catalog.load_all().values():
+        graph.key_course(cat.graph_courses())
 
 
 def test_get_unknown_raises():
@@ -101,10 +130,11 @@ def test_schools_nested_single_call():
 
 
 def test_courses_are_code_keyed_and_ghost_separated():
-    cat = catalog.get("nyu-bacs-2026")
+    cat = catalog.get("nyu-cs")
     assert isinstance(cat.courses, dict)
     assert "CSCI-UA 102" in cat.courses
     assert isinstance(cat.courses["CSCI-UA 102"], catalog.Course)
+    assert cat.courses["CSCI-UA 102"].group == "major"  # the g field survives load
     # the ghost CSCI-UA 310 lives on .ghosts, and its real twin is in .courses
     assert any(g.code == "CSCI-UA 310" for g in cat.ghosts)
     assert "CSCI-UA 310" in cat.courses
@@ -112,8 +142,7 @@ def test_courses_are_code_keyed_and_ghost_separated():
 
 def test_graph_runs_against_loaded_catalog_unchanged():
     # Acceptance 5: the Stage-1 functions consume Catalog.graph_courses() directly.
-    for pid, expected_key in [("nyu-bacs-2026", "MATH-UA 120"),
-                              ("cmu-bscs-2025", "15-251")]:
+    for pid, expected_key in [("nyu-cs", "MATH-UA 120"), ("cmu-cs", "15-251")]:
         cat = catalog.get(pid)
         rows = cat.graph_courses()
         assert graph.key_course(rows) == expected_key
@@ -123,13 +152,50 @@ def test_graph_runs_against_loaded_catalog_unchanged():
 
 
 # --------------------------------------------------------------------------- #
-# the real seed files are clean (no hard errors)
+# the real seed files are clean (no hard errors) — all nine
 # --------------------------------------------------------------------------- #
 
-@pytest.mark.parametrize("pid", ["nyu-bacs-2026", "cmu-bscs-2025"])
+@pytest.mark.parametrize("pid", sorted(curricula.PROGRAMS))
 def test_real_seed_has_no_hard_errors(pid):
     rep = validate_catalog.validate(catalog.get(pid))
     assert rep.errors == [], f"{pid} unexpectedly has hard errors: {rep.errors}"
+
+
+# --------------------------------------------------------------------------- #
+# emitter agreement + determinism  (acceptance 1, 6)
+# --------------------------------------------------------------------------- #
+
+@pytest.mark.parametrize("key", sorted(curricula.PROGRAMS))
+def test_seed_groups_match_frontend_reqs(key):
+    """Acceptance 6: the seed's derived group counts equal what the frontend REQS
+    emitter produces from the same tuples. Catches drift between the two emitters."""
+    P = curricula.PROGRAMS[key]
+    seed_groups = json.loads((ROOT / "data" / f"{key}.json").read_text())["groups"]
+    # rebuild the frontend REQS the way emit_frontend does
+    front = curricula.derive_groups(P)
+    assert [(g["name"], g["done"], g["in_progress"], g["total"]) for g in seed_groups] == \
+           [(g["name"], g["done"], g["in_progress"], g["total"]) for g in front]
+    # and the loaded catalog exposes the same groups
+    assert len(catalog.get(key).groups) == len(front)
+
+
+def test_emitters_are_deterministic():
+    """Acceptance 1: regenerating from the tuples twice is byte-stable."""
+    assert emit_frontend.render() == emit_frontend.render()
+    for key, P in curricula.PROGRAMS.items():
+        a = json.dumps(emit_seeds.seed_payload(key, P), sort_keys=True)
+        b = json.dumps(emit_seeds.seed_payload(key, P), sort_keys=True)
+        assert a == b, f"{key} seed payload not deterministic"
+
+
+def test_seven_engineering_programs_have_no_matchers():
+    # The 2 CS programs carry real matchers; the 7 engineering programs must not
+    # invent any, and must flag needs_requirements instead.
+    for pid, cat in catalog.load_all().items():
+        if pid in ("nyu-cs", "cmu-cs"):
+            assert cat.requirements and not cat.program.needs_requirements
+        else:
+            assert cat.requirements == () and cat.program.needs_requirements
 
 
 # --------------------------------------------------------------------------- #
@@ -184,7 +250,7 @@ def test_ghost_without_real(tmp_path):
     seed = _seed()
     seed["courses"].append({
         "c": "GG 300", "n": "Ghosty", "cr": 10, "t": 2, "s": "blocked",
-        "ghost": 1, "note": "deferred", "offering": "UNKNOWN",
+        "g": "major", "ghost": 1, "note": "deferred", "offering": "UNKNOWN",
         "needs_review": False, "review_note": None,
     })
     rep = _validate(tmp_path, seed)
@@ -195,7 +261,7 @@ def test_unscheduled_term_minus_one_is_allowed(tmp_path):
     seed = _seed()
     seed["courses"].append({
         "c": "AA 900", "n": "Alt", "cr": 10, "t": -1, "s": "alt", "alt": 1,
-        "tier": 1, "req": [], "anti": [], "offering": "UNKNOWN",
+        "g": "math", "tier": 1, "req": [], "anti": [], "offering": "UNKNOWN",
         "needs_review": False, "review_note": None,
     })
     rep = _validate(tmp_path, seed)

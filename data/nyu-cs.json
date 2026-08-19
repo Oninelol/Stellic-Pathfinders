@@ -1,13 +1,29 @@
 {
   "school": "NYU",
   "program": {
-    "id": "nyu-bacs-2026",
+    "id": "nyu-cs",
     "name": "Computer Science, B.A.",
     "degree": "BA",
     "catalog_year": "2026",
     "unit_label": "credits",
     "unit_abbr": "cr",
-    "total_units": 128
+    "total_units": 128,
+    "tab": "Computer Science",
+    "tiers": [
+      "PREREQUISITE",
+      "INTRO SEQUENCE",
+      "DATA STRUCTURES & MATH",
+      "SYSTEMS & ALGORITHMS",
+      "400-LEVEL ELECTIVES"
+    ],
+    "grad": "Spring 2028",
+    "year": "SOPHOMORE",
+    "key": "MATH-UA 120",
+    "keyname": "Discrete Mathematics",
+    "headline": "Register for MATH-UA 120 — Basic Algorithms and Theory of Computation are both waiting on it.",
+    "blurb": "Discrete Mathematics is the one prerequisite of Basic Algorithms you never scheduled. Until it clears, CSCI-UA 310 will not register, and the 400-level electives stacked behind it all slide a year.",
+    "snapshot": "48 of 128 credits are in the bank with 16 more in progress. The gap isn't effort, it's sequencing: Discrete Mathematics never made it onto a schedule, and the courses above it are still waiting.",
+    "needs_requirements": false
   },
   "terms": [
     {
@@ -42,29 +58,88 @@
       "index": 4,
       "key": "F26",
       "label": "Fall 2026",
-      "tag": "JUNIOR \u00b7 DRAFT",
+      "tag": "JUNIOR · DRAFT",
       "status": "plan"
     },
     {
       "index": 5,
       "key": "S27",
       "label": "Spring 2027",
-      "tag": "JUNIOR \u00b7 DRAFT",
+      "tag": "JUNIOR · DRAFT",
       "status": "plan"
     },
     {
       "index": 6,
       "key": "F27",
       "label": "Fall 2027",
-      "tag": "SENIOR \u00b7 DRAFT",
+      "tag": "SENIOR · DRAFT",
       "status": "plan"
     },
     {
       "index": 7,
       "key": "S28",
       "label": "Spring 2028",
-      "tag": "SENIOR \u00b7 DRAFT",
+      "tag": "SENIOR · DRAFT",
       "status": "plan"
+    }
+  ],
+  "groups": [
+    {
+      "group": "major",
+      "name": "Major sequence",
+      "done": 3,
+      "in_progress": 1,
+      "total": 12,
+      "count": "3 of 12 courses",
+      "missing": [
+        "CSCI-UA 202",
+        "CSCI-UA 310",
+        "CSCI-UA 453",
+        "CSCI-UA 479",
+        "CSCI-UA 473"
+      ]
+    },
+    {
+      "group": "math",
+      "name": "Mathematics",
+      "done": 1,
+      "in_progress": 0,
+      "total": 3,
+      "count": "1 of 3 courses",
+      "missing": [
+        "MATH-UA 120",
+        "MATH-UA 140"
+      ]
+    },
+    {
+      "group": "sci",
+      "name": "Science",
+      "done": 1,
+      "in_progress": 1,
+      "total": 2,
+      "count": "1 of 2 courses",
+      "missing": []
+    },
+    {
+      "group": "huss",
+      "name": "Humanities & social sciences",
+      "done": 7,
+      "in_progress": 2,
+      "total": 9,
+      "count": "7 of 9 courses",
+      "missing": []
+    },
+    {
+      "group": "free",
+      "name": "Free electives",
+      "done": 0,
+      "in_progress": 0,
+      "total": 2,
+      "count": "0 of 2 courses",
+      "missing": [
+        "ELEC-UA 1",
+        "ELEC-UA 2"
+      ]
     }
   ],
   "requirements": [
@@ -146,11 +221,12 @@
       "cr": 4,
       "t": 0,
       "s": "done",
+      "g": "major",
       "tier": 0,
       "req": [],
       "anti": [],
-      "g": "major",
-      "offering": "Summer \u00b7 Fall \u00b7 Spring",
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -160,13 +236,14 @@
       "cr": 4,
       "t": 0,
       "s": "done",
+      "g": "math",
       "tier": 0,
       "req": [],
       "anti": [
         "MATH-UA 131"
       ],
-      "g": "math",
-      "offering": "Summer \u00b7 Fall \u00b7 Spring",
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -176,9 +253,12 @@
       "cr": 4,
       "t": 0,
       "s": "done",
-      "gen": 1,
       "g": "huss",
-      "offering": "Summer \u00b7 Fall \u00b7 Spring",
+      "gen": 1,
+      "req": [],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -188,9 +268,12 @@
       "cr": 4,
       "t": 0,
       "s": "done",
-      "gen": 1,
       "g": "huss",
-      "offering": "Summer \u00b7 Fall \u00b7 Spring",
+      "gen": 1,
+      "req": [],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -200,13 +283,14 @@
       "cr": 4,
       "t": 1,
       "s": "done",
+      "g": "major",
       "tier": 1,
       "req": [
         "CSCI-UA 2"
       ],
       "anti": [],
-      "g": "major",
-      "offering": "Summer \u00b7 Fall \u00b7 Spring",
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -216,9 +300,12 @@
       "cr": 4,
       "t": 1,
       "s": "done",
-      "gen": 1,
       "g": "huss",
+      "gen": 1,
+      "req": [],
+      "anti": [],
       "offering": "Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -228,9 +315,12 @@
       "cr": 4,
       "t": 1,
       "s": "done",
-      "gen": 1,
       "g": "huss",
+      "gen": 1,
+      "req": [],
+      "anti": [],
       "offering": "Fall",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -240,9 +330,12 @@
       "cr": 4,
       "t": 1,
       "s": "done",
-      "gen": 1,
       "g": "huss",
-      "offering": "Summer \u00b7 Fall \u00b7 Spring",
+      "gen": 1,
+      "req": [],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -252,13 +345,14 @@
       "cr": 4,
       "t": 2,
       "s": "done",
+      "g": "major",
       "tier": 2,
       "req": [
         "CSCI-UA 101"
       ],
       "anti": [],
-      "g": "major",
-      "offering": "Summer \u00b7 Fall \u00b7 Spring",
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -268,9 +362,12 @@
       "cr": 4,
       "t": 2,
       "s": "done",
-      "gen": 1,
       "g": "sci",
+      "gen": 1,
+      "req": [],
+      "anti": [],
       "offering": "Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -280,9 +377,14 @@
       "cr": 4,
       "t": 2,
       "s": "done",
-      "gen": 1,
       "g": "huss",
-      "offering": "Summer \u00b7 Fall \u00b7 Spring",
+      "gen": 1,
+      "req": [
+        "FREN-UA 1"
+      ],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -292,9 +394,12 @@
       "cr": 4,
       "t": 2,
       "s": "done",
-      "gen": 1,
       "g": "huss",
+      "gen": 1,
+      "req": [],
+      "anti": [],
       "offering": "Fall",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -304,13 +409,14 @@
       "cr": 4,
       "t": 3,
       "s": "current",
+      "g": "major",
       "tier": 3,
       "req": [
         "CSCI-UA 102"
       ],
       "anti": [],
-      "g": "major",
-      "offering": "Fall \u00b7 Spring",
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -320,9 +426,12 @@
       "cr": 4,
       "t": 3,
       "s": "current",
-      "gen": 1,
       "g": "sci",
-      "offering": "Fall \u00b7 Spring",
+      "gen": 1,
+      "req": [],
+      "anti": [],
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -332,9 +441,14 @@
       "cr": 4,
       "t": 3,
       "s": "current",
-      "gen": 1,
       "g": "huss",
-      "offering": "Summer \u00b7 Fall \u00b7 Spring",
+      "gen": 1,
+      "req": [
+        "FREN-UA 2"
+      ],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -344,9 +458,12 @@
       "cr": 4,
       "t": 3,
       "s": "current",
-      "gen": 1,
       "g": "huss",
+      "gen": 1,
+      "req": [],
+      "anti": [],
       "offering": "Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -356,12 +473,13 @@
       "cr": 4,
       "t": 4,
       "s": "todo",
+      "g": "math",
       "tier": 1,
       "req": [],
       "anti": [],
       "key": 1,
-      "g": "math",
-      "offering": "Summer \u00b7 Fall \u00b7 Spring",
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -371,13 +489,14 @@
       "cr": 4,
       "t": 4,
       "s": "plan",
+      "g": "major",
       "tier": 4,
       "req": [
         "CSCI-UA 201"
       ],
       "anti": [],
-      "g": "major",
       "offering": "Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -387,13 +506,14 @@
       "cr": 4,
       "t": 4,
       "s": "plan",
+      "g": "math",
       "tier": 2,
       "req": [
         "MATH-UA 121"
       ],
       "anti": [],
-      "g": "math",
-      "offering": "Summer \u00b7 Fall \u00b7 Spring",
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -403,10 +523,11 @@
       "cr": 4,
       "t": 4,
       "s": "blocked",
-      "ghost": 1,
-      "note": "DEFERRED \u2014 NEEDS MATH-UA 120 FIRST",
       "g": "major",
-      "offering": "Fall \u00b7 Spring",
+      "ghost": 1,
+      "note": "DEFERRED — NEEDS MATH-UA 120 FIRST",
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -416,6 +537,7 @@
       "cr": 4,
       "t": 5,
       "s": "plan",
+      "g": "major",
       "tier": 3,
       "req": [
         "CSCI-UA 102",
@@ -423,8 +545,8 @@
         "MATH-UA 121"
       ],
       "anti": [],
-      "g": "major",
-      "offering": "Fall \u00b7 Spring",
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -434,14 +556,15 @@
       "cr": 4,
       "t": 5,
       "s": "plan",
+      "g": "major",
       "tier": 4,
       "req": [
         "CSCI-UA 102",
         "MATH-UA 120"
       ],
       "anti": [],
-      "g": "major",
       "offering": "Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -451,13 +574,14 @@
       "cr": 4,
       "t": 5,
       "s": "plan",
+      "g": "major",
       "tier": 4,
       "req": [
         "CSCI-UA 102"
       ],
       "anti": [],
-      "g": "major",
       "offering": "Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -467,14 +591,15 @@
       "cr": 4,
       "t": 6,
       "s": "plan",
+      "g": "major",
       "tier": 4,
       "req": [
         "CSCI-UA 310",
         "MATH-UA 140"
       ],
       "anti": [],
-      "g": "major",
       "offering": "Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -484,13 +609,14 @@
       "cr": 4,
       "t": 6,
       "s": "plan",
+      "g": "major",
       "tier": 4,
       "req": [
         "CSCI-UA 201"
       ],
       "anti": [],
-      "g": "major",
       "offering": "Fall",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -500,9 +626,12 @@
       "cr": 4,
       "t": 6,
       "s": "plan",
-      "gen": 1,
       "g": "free",
-      "offering": "Summer \u00b7 Fall \u00b7 Spring",
+      "gen": 1,
+      "req": [],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -512,14 +641,15 @@
       "cr": 4,
       "t": 7,
       "s": "plan",
+      "g": "major",
       "tier": 4,
       "req": [
         "CSCI-UA 102",
         "MATH-UA 140"
       ],
       "anti": [],
-      "g": "major",
       "offering": "Fall",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -529,13 +659,14 @@
       "cr": 4,
       "t": 7,
       "s": "plan",
+      "g": "major",
       "tier": 4,
       "req": [
         "CSCI-UA 310"
       ],
       "anti": [],
-      "g": "major",
-      "offering": "UNKNOWN",
+      "offering": "Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -545,9 +676,12 @@
       "cr": 4,
       "t": 7,
       "s": "plan",
-      "gen": 1,
       "g": "free",
-      "offering": "Summer \u00b7 Fall \u00b7 Spring",
+      "gen": 1,
+      "req": [],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
@@ -557,14 +691,15 @@
       "cr": 4,
       "t": -1,
       "s": "alt",
+      "g": "math",
       "tier": 0,
       "req": [],
       "anti": [
         "MATH-UA 121"
       ],
       "alt": 1,
-      "g": "math",
-      "offering": "Summer \u00b7 Fall \u00b7 Spring",
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     }

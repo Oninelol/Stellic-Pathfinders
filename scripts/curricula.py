@@ -14,10 +14,24 @@ Course tuple: (code, title, credits, term, group, tier, prereqs, antis, flag)
 Status is derived from the term: 0-2 done, 3 current, 4+ plan; 'key' becomes
 todo and 'ghost' becomes blocked.
 
-Run:  python3 scripts/curricula.py
-Then: python3 scripts/rebuild.py embed
+This file is now DATA + shared derivation only. Two thin formatters consume it:
+
+    scripts/emit_frontend.py   tuples -> SCHOOLS block -> build/template.html
+    scripts/emit_seeds.py      tuples -> data/<program-id>.json (one per program)
+
+A course edit therefore happens in exactly one place (the tuple tables below) and
+both targets regenerate from it. Status, the requirement group buckets, and the
+derived offerings all live here so the two emitters cannot disagree.
 """
-import io
+import re
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from app import graph  # noqa: E402  (scripts may import app.graph; graph imports no app)
 
 # ---------------------------------------------------------------- term tables
 NYU_TERMS = [
@@ -58,6 +72,18 @@ PROGRAMS['nyu-cs'] = dict(
     key='MATH-UA 120', keyname='Discrete Mathematics',
     headline="Register for MATH-UA 120 — Basic Algorithms and Theory of Computation are both waiting on it.",
     blurb="Discrete Mathematics is the one prerequisite of Basic Algorithms you never scheduled. Until it clears, CSCI-UA 310 will not register, and the 400-level electives stacked behind it all slide a year.",
+    requirements=[
+        {'id': 'cs-required', 'name': 'Required computer science', 'min_courses': 6,
+         'match': {'explicit': ['CSCI-UA 2', 'CSCI-UA 101', 'CSCI-UA 102', 'CSCI-UA 201', 'CSCI-UA 202', 'CSCI-UA 310']}},
+        {'id': 'math-required', 'name': 'Required mathematics', 'min_courses': 2,
+         'match': {'explicit': ['MATH-UA 120', 'MATH-UA 121']}},
+        {'id': 'cs-electives', 'name': '400-level CS electives', 'min_courses': 5,
+         'match': {'any_of': ['CSCI-UA 453', 'CSCI-UA 479', 'CSCI-UA 473', 'CSCI-UA 467', 'CSCI-UA 421', 'CSCI-UA 480']}},
+        {'id': 'college-core', 'name': 'College Core Curriculum', 'min_courses': 6,
+         'match': {'any_of': ['EXPOS-UA 1', 'FYSEM-UA 1', 'CORE-UA 401', 'CORE-UA 550', 'CORE-UA 710', 'CORE-UA 201', 'CORE-UA 301', 'CORE-UA 610']}},
+        {'id': 'language', 'name': 'Foreign language', 'min_courses': 4,
+         'match': {'any_of': ['FREN-UA 1', 'FREN-UA 2', 'FREN-UA 11']}},
+    ],
     courses=[
         ('CSCI-UA 2', 'Intro to Computer Programming', 4, 0, 'major', 0, [], [], None),
         ('MATH-UA 121', 'Calculus I', 4, 0, 'math', 0, [], ['MATH-UA 131'], None),
@@ -322,6 +348,20 @@ PROGRAMS['cmu-cs'] = dict(
     key='15-251', keyname='Great Ideas in Theoretical Computer Science',
     headline="Register for 15-251 — Algorithm Design and Complexity Theory are both waiting on it.",
     blurb="Great Ideas is the gate into the theory sequence. Until it clears, 15-451 will not register, and the complexity elective stacked behind it has nowhere to go.",
+    requirements=[
+        {'id': 'cs-core', 'name': 'Computer science core', 'min_courses': 5,
+         'match': {'explicit': ['15-122', '15-150', '15-210', '15-213', '15-251']}},
+        {'id': 'cs-electives', 'name': 'CS electives', 'min_courses': 4,
+         'match': {'any_of': ['15-451', '15-410', '15-411', '15-455', '15-462', '10-315']}},
+        {'id': 'math-core', 'name': 'Mathematics', 'min_courses': 4,
+         'match': {'explicit': ['21-120', '21-122', '21-127', '21-241']}},
+        {'id': 'probability', 'name': 'Probability', 'min_courses': 1,
+         'match': {'any_of': ['15-259', '36-218']}},
+        {'id': 'science', 'name': 'Science & engineering', 'min_courses': 2,
+         'match': {'any_of': ['33-121', '09-105']}},
+        {'id': 'humanities', 'name': 'Humanities & arts', 'min_courses': 3,
+         'match': {'any_of': ['76-101', '76-270', '79-104', '73-102']}},
+    ],
     courses=[
         ('15-112', 'Fundamentals of Programming and CS', 12, 0, 'major', 0, [], [], None),
         ('21-120', 'Differential and Integral Calculus', 10, 0, 'math', 0, [], [], None),
@@ -397,108 +437,111 @@ PROGRAMS['cmu-me'] = dict(
     ])
 
 
-# ============================================================ code generation
-def js_str(s):
-    return '"' + s.replace('\\', '\\\\').replace('"', '\\"') + '"' if "'" in s else "'" + s + "'"
+# --------------------------------------------------------------------------- #
+# Inferred-prerequisite notes (sidecar so the tuple tables stay 9-wide).
+# These are prerequisites collapsed from CMU's published OR-lists or inferred from
+# sample-sequence order; the seeds carry them as needs_review + review_note.
+# --------------------------------------------------------------------------- #
+REVIEW_NOTES = {
+    'cmu-cs': {
+        '10-315': 'Prerequisites inferred from sample-sequence order; program page printed none.',
+        '15-259': "Prereq collapsed from CMU's OR-list (21-127 / 15-251 / 21-128 / 15-151) to the "
+                  "sample-sequence course; grades dropped.",
+    },
+}
+
+PROGRAM_ORDER = list(PROGRAMS)
+
+# Tuple index names, so the shared helpers read clearly.
+CODE, TITLE, CR, TERM, GROUP, TIER, REQ, ANTI, FLAG = range(9)
 
 
-def js_list(items):
-    return '[' + ','.join("'" + i + "'" for i in items) + ']'
+# --------------------------------------------------------------------------- #
+# shared derivation — used by BOTH emitters so they cannot disagree
+# --------------------------------------------------------------------------- #
+
+def repo_root() -> Path:
+    """Repo root, derived like rebuild.py — never an absolute machine path."""
+    return ROOT
 
 
-def build(key, P):
+def level_of(code: str) -> int:
+    """Course level from the trailing number — mirrors the JS ``levelOf``."""
+    m = re.search(r'(\d{3,4})\s*$', code)
+    if not m:
+        return 100
+    n = int(m.group(1))
+    if n >= 1000:
+        return (n // 1000) * 100
+    return (n // 100) * 100 or 100
+
+
+def offering_of(code: str, tier) -> str:
+    """Fabricated offered-terms string — an exact mirror of the JS ``offeringOf`` hash.
+
+    This is DERIVED data, not catalog data; the seed marks it ``offering_source:
+    "derived"`` so a planner never mistakes it for a real registrar offering.
+    """
+    lvl = level_of(code)
+    h = 5
+    for ch in code:
+        h = (h * 33 + ord(ch)) & 0xFFFFFFFF
+    if lvl <= 100 or tier == 0:
+        return 'Summer · Fall · Spring'
+    if lvl >= 400 or tier == 4:
+        return 'Fall' if (h % 2) else 'Spring'
+    if h % 4 == 0:
+        return 'Fall' if ((h >> 1) % 2) else 'Spring'
+    return 'Fall · Spring'
+
+
+def _terms_st(P) -> list[dict]:
+    return [{'st': tm[3]} for tm in P['terms']]
+
+
+def status_of(P, t, flag) -> str:
+    """The single status rule, delegated to ``graph.status_for`` (the canonical copy)."""
+    return graph.status_for(_terms_st(P), t, {'ghost': flag == 'ghost', 'key': flag == 'key'})
+
+
+GROUPS_ORDER = ['major', 'math', 'sci', 'huss', 'free']
+
+
+def derive_groups(P) -> list[dict]:
+    """The requirement group buckets, counted off the tuple table.
+
+    Reproduces the frontend's ``REQS`` exactly. Both emitters format from this one
+    function, so the JS ``REQS`` and the seed ``groups`` cannot drift apart. These are
+    *display groupings by ``g``*, NOT degree rules — see ``requirements`` for those.
+    """
     cs = P['courses']
-    total = P['total']
-
-    def status(t, flag):
-        if flag == 'ghost':
-            return 'blocked'
-        if flag == 'key':
-            return 'todo'
-        if flag == 'alt':
-            return 'alt'
-        return 'done' if t <= 2 else ('current' if t == 3 else 'plan')
-
-    done = sum(c[2] for c in cs if status(c[3], c[8]) == 'done')
-    prog = sum(c[2] for c in cs if status(c[3], c[8]) == 'current')
-    pct = round(done / total * 100)
-    key_cr = next((c[2] for c in cs if c[8] == 'key'), 0)
-    ghost_cr = next((c[2] for c in cs if c[8] == 'ghost'), 0)
-
-    # requirement buckets, counted off the same table
-    reqs = []
-    for g in ['major', 'math', 'sci', 'huss', 'free']:
-        rows = [c for c in cs if c[4] == g and c[8] != 'ghost' and c[8] != 'alt']
+    out = []
+    for g in GROUPS_ORDER:
+        rows = [c for c in cs if c[GROUP] == g and c[FLAG] not in ('ghost', 'alt')]
         if not rows:
             continue
-        d = sum(1 for c in rows if status(c[3], c[8]) == 'done')
-        p = sum(1 for c in rows if status(c[3], c[8]) == 'current')
-        missing = [c[0] for c in rows if status(c[3], c[8]) in ('todo', 'plan')][:5]
-        reqs.append((GROUP_LABEL[g], d, p, len(rows), f'{d} of {len(rows)} courses', missing))
-
-    L = []
-    L.append(f"  '{key}': {{\n")
-    L.append("  META: {\n")
-    L.append(f"    school:'{P['school']}', program:'{P['program']}', tab:{js_str(P['tab'])},\n")
-    L.append(f"    unitLabel:'{P['unit']}', unitAbbr:'{P['abbr']}', doneCr:{done}, totalCr:{total}, "
-             f"inProgCr:{prog}, behindCr:{key_cr + ghost_cr}, pct:{pct},\n")
-    L.append(f"    gradTerm:'{P['grad']}', classYear:'{P['year']}',\n")
-    L.append(f"    keyCode:'{P['key']}', keyName:{js_str(P['keyname'])},\n")
-    L.append(f"    headline:{js_str(P['headline'])},\n")
-    L.append(f"    blurb:{js_str(P['blurb'])},\n")
-    snap = (f"{done} of {total} {P['unit']} are in the bank with {prog} more in progress. "
-            f"The gap isn't effort, it's sequencing: {P['keyname']} never made it onto a schedule, "
-            f"and the courses above it are still waiting.")
-    L.append(f"    snapshot:{js_str(snap)}\n")
-    L.append("  },\n\n")
-    L.append("  TIERS: [" + ','.join(js_str(t) for t in P['tiers']) + "],\n\n")
-    L.append("  TERMS: [\n")
-    for k, l, tag, st in P['terms']:
-        L.append(f"    {{k:'{k}', l:'{l}', short:'{k}', tag:{js_str(tag)}, st:'{st}'}},\n")
-    L[-1] = L[-1].rstrip(',\n') + '\n'
-    L.append("  ],\n\n")
-    L.append("  REQS: [\n")
-    for name, d, p, tot, count, missing in reqs:
-        L.append(f"    {{ name:{js_str(name)}, d:{d}, p:{p}, tot:{tot}, count:{js_str(count)}, "
-                 f"missing:{js_list(missing)} }},\n")
-    L[-1] = L[-1].rstrip(',\n') + '\n'
-    L.append("  ],\n\n")
-    L.append("  COURSES: [\n")
-    for code, title, cr, t, g, tier, req, anti, flag in cs:
-        st = status(t, flag)
-        row = f"    {{c:'{code}', n:{js_str(title)}, cr:{cr}, t:{t}, s:'{st}', g:'{g}'"
-        if flag == 'ghost':
-            row += f", ghost:1, note:'DEFERRED — NEEDS {P['key']} FIRST'"
-        else:
-            if tier is not None:
-                row += f", tier:{tier}"
-            else:
-                row += ", gen:1"
-            if tier is not None:
-                row += f", req:{js_list(req)}, anti:{js_list(anti)}"
-            if flag == 'key':
-                row += ", key:1"
-            if flag == 'alt':
-                row += ", alt:1"
-        row += "},\n"
-        L.append(row)
-    L[-1] = L[-1].rstrip(',\n') + '\n'
-    L.append("  ]\n\n  }")
-    return ''.join(L)
+        d = sum(1 for c in rows if status_of(P, c[TERM], c[FLAG]) == 'done')
+        p = sum(1 for c in rows if status_of(P, c[TERM], c[FLAG]) == 'current')
+        missing = [c[CODE] for c in rows if status_of(P, c[TERM], c[FLAG]) in ('todo', 'plan')][:5]
+        out.append({'group': g, 'name': GROUP_LABEL[g], 'done': d, 'in_progress': p,
+                    'total': len(rows), 'count': f'{d} of {len(rows)} courses', 'missing': missing})
+    return out
 
 
-def main():
-    blocks = [build(k, P) for k, P in PROGRAMS.items()]
-    js = "  SCHOOLS = {\n\n" + ',\n\n'.join(blocks) + "\n\n  };\n"
-
-    p = '/Users/alexzhong/stellic-pathfinders/build/template.html'
-    s = io.open(p, encoding='utf-8').read()
-    start = s.index('  SCHOOLS = {')
-    end = s.index('  // Read through to the active school')
-    s = s[:start] + js + '\n' + s[end:]
-    io.open(p, 'w', encoding='utf-8').write(s)
-    print(f'wrote {len(PROGRAMS)} programs, {sum(len(P["courses"]) for P in PROGRAMS.values())} course rows')
+def derived_totals(P) -> dict:
+    """The META credit numbers the frontend shows, derived from the table."""
+    cs = P['courses']
+    done = sum(c[CR] for c in cs if status_of(P, c[TERM], c[FLAG]) == 'done')
+    prog = sum(c[CR] for c in cs if status_of(P, c[TERM], c[FLAG]) == 'current')
+    key_cr = next((c[CR] for c in cs if c[FLAG] == 'key'), 0)
+    ghost_cr = next((c[CR] for c in cs if c[FLAG] == 'ghost'), 0)
+    return {'doneCr': done, 'inProgCr': prog, 'totalCr': P['total'],
+            'behindCr': key_cr + ghost_cr, 'pct': round(done / P['total'] * 100)}
 
 
-if __name__ == '__main__':
-    main()
+def snapshot_of(P) -> str:
+    """The snapshot sentence, derived — references the bottleneck (keyname)."""
+    tot = derived_totals(P)
+    return (f"{tot['doneCr']} of {P['total']} {P['unit']} are in the bank with "
+            f"{tot['inProgCr']} more in progress. The gap isn't effort, it's sequencing: "
+            f"{P['keyname']} never made it onto a schedule, and the courses above it are still waiting.")
