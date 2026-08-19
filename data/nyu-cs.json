@@ -3,6 +3,7 @@
   "program": {
     "id": "nyu-cs",
     "name": "Computer Science, B.A.",
+    "descriptor": "CS BA · COURANT",
     "degree": "BA",
     "catalog_year": "2026",
     "unit_label": "credits",

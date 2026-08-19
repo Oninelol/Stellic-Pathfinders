@@ -51,7 +51,7 @@ def test_schools_returns_all_nine_in_one_call():
 
 _TOP_KEYS = {
     "program_id", "school", "program_name", "unit_label", "unit_abbr",
-    "total_units", "tiers", "terms", "groups", "requirements",
+    "total_units", "tiers", "terms", "groups", "requirements", "program", "tab",
     "needs_requirements", "meta", "nodes", "edges",
 }
 _META_KEYS = {
@@ -60,7 +60,8 @@ _META_KEYS = {
 }
 _NODE_KEYS = {
     "code", "title", "units", "term", "status", "tier", "group", "offering",
-    "offering_source", "requirement_ids", "needs_review", "review_note",
+    "offering_source", "requirement_ids", "req", "anti", "note",
+    "needs_review", "review_note",
     "ghost", "alt", "key",
 }
 

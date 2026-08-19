@@ -3,6 +3,7 @@
   "program": {
     "id": "cmu-cs",
     "name": "Computer Science, B.S.",
+    "descriptor": "CS BS · SCS",
     "degree": "BS",
     "catalog_year": "2025",
     "unit_label": "units",

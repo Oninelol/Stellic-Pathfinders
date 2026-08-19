@@ -37,6 +37,7 @@ class Health(BaseModel):
 class ProgramSummary(BaseModel):
     id: str
     name: str
+    tab: str
     degree: str
     catalog_year: str
     unit_label: str
@@ -98,6 +99,9 @@ class Node(BaseModel):
     offering: str
     offering_source: str
     requirement_ids: list[str]
+    req: list[str]
+    anti: list[str]
+    note: Optional[str]
     needs_review: bool
     review_note: Optional[str]
     ghost: bool
@@ -116,6 +120,8 @@ class CourseMap(BaseModel):
     program_id: str
     school: str
     program_name: str
+    program: str          # the '<CODE BA · CAMPUS>' descriptor
+    tab: str              # short label for the selector
     unit_label: str
     unit_abbr: str
     total_units: int
@@ -179,6 +185,7 @@ def _node(cat: catalog.Catalog, c: catalog.Course) -> dict:
         "status": c.status, "tier": c.tier, "group": c.group,
         "offering": c.offering, "offering_source": c.offering_source,
         "requirement_ids": _requirement_ids_for(cat, c.code),
+        "req": list(c.req), "anti": list(c.anti), "note": c.note,
         "needs_review": c.needs_review, "review_note": c.review_note,
         "ghost": c.is_ghost, "alt": c.is_alt, "key": c.is_key,
     }
@@ -231,6 +238,7 @@ def to_coursemap(cat: catalog.Catalog) -> dict:
         nodes.append(_node(cat, c))
     return {
         "program_id": p.id, "school": cat.school, "program_name": p.name,
+        "program": p.descriptor, "tab": p.tab,
         "unit_label": p.unit_label, "unit_abbr": p.unit_abbr,
         "total_units": p.total_units, "tiers": list(p.tiers),
         "terms": [

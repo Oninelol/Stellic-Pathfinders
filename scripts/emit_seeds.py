@@ -74,6 +74,7 @@ def seed_payload(program_id: str, P: dict) -> dict:
         'program': {
             'id': program_id,
             'name': _program_name(P),
+            'descriptor': P['program'],
             'degree': _degree(P),
             'catalog_year': _catalog_year(P),
             'unit_label': P['unit'],

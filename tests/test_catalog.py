@@ -19,7 +19,6 @@ if str(ROOT / "scripts") not in sys.path:
     sys.path.insert(0, str(ROOT / "scripts"))
 
 import curricula  # noqa: E402  (the single source of the nine tuple tables)
-import emit_frontend  # noqa: E402
 import emit_seeds  # noqa: E402
 
 # import scripts/validate_catalog.py by path (it is a script, not a package module)
@@ -180,8 +179,7 @@ def test_seed_groups_match_frontend_reqs(key):
 
 
 def test_emitters_are_deterministic():
-    """Acceptance 1: regenerating from the tuples twice is byte-stable."""
-    assert emit_frontend.render() == emit_frontend.render()
+    """Acceptance 1: regenerating the seeds from the tuples twice is byte-stable."""
     for key, P in curricula.PROGRAMS.items():
         a = json.dumps(emit_seeds.seed_payload(key, P), sort_keys=True)
         b = json.dumps(emit_seeds.seed_payload(key, P), sort_keys=True)

@@ -110,3 +110,48 @@ the seed. Nodes carry `offering_source`; edges carry `kind ∈ {prereq, anti}`.
   edits to `localStorage`. After Phase 2, `curricula.py` writes seeds only.
 
 ---
+
+## Phase 2 — Frontend fetches + plans persist ✅ (complete)
+
+**Built.**
+- **Fetch.** The bundle's inlined `SCHOOLS = {…}` is gone; `get SCHOOLS()` reads
+  `state.fetched`. On mount it `GET`s `/schools` (builds the selector) then every
+  program's `/coursemap`. One marked `adaptCoursemap()` maps the payload into the
+  existing `META/TERMS/REQS/TIERS/COURSES` shape — `boardVals`, `detailFor`, `FINDER`,
+  `PATHS` are unchanged. A `LOADING_SHAPE` placeholder keeps `renderVals()` from
+  throwing before data arrives; a full-screen loading overlay covers it, and an API
+  error shows a readable screen with **Retry** (not a blank page).
+- **API additions (needed so the client holds no school-specific string):** coursemap
+  `+ program` (the `CS BA · COURANT` descriptor) `+ tab`; nodes `+ req/anti/note`;
+  `/schools` program summary `+ tab`; seed/`catalog.Program` `+ descriptor`.
+- **Persistence.** `state.edits` → `localStorage` under `compass.edits.v1` (schema
+  versioned). Written on every `writeEdits` **and** `resetPlan`; restored on mount
+  before the board renders; stale entries (course gone from catalog) pruned on load,
+  never crash. Every `localStorage` call is try/catch'd.
+- **Two writers reconciled.** `emit_frontend.py` deleted; `curricula.py` writes seeds
+  only (via `emit_seeds`). The bundle no longer carries a `SCHOOLS` block.
+
+**Acceptance — all verified in-browser (API on :8000, bundle on :8793).**
+1. All nine render from the API (fetched `/schools` + 9 coursemaps; selector shows
+   nine; engineering programs render real nodes). ✅
+2. Switching programs redraws without remounting (CMU→`units`, Class 2028). ✅
+3. Edits survive reload (added `15-455`→Spring 2027 persisted through a reload). ✅
+4. Reset clears one program only (reset nyu-cs kept cmu-cs in localStorage). ✅
+5. API down → readable error + Retry; Retry recovers all nine. ✅
+6. `localStorage` throwing on read+write → app still boots and edits still apply
+   (just not persisted); no crash. ✅
+7. `rebuild.py verify` passes; `pytest` 106 passed. ✅
+
+**Notes / fixes.**
+- Found and fixed a bug mid-phase: `resetPlan` cleared in-memory state but not
+  `localStorage`, so a reset edit came back on reload. Now persists.
+- `API_BASE` defaults to `http://localhost:8000`, overridable via
+  `window.COMPASS_API_BASE` (Phase 6 wires it from env). CORS already allows any
+  localhost origin.
+- Frontend files: `Compass Planner.html` is committed; `build/template.html` stays
+  untracked scratch (regenerate via `rebuild.py extract`).
+- Phase 3 next: `POST /programs/{id}/evaluate` (stateless), and the frontend replaces
+  its client-side `UNMET` with a debounced POST — keep the client fn behind a flag to
+  cross-check during dev.
+
+---

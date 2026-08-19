@@ -71,6 +71,7 @@ class Program:
     unit_label: str
     unit_abbr: str
     total_units: int
+    descriptor: str = ""  # the '<CODE BA · CAMPUS>' sidebar mark
     # presentation copy + derived claims carried from the frontend curriculum
     tab: str = ""
     tiers: tuple[str, ...] = ()
@@ -180,6 +181,7 @@ def _parse(payload: dict, source: str) -> Catalog:
             catalog_year=str(p.get("catalog_year", "")),
             unit_label=p["unit_label"], unit_abbr=p.get("unit_abbr", ""),
             total_units=int(p["total_units"]),
+            descriptor=p.get("descriptor", ""),
             tab=p.get("tab", ""), tiers=tuple(p.get("tiers", ())),
             grad=p.get("grad", ""), year=p.get("year", ""),
             key=p.get("key"), keyname=p.get("keyname", ""),
@@ -280,6 +282,7 @@ def schools() -> list[dict]:
             "catalog_year": cat.program.catalog_year,
             "unit_label": cat.program.unit_label,
             "total_units": cat.program.total_units,
+            "tab": cat.program.tab,
         })
     for entry in by_school.values():
         entry["programs"].sort(key=lambda p: p["id"])

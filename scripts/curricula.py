@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Author the SCHOOLS dataset and splice it into build/template.html.
+"""The single source of course data: nine programs as compact tuple tables.
 
 Each program is written as a compact course table; META credit totals, the
 requirement buckets and every course status are DERIVED from that table, so the
-numbers on screen cannot drift from the courses on the board.
+numbers can never drift from the courses.
 
 Course tuple: (code, title, credits, term, group, tier, prereqs, antis, flag)
   term   0-7 index into TERMS, or -1 for an unscheduled alternative
@@ -11,17 +11,16 @@ Course tuple: (code, title, credits, term, group, tier, prereqs, antis, flag)
   tier   0-4 column on the dependency graph, or None for a breadth row (gen:1)
   flag   None | 'key' (the bottleneck) | 'ghost' (deferred placeholder) | 'alt'
 
-Status is derived from the term: 0-2 done, 3 current, 4+ plan; 'key' becomes
-todo and 'ghost' becomes blocked.
+Status is derived from the term via graph.status_for: 0-2 done, 3 current, 4+ plan;
+'key' becomes todo and 'ghost' becomes blocked.
 
-This file is now DATA + shared derivation only. Two thin formatters consume it:
+This file is DATA + shared derivation only. As of Phase 2 there is ONE emitter:
 
-    scripts/emit_frontend.py   tuples -> SCHOOLS block -> build/template.html
-    scripts/emit_seeds.py      tuples -> data/<program-id>.json (one per program)
+    scripts/emit_seeds.py   tuples -> data/<program-id>.json (one per program)
 
-A course edit therefore happens in exactly one place (the tuple tables below) and
-both targets regenerate from it. Status, the requirement group buckets, and the
-derived offerings all live here so the two emitters cannot disagree.
+The frontend no longer inlines a SCHOOLS block — it fetches the seeds through the
+API and adapts them client-side. (emit_frontend.py is retired.) A course edit
+happens in exactly one place (the tuple tables below); the seeds regenerate from it.
 """
 import re
 import sys
