@@ -431,3 +431,39 @@ surfaces as a production-only insert failure.
 round-trip `base` → `head`.
 
 ---
+
+## Fix: school/major picker unresponsive on sign-up ✅
+
+**Symptom.** On the sign-up form the school & major dropdown did not react to clicks.
+
+**Cause — two bugs, both about the catalog not being loaded.**
+1. The login gate renders immediately, but the program list comes from `GET /schools`.
+   If that request had not returned (API down, slow start, cold start), the picker
+   rendered with **zero options** — a control that opens nothing and explains nothing.
+2. The "Can't reach the catalog" screen was `z-index: 200`, *below* the login gate at
+   `z-index: 400`. So a user whose API was unreachable saw a normal-looking login page
+   with a dead dropdown and **no error at all** — the explanation was rendered but
+   covered.
+
+The dropdown itself was never broken: with options present, clicking focuses it,
+nothing calls `preventDefault` on mousedown, the node is not replaced mid-interaction,
+and a selection sticks through the re-render. Verified all four directly.
+
+**Fix.**
+- Catalog error overlay raised to `z-index: 420`, above the gate — a failure is now
+  always visible.
+- The picker renders only when programs exist. Otherwise an inline notice takes its
+  place: *"Loading programs…"*, or *"Program list unavailable — the catalog service is
+  not reachable."* with a **RETRY** button.
+- Sign-up refuses to submit with no program list, with a specific message, instead of
+  silently creating an account with no program.
+
+**Verified.** API down → error screen with Retry (not a dead form). Retry with the API
+back → gate returns, picker has all nine programs. Selecting `nyu-enve` sticks through
+re-render and is the program the new account lands on (`Welcome back, Dana`, initials
+`DF`, board on Environmental Engineering).
+
+**Tests.** 212 passed (+1 regression guard asserting the fallback states, the submit
+guard, and the z-order against the shipped bundle).
+
+---
