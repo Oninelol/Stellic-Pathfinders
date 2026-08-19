@@ -33,6 +33,7 @@ class SignupIn(BaseModel):
     password: str
     display_name: str = ""
     remember: bool = False
+    program_id: str | None = None   # school + major, chosen on the sign-up form
 
 
 class LoginIn(BaseModel):
@@ -45,6 +46,8 @@ class UserOut(BaseModel):
     id: int
     email: str
     display_name: str
+    program_id: str | None = None
+    initials: str = ""
 
 
 class TokenOut(BaseModel):
@@ -86,7 +89,17 @@ class PlanOut(BaseModel):
 
 
 def _user_out(u: User) -> dict:
-    return {"id": u.id, "email": u.email, "display_name": u.display_name or ""}
+    return {"id": u.id, "email": u.email, "display_name": u.display_name or "",
+            "program_id": u.program_id, "initials": _initials(u)}
+
+
+def _initials(u: User) -> str:
+    """Two letters for the avatar: from the display name if given, else the email."""
+    src = (u.display_name or "").strip() or (u.email or "").split("@")[0]
+    parts = [p for p in src.replace(".", " ").replace("_", " ").replace("-", " ").split() if p]
+    if len(parts) >= 2:
+        return (parts[0][0] + parts[1][0]).upper()
+    return (parts[0][:2] if parts else "?").upper()
 
 
 def _plan_out(p: Plan) -> dict:
@@ -129,11 +142,21 @@ def signup(body: SignupIn, db: Session = Depends(get_db)) -> dict:
     problem = auth.password_problem(body.password)
     if problem:
         raise HTTPException(status_code=422, detail={"error": "weak_password", "message": problem})
+    program_id = (body.program_id or "").strip() or None
+    if program_id:
+        _check_program(program_id)            # 422 listing known ids if unknown
     user = User(email=email, display_name=(body.display_name or "").strip(),
+                program_id=program_id,
                 password_hash=auth.hash_password(body.password))
     db.add(user)
     db.commit()
     db.refresh(user)
+    # Give the new account a primary plan for the program they chose, so their data
+    # has somewhere to live from the first edit.
+    if program_id:
+        db.add(Plan(user_id=user.id, program_id=program_id,
+                    name="My plan", is_primary=True))
+        db.commit()
     token, ttl = auth.create_token(user, body.remember)
     return {"token": token, "expires_in": ttl, "remember": body.remember,
             "user": _user_out(user)}

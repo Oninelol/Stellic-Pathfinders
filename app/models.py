@@ -27,6 +27,9 @@ class User(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     email: Mapped[str] = mapped_column(String(320), unique=True, nullable=False, index=True)
     display_name: Mapped[str] = mapped_column(String(120), default="")
+    # The school + major chosen at sign-up. A plain string id (e.g. "nyu-cs"),
+    # validated against the seed catalog at write time, never a foreign key.
+    program_id: Mapped[str | None] = mapped_column(String(64), nullable=True)
     # scrypt hash, stored as "scrypt$n$r$p$salt_hex$hash_hex" — never a plaintext password
     password_hash: Mapped[str] = mapped_column(Text, nullable=False)
     # bumped on password change / "sign out everywhere" so old tokens stop verifying

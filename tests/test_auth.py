@@ -3,16 +3,9 @@
 Runs against a throwaway SQLite file per test session — no network, no provider.
 """
 
-import os
-import tempfile
-from pathlib import Path
-
 import pytest
 
-# point the app at a temp database BEFORE importing it
-_TMP = Path(tempfile.mkdtemp()) / "test.db"
-os.environ["DATABASE_URL"] = f"sqlite:///{_TMP}"
-
+# conftest.py points DATABASE_URL at a throwaway file before any app import.
 from fastapi.testclient import TestClient  # noqa: E402
 
 from app import auth  # noqa: E402
@@ -231,3 +224,48 @@ def test_plan_endpoints_require_auth():
         lambda: client.post("/me/plans", json={"program_id": "nyu-cs"}),
     ):
         assert call().status_code == 401
+
+
+# --------------------------------------------------------------------------- #
+# sign-up captures the student's school + major
+# --------------------------------------------------------------------------- #
+
+def test_signup_stores_program_and_creates_primary_plan():
+    r = client.post("/auth/signup", json={
+        "email": "pat.chen@nyu.edu", "password": "compass2026pass",
+        "program_id": "nyu-ee", "remember": True})
+    assert r.status_code == 201
+    user = r.json()["user"]
+    assert user["program_id"] == "nyu-ee"
+    assert user["initials"] == "PC"          # derived from the email local part
+    token = r.json()["token"]
+    plans = client.get("/me/plans", headers={"Authorization": f"Bearer {token}"}).json()
+    assert [(p["program_id"], p["is_primary"]) for p in plans] == [("nyu-ee", True)]
+
+
+def test_signup_rejects_unknown_program():
+    r = client.post("/auth/signup", json={
+        "email": "nobody@nyu.edu", "password": "compass2026pass",
+        "program_id": "not-a-program"})
+    assert r.status_code == 422
+    assert "known_programs" in str(r.json()["detail"])
+
+
+def test_signup_without_program_still_works():
+    # The field is optional: an account can be created and a program chosen later.
+    r = client.post("/auth/signup", json={
+        "email": "later@nyu.edu", "password": "compass2026pass"})
+    assert r.status_code == 201
+    assert r.json()["user"]["program_id"] is None
+    token = r.json()["token"]
+    assert client.get("/me/plans", headers={"Authorization": f"Bearer {token}"}).json() == []
+
+
+def test_login_returns_program_and_initials():
+    client.post("/auth/signup", json={
+        "email": "dana.wu@cmu.edu", "password": "compass2026pass", "program_id": "cmu-me"})
+    r = client.post("/auth/login", json={
+        "email": "dana.wu@cmu.edu", "password": "compass2026pass"})
+    assert r.status_code == 200
+    assert r.json()["user"]["program_id"] == "cmu-me"
+    assert r.json()["user"]["initials"] == "DW"

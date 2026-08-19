@@ -229,3 +229,41 @@ returned her plan → wrong password 401.
 columns exist and round-trip, unused until Phase 4.
 
 ---
+
+## Accounts: school + major at sign-up, profile in the header ✅
+
+**Built.**
+- **Sign-up captures the student's school + major.** `POST /auth/signup` accepts an
+  optional `program_id`, validated against the seed catalog (422 listing known ids if
+  unknown). It is stored on `users.program_id` (migration `0003_user_program`) — a
+  plain string, never a foreign key, since the catalog lives in seed JSON. On sign-up
+  the account also gets a **primary plan** for that program, so their data has
+  somewhere to live from the first edit.
+- **`/me`, signup and login now return `program_id` and derived `initials`** (two
+  letters from the display name, else the email local part).
+- **Home header is the auth surface.** The old SCHOOL & MAJOR select in the top right
+  is replaced by **Log in / Sign up** when signed out, and by a **profile pill**
+  (initials + email + SYNCED, click for a menu with Sign out) when signed in. Program
+  switching still lives in the sidebar selector, so nothing was lost.
+- **The sign-up form** gained a grouped "YOUR SCHOOL & MAJOR" dropdown (login does not
+  show it). On success the app adopts that program, so the board opens on their major.
+- **Identity follows the account**: the greeting, the big avatar and the sidebar name
+  use the signed-in user (falling back to the demo persona when anonymous).
+
+**Verified in-browser (fresh database).** Sign up as `jordan.kim@cmu.edu` choosing CMU
+Mechanical Engineering → modal closes, header shows `JK` + SYNCED, greeting reads
+"Welcome back, Jordan", the board switches to cmu-me and reports **units**. Reload →
+still signed in, program restored. Account menu → Sign out → Log in / Sign up return
+and the demo persona comes back. Log back in → `JK`, cmu-me, synced.
+
+**Bug found and fixed: the test suite was writing into the dev database.** `app.db`
+reads `DATABASE_URL` at import time, and `test_auth.py` set it *after* `test_api.py`
+had already imported the app — so in a full-suite run the auth tests hit the real
+`compass.db` (23 stray users accumulated there). `DATABASE_URL` now points at a
+throwaway file from `conftest.py`, before any `app.*` import. Confirmed: a full run
+leaves `compass.db` empty, and the suite is repeatable.
+
+**Tests.** 155 passed (was 151; +4 covering program capture, the auto-created primary
+plan, unknown-program rejection, and initials on login).
+
+---
