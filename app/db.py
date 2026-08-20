@@ -50,10 +50,27 @@ def _default_url() -> str:
     return "sqlite:////tmp/compass.db"
 
 
+# Managed-Postgres integrations do not agree on a name: Vercel Postgres and
+# Supabase set POSTGRES_URL, Neon sets DATABASE_URL, and some set only the
+# non-pooling variant. Accepting all of them means attaching a database in the
+# dashboard just works instead of silently leaving the app on /tmp.
+#
 # `.get(key, default)` is deliberately not used: a variable that exists but is
 # empty must fall back too, and an empty string is exactly what SQLAlchemy
 # cannot parse.
-DATABASE_URL = _normalise(os.environ.get("DATABASE_URL", "")) or _normalise(_default_url())
+DB_URL_VARS = ("DATABASE_URL", "POSTGRES_URL", "POSTGRES_URL_NON_POOLING",
+               "DATABASE_URL_UNPOOLED")
+
+
+def _configured_url() -> str:
+    for name in DB_URL_VARS:
+        raw = os.environ.get(name, "").strip()
+        if raw:
+            return raw
+    return ""
+
+
+DATABASE_URL = _normalise(_configured_url()) or _normalise(_default_url())
 IS_EPHEMERAL = DATABASE_URL == "sqlite:////tmp/compass.db"
 
 # check_same_thread=False: FastAPI serves requests on a threadpool.
@@ -63,8 +80,10 @@ def _redacted(url: str) -> str:
     return re.sub(r"//([^:/@]+):[^@]*@", r"//\1:***@", url)
 
 
+_engine_kw = {} if DATABASE_URL.startswith("sqlite") else {"pool_pre_ping": True, "pool_recycle": 300}
+
 try:
-    engine = create_engine(DATABASE_URL, connect_args=_connect_args, future=True)
+    engine = create_engine(DATABASE_URL, connect_args=_connect_args, future=True, **_engine_kw)
 except ArgumentError as exc:
     # Dying here kills the whole process at import time, and the stack trace
     # says nothing about which setting is wrong. Say it plainly instead.
