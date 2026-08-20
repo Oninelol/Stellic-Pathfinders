@@ -32,6 +32,10 @@ class Health(BaseModel):
     status: str
     programs: int
     courses: int
+    # "durable" or "ephemeral" — whether an account created now will still exist
+    # later. Ephemeral means SQLite on a serverless /tmp disk, which is wiped on
+    # every cold start, so sign-ups silently disappear.
+    storage: str = "durable"
 
 
 class ProgramSummary(BaseModel):
@@ -162,10 +166,13 @@ class Detail(BaseModel):
 # --------------------------------------------------------------------------- #
 
 def to_health(catalogs: dict[str, catalog.Catalog]) -> dict:
+    from app import db
+
     return {
         "status": "ok",
         "programs": len(catalogs),
         "courses": sum(len(cat.rows) for cat in catalogs.values()),
+        "storage": "ephemeral" if db.IS_EPHEMERAL else "durable",
     }
 
 
