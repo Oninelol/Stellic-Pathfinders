@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 220" width="220" height="220">
+<defs>
+<path id="pbody" d="M110 11c37 0 70 19 88 49 5 8 11 13 12 22 2 11 2 16 4 26 0 40-23 75-59 92-11 5-23 8-36 8-38 0-72-20-90-52-4-8-11-12-13-21-2-10-3-17-3-25 0-41 25-77 62-93 11-4 23-6 35-6z"/>
+<clipPath id="pclip"><use href="#pbody"/></clipPath>
+</defs>
+
+<g clip-path="url(#pclip)">
+<rect width="220" height="220" fill="#A5B1B8"/>
+<path d="M-6 26c44-14 86-8 124 12 30 16 50 38 62 66-10 28-32 50-64 62-38 14-80 12-114-8-24-14-34-38-32-66 2-24 10-50 24-66z" fill="#ACB7BD"/>
+<path d="M146 -8c30 16 50 42 58 74-16 8-34 6-50-6-18-14-24-40-8-68z" fill="#99A6AF"/>
+<path d="M-8 152c26 24 60 38 98 38 30 0 58-10 80-26-12 34-50 60-96 60-44 0-82-28-82-72z" fill="#99A6AF"/>
+<path d="M40 56c20-18 46-27 74-25-12 16-30 27-50 32-10 2-18-1-24-7z" fill="#BAC3C8" opacity=".6"/>
+<path d="M158 108c14-6 28-4 40 6-10 12-24 18-38 16-8-2-10-14-2-22z" fill="#9BA8B1" opacity=".7"/>
+</g>
+
+<g clip-path="url(#pclip)">
+<g fill="#98A4B9" stroke="#171717" stroke-width="5">
+<ellipse cx="76" cy="98" rx="32" ry="28"/>
+<ellipse cx="157" cy="53" rx="24" ry="21"/>
+<ellipse cx="152" cy="161" rx="28" ry="25"/>
+<ellipse cx="34" cy="174" rx="25" ry="28"/>
+</g>
+<g fill="none" stroke="#7C8892" stroke-width="10" opacity=".33">
+<ellipse cx="76" cy="98" rx="34" ry="30"/>
+<ellipse cx="157" cy="53" rx="26" ry="23"/>
+<ellipse cx="152" cy="161" rx="30" ry="27"/>
+</g>
+<g stroke="#1F1F1F" stroke-width="2.4" stroke-linecap="round" fill="none">
+<path d="M47 79l-8-7M53 68l-4-9M66 61l-3-10M81 59l1-10M95 63l5-9M106 73l9-5M42 95l-10-2M43 110l-10 3M49 123l-8 8M60 132l-5 9M75 137l0 10M90 134l4 9"/>
+<path d="M136 39l-8-6M141 28l-3-9M154 25l0-9M168 28l4-9M180 37l8-6M183 52l10 1M180 67l8 6M170 77l4 9M156 81l0 10"/>
+<path d="M127 145l-9-4M130 132l-3-9M144 128l-1-10M160 129l3-9M174 137l8-6M182 152l10-2M182 169l9 4M173 183l6 8M158 190l1 10"/>
+<path d="M12 152l-8-5M20 141l-3-9M35 137l0-10M50 142l6-9M61 156l9-5M63 174l10 2M59 192l7 7"/>
+</g>
+</g>
+
+<use href="#pbody" fill="none" stroke="#171717" stroke-width="5.6" stroke-linejoin="round"/>
+<use href="#pbody" fill="none" stroke="#171717" stroke-width="2" opacity=".5" transform="translate(1.5 1)"/>
+</svg>
