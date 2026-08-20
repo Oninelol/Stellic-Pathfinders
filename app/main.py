@@ -7,12 +7,13 @@ write endpoints — those are later phases. The catalog loads once at startup
 
 from __future__ import annotations
 
+import os
 from contextlib import asynccontextmanager
 
 from fastapi import Body, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
-from app import catalog, schemas
+from app import auth, catalog, db, schemas
 from app.routes_user import router as user_router
 
 
@@ -22,14 +23,37 @@ async def lifespan(app: FastAPI):
     # broken seed fails loudly here rather than on a random request.
     catalog.load_all.cache_clear()
     catalog.load_all()
+    # No migration step exists on a serverless host, so make sure the tables are
+    # there before the first request tries to read them.
+    db.ensure_schema()
+    for line in _deployment_warnings():
+        print("WARNING:", line, flush=True)
     yield
+
+
+def _deployment_warnings() -> list[str]:
+    """Conditions that let the app boot but will bite in production."""
+    out = []
+    if auth.SECRET_KEY == auth.DEV_SECRET_KEY:
+        out.append(
+            "SECRET_KEY is unset, so sessions are signed with the public dev key "
+            "and anyone can forge a login. Set SECRET_KEY before real use.")
+    if db.IS_EPHEMERAL:
+        out.append(
+            "No DATABASE_URL, and the app directory is read-only, so data is in "
+            "/tmp. That disk is per-instance and cleared on cold starts: accounts "
+            "will disappear. Point DATABASE_URL at Postgres.")
+    return out
 
 
 app = FastAPI(title="Compass Planner API", version="1.0.0", lifespan=lifespan)
 
 # CORS: local dev origins only. Phase 6 sets the deployed frontend origin from env.
+_extra_origin = os.environ.get("FRONTEND_ORIGIN", "").strip()
+
 app.add_middleware(
     CORSMiddleware,
+    allow_origins=[_extra_origin] if _extra_origin else [],
     allow_origin_regex=r"https?://(localhost|127\.0\.0\.1)(:\d+)?",
     allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE"],
     allow_headers=["*"],
