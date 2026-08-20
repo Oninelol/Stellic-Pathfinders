@@ -275,3 +275,26 @@ def test_bundle_clears_plan_edits_on_sign_out_and_replaces_on_sign_in():
     assert "const edits = { ...(this.state.edits || {}) };\n        plans.forEach" not in src, \
         "syncPlansFromServer must not merge onto existing edits"
     assert "// Replace, do not merge" in src
+
+
+# --------------------------------------------------------------------------- #
+# sign-up form: the program picker must never be a dead control
+# --------------------------------------------------------------------------- #
+
+def test_signup_form_handles_an_unloaded_program_list():
+    """Regression guard: the school/major picker used to render with zero options
+    when the catalog had not loaded (API down, or simply still in flight), so it
+    looked broken — clicking did nothing and no message explained why. The catalog
+    error screen was also stacked *below* the login gate, hiding the explanation.
+    """
+    from pathlib import Path
+    src = (Path(__file__).resolve().parent.parent / "Compass Planner.html").read_text(
+        encoding="utf-8")
+    # the picker only renders when programs exist, with a labelled fallback otherwise
+    assert "programsReady" in src and "programsPending" in src
+    assert "Loading programs" in src
+    assert "Program list unavailable" in src
+    # sign-up refuses to submit without a program list
+    assert "Cannot load the program list" in src
+    # the catalog error screen must sit above the gate (z 420 > z 400)
+    assert "z-index:420" in src, "catalog error must render above the login gate"

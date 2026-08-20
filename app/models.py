@@ -26,7 +26,8 @@ class User(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     email: Mapped[str] = mapped_column(String(320), unique=True, nullable=False, index=True)
-    display_name: Mapped[str] = mapped_column(String(120), default="")
+    # Nullable to match migration 0001; the app writes "" or a real name.
+    display_name: Mapped[str | None] = mapped_column(String(120), default="")
     # Collected on the sign-up form; the source of the greeting, avatar initials
     # and the sidebar identity block. No demo persona is shown for a real account.
     first_name: Mapped[str | None] = mapped_column(String(80), nullable=True)
@@ -38,6 +39,10 @@ class User(Base):
     # The school + major chosen at sign-up. A plain string id (e.g. "nyu-cs"),
     # validated against the seed catalog at write time, never a foreign key.
     program_id: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    # The pigeon onboarding answers (career fields, specifics, semester goals,
+    # international status) as a JSON object string. NULL means the student has
+    # not been through the quiz yet, which is what makes the pigeon ask.
+    pigeon: Mapped[str | None] = mapped_column(Text, nullable=True)
     # scrypt hash, stored as "scrypt$n$r$p$salt_hex$hash_hex" — never a plaintext password
     password_hash: Mapped[str] = mapped_column(Text, nullable=False)
     # bumped on password change / "sign out everywhere" so old tokens stop verifying
