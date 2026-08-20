@@ -29,7 +29,7 @@ validate_catalog = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(validate_catalog)
 
 # The nine program ids are the frontend keys (identity mapping).
-NINE = set(curricula.PROGRAMS)
+PROGRAMS = set(curricula.PROGRAMS)
 
 
 # --------------------------------------------------------------------------- #
@@ -78,11 +78,11 @@ def _validate(tmp_path: Path, seed: dict) -> validate_catalog.Report:
 # loading API  (acceptance 3, 4, 5)
 # --------------------------------------------------------------------------- #
 
-def test_load_all_returns_nine_catalogs():
+def test_load_all_returns_every_seed():
     catalog.load_all.cache_clear()
     cats = catalog.load_all()
-    assert set(cats) == NINE
-    assert len(cats) == 9
+    assert set(cats) == PROGRAMS
+    assert len(cats) == len(PROGRAMS)
 
 
 def test_every_frontend_key_maps_to_exactly_one_seed():
@@ -101,12 +101,13 @@ def test_load_all_is_memoised():
     assert catalog.load_all() is catalog.load_all()
 
 
-def test_nyu_credits_cmu_units():
-    assert catalog.get("nyu-cs").program.unit_label == "credits"
-    assert catalog.get("cmu-cs").program.unit_label == "units"
+def test_cmu_programs_are_measured_in_units():
+    for pid, cat in catalog.load_all().items():
+        assert cat.program.unit_label == "units", pid
+        assert cat.program.unit_abbr == "u", pid
 
 
-def test_key_course_runs_on_all_nine():
+def test_key_course_runs_on_every_program():
     # Acceptance 4: graph.key_course runs on every loaded catalog without raising.
     catalog.load_all.cache_clear()
     for cat in catalog.load_all().values():
@@ -120,7 +121,7 @@ def test_get_unknown_raises():
 
 def test_schools_nested_single_call():
     sc = catalog.schools()
-    assert [s["school"] for s in sc] == ["CMU", "NYU"]
+    assert [s["school"] for s in sc] == ["CMU"]
     for entry in sc:
         assert entry["programs"] and all("id" in p for p in entry["programs"])
     # every loaded program is represented exactly once
@@ -129,19 +130,21 @@ def test_schools_nested_single_call():
 
 
 def test_courses_are_code_keyed_and_ghost_separated():
-    cat = catalog.get("nyu-cs")
+    cat = catalog.get("cmu-cs")
     assert isinstance(cat.courses, dict)
-    assert "CSCI-UA 102" in cat.courses
-    assert isinstance(cat.courses["CSCI-UA 102"], catalog.Course)
-    assert cat.courses["CSCI-UA 102"].group == "major"  # the g field survives load
-    # the ghost CSCI-UA 310 lives on .ghosts, and its real twin is in .courses
-    assert any(g.code == "CSCI-UA 310" for g in cat.ghosts)
-    assert "CSCI-UA 310" in cat.courses
+    assert "15-122" in cat.courses
+    assert isinstance(cat.courses["15-122"], catalog.Course)
+    assert cat.courses["15-122"].group == "major"  # the g field survives load
+    # a ghost row lives on .ghosts while its real twin stays in .courses
+    assert cat.ghosts, "cmu-cs seeds a ghost placeholder"
+    ghost_code = cat.ghosts[0].code
+    assert ghost_code in cat.courses
 
 
 def test_graph_runs_against_loaded_catalog_unchanged():
     # Acceptance 5: the Stage-1 functions consume Catalog.graph_courses() directly.
-    for pid, expected_key in [("nyu-cs", "MATH-UA 120"), ("cmu-cs", "15-251")]:
+    for pid, expected_key in [("cmu-cs", "15-251"), ("cmu-me", "24-261"),
+                              ("cmu-ce", "12-355"), ("cmu-cheme", "06-323")]:
         cat = catalog.get(pid)
         rows = cat.graph_courses()
         assert graph.key_course(rows) == expected_key
@@ -186,11 +189,11 @@ def test_emitters_are_deterministic():
         assert a == b, f"{key} seed payload not deterministic"
 
 
-def test_seven_engineering_programs_have_no_matchers():
-    # The 2 CS programs carry real matchers; the 7 engineering programs must not
-    # invent any, and must flag needs_requirements instead.
+def test_engineering_programs_have_no_invented_matchers():
+    # cmu-cs carries real matchers; the engineering programs must not invent any,
+    # and must flag needs_requirements instead.
     for pid, cat in catalog.load_all().items():
-        if pid in ("nyu-cs", "cmu-cs"):
+        if pid == "cmu-cs":
             assert cat.requirements and not cat.program.needs_requirements
         else:
             assert cat.requirements == () and cat.program.needs_requirements

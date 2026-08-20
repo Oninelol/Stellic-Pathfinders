@@ -1,8 +1,8 @@
 """Tests for the Phase 1 read-only API.
 
 Everything runs through FastAPI's TestClient (no network, no server process). The
-catalog is the real nine seeds; the API is asserted to stay program-agnostic — same
-shape for all nine, no program-specific keys.
+catalog is the real seeds; the API is asserted to stay program-agnostic — same
+shape for all, no program-specific keys.
 """
 
 import sys
@@ -27,20 +27,20 @@ client = TestClient(app)
 # healthz + schools
 # --------------------------------------------------------------------------- #
 
-def test_healthz_reports_nine_programs():
+def test_healthz_reports_every_program():
     r = client.get("/healthz")
     assert r.status_code == 200
     body = r.json()
     assert body["status"] == "ok"
-    assert body["programs"] == 9
+    assert body["programs"] == len(NINE)
     assert body["courses"] > 0
 
 
-def test_schools_returns_all_nine_in_one_call():
+def test_schools_returns_every_program_in_one_call():
     r = client.get("/schools")
     assert r.status_code == 200
     body = r.json()
-    assert [s["school"] for s in body] == ["CMU", "NYU"]
+    assert [s["school"] for s in body] == ["CMU"]
     ids = {p["id"] for s in body for p in s["programs"]}
     assert ids == set(NINE)
 
@@ -77,7 +77,7 @@ def test_coursemap_complete(pid):
         assert set(n) == _NODE_KEYS
 
 
-def test_shape_identical_across_all_nine():
+def test_shape_identical_across_every_program():
     maps = {pid: client.get(f"/programs/{pid}/coursemap").json() for pid in NINE}
     # top-level, meta, node and edge key sets are identical for every program
     assert len({frozenset(m) for m in maps.values()}) == 1
@@ -88,10 +88,10 @@ def test_shape_identical_across_all_nine():
     assert edge_keysets == {frozenset({"from", "to", "kind"})}
 
 
-def test_nyu_credits_cmu_units():
+def test_unit_vocabulary_is_consistent():
     for pid in NINE:
         cm = client.get(f"/programs/{pid}/coursemap").json()
-        expect = "credits" if pid.startswith("nyu") else "units"
+        expect = "units"   # CMU measures in units across every program
         assert cm["unit_label"] == expect, f"{pid} unit_label"
 
 
@@ -105,14 +105,14 @@ def test_edges_kinds_and_endpoints_are_nodes():
 
 
 def test_offerings_flagged_derived():
-    cm = client.get("/programs/nyu-cs/coursemap").json()
+    cm = client.get("/programs/cmu-cs/coursemap").json()
     assert all(n["offering_source"] == "derived" for n in cm["nodes"])
 
 
 def test_requirements_only_for_cs_programs():
     for pid in NINE:
         cm = client.get(f"/programs/{pid}/coursemap").json()
-        if pid in ("nyu-cs", "cmu-cs"):
+        if pid in ("cmu-cs", "cmu-cs"):
             assert cm["requirements"] and cm["needs_requirements"] is False
         else:
             assert cm["requirements"] == [] and cm["needs_requirements"] is True
@@ -134,11 +134,11 @@ def test_detail_matches_graph(pid):
     assert d["unlocks"] == sorted(graph.unlocks(rows, code))
 
 
-def test_detail_blocked_case_nyu_cs():
-    # CSCI-UA 310 (real, t5) is not blocked in the published plan.
-    d = client.get("/programs/nyu-cs/courses/CSCI-UA 310").json()
+def test_detail_reports_prereqs_and_no_false_block():
+    # 15-210 is not blocked in the published plan, and reports its real prereqs.
+    d = client.get("/programs/cmu-cs/courses/15-210").json()
     assert d["blocked_by"] == []
-    assert "MATH-UA 120" in d["req"]
+    assert "15-150" in d["req"] and "15-122" in d["req"]
 
 
 # --------------------------------------------------------------------------- #
@@ -154,11 +154,11 @@ def test_unknown_program_404_lists_known():
 
 
 def test_unknown_course_404_names_program():
-    r = client.get("/programs/nyu-cs/courses/ZZZ 999")
+    r = client.get("/programs/cmu-cs/courses/ZZZ 999")
     assert r.status_code == 404
     detail = r.json()["detail"]
-    assert "ZZZ 999" in detail["error"] and "nyu-cs" in detail["error"]
-    assert "CSCI-UA 102" in detail["known_courses"]
+    assert "ZZZ 999" in detail["error"] and "cmu-cs" in detail["error"]
+    assert "15-122" in detail["known_courses"]
 
 
 def test_unknown_course_detail_endpoint_also_404():

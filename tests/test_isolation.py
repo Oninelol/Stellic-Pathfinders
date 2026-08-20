@@ -15,7 +15,7 @@ client = TestClient(app)
 _n = {"i": 0}
 
 
-def make_user(program_id="nyu-cs", first="Test", last="User", password="hunter2hunter2"):
+def make_user(program_id="cmu-cs", first="Test", last="User", password="hunter2hunter2"):
     """A fresh account with its own auth header."""
     _n["i"] += 1
     email = f"iso{_n['i']}@example.edu"
@@ -32,7 +32,7 @@ def make_user(program_id="nyu-cs", first="Test", last="User", password="hunter2h
 
 @pytest.fixture
 def alice():
-    return make_user(program_id="nyu-cs", first="Alice", last="Ng")
+    return make_user(program_id="cmu-cs", first="Alice", last="Ng")
 
 
 @pytest.fixture
@@ -54,8 +54,8 @@ def plan_of(u, program_id, name, entries):
 # --------------------------------------------------------------------------- #
 
 def test_two_users_hold_independent_data(alice, bob):
-    a = plan_of(alice, "nyu-cs", "Alice's plan",
-                [{"course_code": "CSCI-UA 102", "term": 2, "status": "COMPLETE", "grade": "A"}])
+    a = plan_of(alice, "cmu-cs", "Alice's plan",
+                [{"course_code": "15-122", "term": 2, "status": "COMPLETE", "grade": "A"}])
     b = plan_of(bob, "cmu-me", "Bob's plan",
                 [{"course_code": "24-101", "term": 1, "status": "PLANNED"}])
 
@@ -72,11 +72,11 @@ def test_two_users_hold_independent_data(alice, bob):
         f"/me/plans/{a['id']}", headers=alice["h"]).json()["entries"]}
     b_codes = {e["course_code"] for e in client.get(
         f"/me/plans/{b['id']}", headers=bob["h"]).json()["entries"]}
-    assert a_codes == {"CSCI-UA 102"} and b_codes == {"24-101"}
+    assert a_codes == {"15-122"} and b_codes == {"24-101"}
 
 
 def test_profiles_are_independent(alice, bob):
-    assert alice["user"]["program_id"] == "nyu-cs"
+    assert alice["user"]["program_id"] == "cmu-cs"
     assert bob["user"]["program_id"] == "cmu-me"
     assert alice["user"]["initials"] == "AN" and bob["user"]["initials"] == "BO"
 
@@ -96,8 +96,8 @@ def test_each_user_sees_their_own_identity(alice, bob):
 # --------------------------------------------------------------------------- #
 
 def test_every_plan_endpoint_404s_for_a_non_owner(alice, bob):
-    a = plan_of(alice, "nyu-cs", "Alice's plan",
-                [{"course_code": "CSCI-UA 102", "term": 2}])
+    a = plan_of(alice, "cmu-cs", "Alice's plan",
+                [{"course_code": "15-122", "term": 2}])
     pid = a["id"]
     # Bob attempts every id-scoped route against Alice's plan
     attempts = [
@@ -105,7 +105,7 @@ def test_every_plan_endpoint_404s_for_a_non_owner(alice, bob):
         ("PATCH",  f"/me/plans/{pid}",                        {"name": "pwned"}),
         ("DELETE", f"/me/plans/{pid}",                        None),
         ("PUT",    f"/me/plans/{pid}/entries",                []),
-        ("PATCH",  f"/me/plans/{pid}/entries/CSCI-UA 102",    {"term": 7}),
+        ("PATCH",  f"/me/plans/{pid}/entries/15-122",    {"term": 7}),
         ("GET",    f"/me/plans/{pid}/evaluate",               None),
     ]
     for method, url, body in attempts:
@@ -116,18 +116,18 @@ def test_every_plan_endpoint_404s_for_a_non_owner(alice, bob):
     # Alice's plan is untouched by every one of those attempts
     still = client.get(f"/me/plans/{pid}", headers=alice["h"]).json()
     assert still["name"] == "Alice's plan"
-    assert [e["course_code"] for e in still["entries"]] == ["CSCI-UA 102"]
+    assert [e["course_code"] for e in still["entries"]] == ["15-122"]
     assert still["entries"][0]["term"] == 2
 
 
 def test_non_owner_cannot_delete(alice, bob):
-    a = plan_of(alice, "nyu-cs", "Keep me", [{"course_code": "CSCI-UA 102", "term": 2}])
+    a = plan_of(alice, "cmu-cs", "Keep me", [{"course_code": "15-122", "term": 2}])
     assert client.delete(f"/me/plans/{a['id']}", headers=bob["h"]).status_code == 404
     assert client.get(f"/me/plans/{a['id']}", headers=alice["h"]).status_code == 200
 
 
 def test_deleting_own_plan_does_not_touch_the_other_user(alice, bob):
-    a = plan_of(alice, "nyu-cs", "Alice temp", [{"course_code": "CSCI-UA 102", "term": 2}])
+    a = plan_of(alice, "cmu-cs", "Alice temp", [{"course_code": "15-122", "term": 2}])
     b = plan_of(bob, "cmu-me", "Bob keeps", [{"course_code": "24-101", "term": 1}])
     assert client.delete(f"/me/plans/{a['id']}", headers=alice["h"]).status_code in (200, 204)
     assert client.get(f"/me/plans/{a['id']}", headers=alice["h"]).status_code == 404
@@ -156,12 +156,12 @@ USER_SCOPED = [
     ("PATCH", "/me/profile", {"grad_year": 2030}),
     ("PATCH", "/me/password", {"current_password": "a", "new_password": "bbbbbbbbbb"}),
     ("GET", "/me/plans", None),
-    ("POST", "/me/plans", {"program_id": "nyu-cs", "name": "x"}),
+    ("POST", "/me/plans", {"program_id": "cmu-cs", "name": "x"}),
     ("GET", "/me/plans/1", None),
     ("PATCH", "/me/plans/1", {"name": "x"}),
     ("DELETE", "/me/plans/1", None),
     ("PUT", "/me/plans/1/entries", []),
-    ("PATCH", "/me/plans/1/entries/CSCI-UA 102", {"term": 1}),
+    ("PATCH", "/me/plans/1/entries/15-122", {"term": 1}),
     ("GET", "/me/plans/1/evaluate", None),
 ]
 
@@ -246,7 +246,7 @@ def test_all_me_routes_require_authentication():
         if not path.startswith("/me"):
             continue
         for method in (getattr(route, "methods", set()) or set()) - {"HEAD", "OPTIONS"}:
-            url = path.replace("{plan_id}", "1").replace("{code}", "CSCI-UA 102")
+            url = path.replace("{plan_id}", "1").replace("{code}", "15-122")
             r = client.request(method, url, json={} if method != "GET" else None)
             assert r.status_code == 401, f"{method} {path} -> {r.status_code} (unscoped?)"
             checked += 1

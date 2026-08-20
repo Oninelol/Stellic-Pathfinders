@@ -1,29 +1,29 @@
 {
-  "school": "NYU",
+  "school": "CMU",
   "program": {
-    "id": "nyu-enve",
-    "name": "Environmental Engineering, B.S.",
-    "descriptor": "ENVIRONMENTAL ENG BS · TANDON",
+    "id": "cmu-ce",
+    "name": "Civil Engineering, B.S.",
+    "descriptor": "CIVIL ENG BS · CIT",
     "degree": "BS",
-    "catalog_year": "2026",
-    "unit_label": "credits",
-    "unit_abbr": "cr",
-    "total_units": 129,
-    "tab": "Environmental Engineering",
+    "catalog_year": "2025",
+    "unit_label": "units",
+    "unit_abbr": "u",
+    "total_units": 384,
+    "tab": "Civil Engineering",
     "tiers": [
       "FIRST YEAR",
-      "MATH & SCIENCE",
-      "ENVIRONMENTAL CORE",
-      "WATER & TREATMENT",
-      "CAPSTONE & ELECTIVES"
+      "MECHANICS & MATH",
+      "SYSTEMS & COMPUTING",
+      "ENVIRONMENT & FLUIDS",
+      "DESIGN & MANAGEMENT"
     ],
     "grad": "Spring 2028",
     "year": "SOPHOMORE",
-    "key": "CE-UY 2213",
-    "keyname": "Fluid Mechanics and Hydraulics",
-    "headline": "Register for CE-UY 2213 — Water Resources Engineering and Hydrology are both waiting on it.",
-    "blurb": "Fluid Mechanics and Hydraulics is the gate into the water sequence. Until it clears, Water Resources Engineering will not register, and the treatment courses behind it slide a year.",
-    "snapshot": "45 of 129 credits are in the bank with 13 more in progress. The gap isn't effort, it's sequencing: Fluid Mechanics and Hydraulics never made it onto a schedule, and the courses above it are still waiting.",
+    "key": "12-355",
+    "keyname": "Fluid Mechanics",
+    "headline": "Register for 12-355 — the Fluid Mechanics Lab cannot run before it.",
+    "blurb": "Fluid Mechanics gates its own lab. The draft has the lab in the same term, which will not register; the lab has to move a term later.",
+    "snapshot": "110 of 384 units are in the bank with 40 more in progress. The gap isn't effort, it's sequencing: Fluid Mechanics never made it onto a schedule, and the courses above it are still waiting.",
     "needs_requirements": true
   },
   "terms": [
@@ -31,14 +31,14 @@
       "index": 0,
       "key": "F24",
       "label": "Fall 2024",
-      "tag": "FRESHMAN",
+      "tag": "FIRST YEAR",
       "status": "done"
     },
     {
       "index": 1,
       "key": "S25",
       "label": "Spring 2025",
-      "tag": "FRESHMAN",
+      "tag": "FIRST YEAR",
       "status": "done"
     },
     {
@@ -88,16 +88,16 @@
     {
       "group": "major",
       "name": "Major sequence",
-      "done": 3,
-      "in_progress": 2,
-      "total": 14,
-      "count": "3 of 14 courses",
+      "done": 5,
+      "in_progress": 3,
+      "total": 17,
+      "count": "5 of 17 courses",
       "missing": [
-        "CE-UY 2213",
-        "CE-UY 2253",
-        "CE-UY 3013",
-        "CE-UY 3243",
-        "CE-UY 3263"
+        "12-301",
+        "12-351",
+        "12-355",
+        "12-356",
+        "12-335"
       ]
     },
     {
@@ -105,64 +105,53 @@
       "name": "Mathematics",
       "done": 3,
       "in_progress": 1,
-      "total": 4,
-      "count": "3 of 4 courses",
-      "missing": []
+      "total": 5,
+      "count": "3 of 5 courses",
+      "missing": [
+        "36-220"
+      ]
     },
     {
       "group": "sci",
       "name": "Science",
-      "done": 4,
-      "in_progress": 0,
-      "total": 4,
-      "count": "4 of 4 courses",
-      "missing": []
+      "done": 3,
+      "in_progress": 1,
+      "total": 5,
+      "count": "3 of 5 courses",
+      "missing": [
+        "27-357"
+      ]
     },
     {
       "group": "huss",
       "name": "Humanities & social sciences",
-      "done": 3,
-      "in_progress": 1,
-      "total": 6,
-      "count": "3 of 6 courses",
+      "done": 1,
+      "in_progress": 0,
+      "total": 2,
+      "count": "1 of 2 courses",
       "missing": [
-        "HUSS-UY 1",
-        "HUSS-UY 2"
+        "GEN-2"
       ]
     },
     {
       "group": "free",
       "name": "Free electives",
-      "done": 0,
+      "done": 1,
       "in_progress": 0,
-      "total": 1,
-      "count": "0 of 1 courses",
+      "total": 3,
+      "count": "1 of 3 courses",
       "missing": [
-        "FREE-UY 1"
+        "ELEC-1",
+        "ELEC-2"
       ]
     }
   ],
   "requirements": [],
   "courses": [
     {
-      "c": "MA-UY 1024",
-      "n": "Calculus I for Engineers",
-      "cr": 4,
-      "t": 0,
-      "s": "done",
-      "g": "math",
-      "tier": 0,
-      "req": [],
-      "anti": [],
-      "offering": "Summer · Fall · Spring",
-      "offering_source": "derived",
-      "needs_review": false,
-      "review_note": null
-    },
-    {
-      "c": "EG-UY 1004",
-      "n": "Introduction to Engineering and Design",
-      "cr": 4,
+      "c": "12-100",
+      "n": "Exploring CEE: Infrastructure and Environment in a Changing World",
+      "cr": 12,
       "t": 0,
       "s": "done",
       "g": "major",
@@ -175,79 +164,13 @@
       "review_note": null
     },
     {
-      "c": "EXPOS-UA 1",
-      "n": "Writing as Inquiry",
-      "cr": 4,
+      "c": "21-120",
+      "n": "Differential and Integral Calculus",
+      "cr": 10,
       "t": 0,
       "s": "done",
-      "g": "huss",
-      "gen": 1,
-      "req": [],
-      "anti": [],
-      "offering": "Summer · Fall · Spring",
-      "offering_source": "derived",
-      "needs_review": false,
-      "review_note": null
-    },
-    {
-      "c": "MA-UY 1124",
-      "n": "Calculus II for Engineers",
-      "cr": 4,
-      "t": 1,
-      "s": "done",
       "g": "math",
-      "tier": 1,
-      "req": [
-        "MA-UY 1024"
-      ],
-      "anti": [],
-      "offering": "Summer · Fall · Spring",
-      "offering_source": "derived",
-      "needs_review": false,
-      "review_note": null
-    },
-    {
-      "c": "PH-UY 1013",
-      "n": "Mechanics",
-      "cr": 3,
-      "t": 1,
-      "s": "done",
-      "g": "sci",
-      "tier": 1,
-      "req": [
-        "MA-UY 1024"
-      ],
-      "anti": [],
-      "offering": "Summer · Fall · Spring",
-      "offering_source": "derived",
-      "needs_review": false,
-      "review_note": null
-    },
-    {
-      "c": "EXPOS-UA 22",
-      "n": "Advanced Writing for Engineers",
-      "cr": 4,
-      "t": 1,
-      "s": "done",
-      "g": "huss",
-      "gen": 1,
-      "req": [
-        "EXPOS-UA 1"
-      ],
-      "anti": [],
-      "offering": "Summer · Fall · Spring",
-      "offering_source": "derived",
-      "needs_review": false,
-      "review_note": null
-    },
-    {
-      "c": "CE-UY 1002",
-      "n": "Intro to Civil and Environmental Engineering",
-      "cr": 2,
-      "t": 1,
-      "s": "done",
-      "g": "major",
-      "tier": 1,
+      "tier": 0,
       "req": [],
       "anti": [],
       "offering": "Summer · Fall · Spring",
@@ -256,9 +179,9 @@
       "review_note": null
     },
     {
-      "c": "CM-UY 1003",
-      "n": "General Chemistry for Engineers",
-      "cr": 3,
+      "c": "33-141",
+      "n": "Physics I for Engineering Students",
+      "cr": 12,
       "t": 0,
       "s": "done",
       "g": "sci",
@@ -271,12 +194,61 @@
       "review_note": null
     },
     {
-      "c": "CS-UY 1113",
-      "n": "Problem Solving and Programming I",
+      "c": "99-101",
+      "n": "Core@CMU",
+      "cr": 3,
+      "t": 0,
+      "s": "done",
+      "g": "free",
+      "gen": 1,
+      "req": [],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "21-122",
+      "n": "Integration and Approximation",
+      "cr": 10,
+      "t": 1,
+      "s": "done",
+      "g": "math",
+      "tier": 1,
+      "req": [
+        "21-120"
+      ],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "33-142",
+      "n": "Physics II for Engineering and Physics Students",
+      "cr": 12,
+      "t": 1,
+      "s": "done",
+      "g": "sci",
+      "tier": 1,
+      "req": [
+        "33-141"
+      ],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "09-101",
+      "n": "Introduction to Experimental Chemistry",
       "cr": 3,
       "t": 1,
       "s": "done",
-      "g": "major",
+      "g": "sci",
       "tier": 1,
       "req": [],
       "anti": [],
@@ -286,96 +258,15 @@
       "review_note": null
     },
     {
-      "c": "MA-UY 2034",
-      "n": "Linear Algebra and Differential Equations",
-      "cr": 4,
+      "c": "12-200",
+      "n": "CEE Challenges: Design in a Changing World",
+      "cr": 9,
       "t": 2,
       "s": "done",
-      "g": "math",
-      "tier": 2,
-      "req": [
-        "MA-UY 1124"
-      ],
-      "anti": [],
-      "offering": "Fall · Spring",
-      "offering_source": "derived",
-      "needs_review": false,
-      "review_note": null
-    },
-    {
-      "c": "PH-UY 2023",
-      "n": "Electricity, Magnetism, & Fluids",
-      "cr": 3,
-      "t": 2,
-      "s": "done",
-      "g": "sci",
-      "tier": 2,
-      "req": [
-        "PH-UY 1013"
-      ],
-      "anti": [],
-      "offering": "Fall · Spring",
-      "offering_source": "derived",
-      "needs_review": false,
-      "review_note": null
-    },
-    {
-      "c": "BMS-UY 1003",
-      "n": "Introduction to Cell and Molecular Biology",
-      "cr": 3,
-      "t": 2,
-      "s": "done",
-      "g": "sci",
-      "tier": 2,
-      "req": [],
-      "anti": [],
-      "offering": "Summer · Fall · Spring",
-      "offering_source": "derived",
-      "needs_review": false,
-      "review_note": null
-    },
-    {
-      "c": "URB-UY 2334",
-      "n": "Environmental Studies",
-      "cr": 4,
-      "t": 2,
-      "s": "done",
-      "g": "huss",
-      "gen": 1,
-      "req": [],
-      "anti": [],
-      "offering": "Fall · Spring",
-      "offering_source": "derived",
-      "needs_review": false,
-      "review_note": null
-    },
-    {
-      "c": "MA-UY 2224",
-      "n": "Probability and Statistics for Engineers",
-      "cr": 4,
-      "t": 3,
-      "s": "current",
-      "g": "math",
-      "tier": 2,
-      "req": [
-        "MA-UY 1124"
-      ],
-      "anti": [],
-      "offering": "Spring",
-      "offering_source": "derived",
-      "needs_review": false,
-      "review_note": null
-    },
-    {
-      "c": "CE-UY 2112",
-      "n": "Structural Statics",
-      "cr": 2,
-      "t": 3,
-      "s": "current",
       "g": "major",
-      "tier": 2,
+      "tier": 1,
       "req": [
-        "PH-UY 1013"
+        "12-100"
       ],
       "anti": [],
       "offering": "Fall · Spring",
@@ -384,85 +275,100 @@
       "review_note": null
     },
     {
-      "c": "CE-UY 3223",
-      "n": "Fundamentals of Environmental Engineering",
-      "cr": 3,
-      "t": 3,
-      "s": "current",
+      "c": "12-212",
+      "n": "Statics",
+      "cr": 9,
+      "t": 2,
+      "s": "done",
       "g": "major",
-      "tier": 3,
+      "tier": 1,
       "req": [
-        "CM-UY 1003"
-      ],
-      "anti": [],
-      "offering": "Fall · Spring",
-      "offering_source": "derived",
-      "needs_review": false,
-      "review_note": null
-    },
-    {
-      "c": "URB-UY 3834",
-      "n": "Environmental Policy",
-      "cr": 4,
-      "t": 3,
-      "s": "current",
-      "g": "huss",
-      "gen": 1,
-      "req": [
-        "URB-UY 2334"
-      ],
-      "anti": [],
-      "offering": "Fall · Spring",
-      "offering_source": "derived",
-      "needs_review": false,
-      "review_note": null
-    },
-    {
-      "c": "CE-UY 2213",
-      "n": "Fluid Mechanics and Hydraulics",
-      "cr": 3,
-      "t": 4,
-      "s": "todo",
-      "g": "major",
-      "tier": 2,
-      "req": [
-        "PH-UY 1013",
-        "MA-UY 1124"
+        "21-120",
+        "33-141"
       ],
       "anti": [],
       "key": 1,
-      "offering": "Spring",
+      "offering": "Fall · Spring",
       "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
     {
-      "c": "CE-UY 2253",
-      "n": "Hydrology",
-      "cr": 3,
-      "t": 4,
-      "s": "plan",
+      "c": "12-233",
+      "n": "CEE Infrastructure Systems in Action",
+      "cr": 2,
+      "t": 2,
+      "s": "done",
       "g": "major",
-      "tier": 3,
+      "tier": 1,
+      "req": [],
+      "anti": [],
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "21-259",
+      "n": "Calculus in Three Dimensions",
+      "cr": 9,
+      "t": 2,
+      "s": "done",
+      "g": "math",
+      "tier": 2,
       "req": [
-        "CE-UY 2213"
+        "21-122"
+      ],
+      "anti": [
+        "21-254"
+      ],
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "15-110",
+      "n": "Principles of Computing",
+      "cr": 10,
+      "t": 2,
+      "s": "done",
+      "g": "major",
+      "tier": 1,
+      "req": [],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "12-231",
+      "n": "Solid Mechanics",
+      "cr": 9,
+      "t": 3,
+      "s": "current",
+      "g": "major",
+      "tier": 2,
+      "req": [
+        "12-212"
       ],
       "anti": [],
-      "offering": "Spring",
+      "offering": "Fall · Spring",
       "offering_source": "derived",
-      "needs_review": false,
-      "review_note": null
+      "needs_review": true,
+      "review_note": "Prerequisite inferred from the published sequence order, not a stated prerequisite."
     },
     {
-      "c": "CE-UY 3013",
-      "n": "Computing in Civil Engineering",
-      "cr": 3,
-      "t": 4,
-      "s": "plan",
+      "c": "12-234",
+      "n": "Sensing and Data Acquisition for Engineering Systems",
+      "cr": 4,
+      "t": 3,
+      "s": "current",
       "g": "major",
-      "tier": 3,
+      "tier": 2,
       "req": [
-        "CS-UY 1113"
+        "12-233"
       ],
       "anti": [],
       "offering": "Fall · Spring",
@@ -471,46 +377,133 @@
       "review_note": null
     },
     {
-      "c": "CE-UY 3243",
-      "n": "Water Resources Engineering",
-      "cr": 3,
+      "c": "12-271",
+      "n": "Computation and Data Science for Civil & Environmental Engineering",
+      "cr": 9,
+      "t": 3,
+      "s": "current",
+      "g": "major",
+      "tier": 2,
+      "req": [
+        "15-110"
+      ],
+      "anti": [],
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "21-260",
+      "n": "Differential Equations",
+      "cr": 9,
+      "t": 3,
+      "s": "current",
+      "g": "math",
+      "tier": 2,
+      "req": [
+        "21-122"
+      ],
+      "anti": [],
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "09-105",
+      "n": "Introduction to Modern Chemistry I",
+      "cr": 9,
+      "t": 3,
+      "s": "current",
+      "g": "sci",
+      "tier": 2,
+      "req": [
+        "09-101"
+      ],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "12-301",
+      "n": "CEE Projects: Integrating the Built, Natural and Information Environments",
+      "cr": 9,
+      "t": 4,
+      "s": "plan",
+      "g": "major",
+      "tier": 3,
+      "req": [
+        "12-200"
+      ],
+      "anti": [],
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "12-351",
+      "n": "Environmental Engineering",
+      "cr": 9,
+      "t": 4,
+      "s": "plan",
+      "g": "major",
+      "tier": 3,
+      "req": [
+        "09-105"
+      ],
+      "anti": [],
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "12-355",
+      "n": "Fluid Mechanics",
+      "cr": 9,
+      "t": 4,
+      "s": "todo",
+      "g": "major",
+      "tier": 3,
+      "req": [
+        "12-212",
+        "21-260"
+      ],
+      "anti": [],
+      "key": 1,
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": true,
+      "review_note": "Prerequisite inferred from the published sequence order, not a stated prerequisite."
+    },
+    {
+      "c": "12-356",
+      "n": "Fluid Mechanics Lab",
+      "cr": 2,
       "t": 4,
       "s": "blocked",
       "g": "major",
       "ghost": 1,
-      "note": "DEFERRED — NEEDS CE-UY 2213 FIRST",
-      "offering": "Spring",
+      "note": "DEFERRED — NEEDS 12-355 FIRST",
+      "offering": "Fall · Spring",
       "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
     {
-      "c": "CE-UY 3243",
-      "n": "Water Resources Engineering",
-      "cr": 3,
+      "c": "12-356",
+      "n": "Fluid Mechanics Lab",
+      "cr": 2,
       "t": 5,
       "s": "plan",
       "g": "major",
       "tier": 3,
       "req": [
-        "CE-UY 2213"
-      ],
-      "anti": [],
-      "offering": "Spring",
-      "offering_source": "derived",
-      "needs_review": false,
-      "review_note": null
-    },
-    {
-      "c": "CE-UY 3263",
-      "n": "Environmental Chemistry",
-      "cr": 3,
-      "t": 5,
-      "s": "plan",
-      "g": "major",
-      "tier": 3,
-      "req": [
-        "CE-UY 3223"
+        "12-355"
       ],
       "anti": [],
       "offering": "Fall · Spring",
@@ -519,15 +512,116 @@
       "review_note": null
     },
     {
-      "c": "CE-UY 3233",
-      "n": "Water and Wastewater Treatment",
-      "cr": 3,
+      "c": "36-220",
+      "n": "Engineering Statistics and Quality Control",
+      "cr": 9,
+      "t": 4,
+      "s": "plan",
+      "g": "math",
+      "tier": 3,
+      "req": [
+        "21-122"
+      ],
+      "anti": [],
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "12-335",
+      "n": "Soil Mechanics",
+      "cr": 9,
       "t": 5,
       "s": "plan",
       "g": "major",
+      "tier": 3,
+      "req": [
+        "12-231"
+      ],
+      "anti": [],
+      "offering": "Spring",
+      "offering_source": "derived",
+      "needs_review": true,
+      "review_note": "Prerequisite inferred from the published sequence order, not a stated prerequisite."
+    },
+    {
+      "c": "27-357",
+      "n": "Introduction to Materials Selection",
+      "cr": 6,
+      "t": 5,
+      "s": "plan",
+      "g": "sci",
+      "tier": 3,
+      "req": [],
+      "anti": [],
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "12-371",
+      "n": "Advanced Computing and Problem Solving in Civil and Environmental Engineering",
+      "cr": 9,
+      "t": 5,
+      "s": "plan",
+      "g": "major",
+      "tier": 3,
+      "req": [
+        "12-271"
+      ],
+      "anti": [],
+      "offering": "Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "12-333",
+      "n": "Experimental & Sensing Systems Design and Computation for Infrastructure Systems",
+      "cr": 4,
+      "t": 5,
+      "s": "plan",
+      "g": "major",
+      "tier": 3,
+      "req": [
+        "12-234"
+      ],
+      "anti": [],
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "12-401",
+      "n": "CEE Design: Imagine, Build, Test",
+      "cr": 12,
+      "t": 6,
+      "s": "plan",
+      "g": "major",
       "tier": 4,
       "req": [
-        "CE-UY 3223"
+        "12-301",
+        "12-335"
+      ],
+      "anti": [],
+      "offering": "Spring",
+      "offering_source": "derived",
+      "needs_review": true,
+      "review_note": "Prerequisite inferred from the published sequence order, not a stated prerequisite."
+    },
+    {
+      "c": "12-411",
+      "n": "Project Management for Engineering and Construction",
+      "cr": 9,
+      "t": 6,
+      "s": "plan",
+      "g": "major",
+      "tier": 4,
+      "req": [
+        "12-301"
       ],
       "anti": [],
       "offering": "Fall",
@@ -536,42 +630,25 @@
       "review_note": null
     },
     {
-      "c": "CE-UY 3273",
-      "n": "Air Pollution Control",
-      "cr": 3,
-      "t": 6,
-      "s": "plan",
-      "g": "major",
-      "tier": 4,
-      "req": [
-        "CE-UY 3223"
-      ],
-      "anti": [],
-      "offering": "Fall",
-      "offering_source": "derived",
-      "needs_review": false,
-      "review_note": null
-    },
-    {
-      "c": "CE-UY 4092",
-      "n": "Leadership, Business, Policy & Ethics",
-      "cr": 2,
-      "t": 6,
-      "s": "plan",
-      "g": "major",
+      "c": "GEN-1",
+      "n": "General Education Course",
+      "cr": 9,
+      "t": 1,
+      "s": "done",
+      "g": "huss",
       "gen": 1,
       "req": [],
       "anti": [],
-      "offering": "Fall",
+      "offering": "Summer · Fall · Spring",
       "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
     {
-      "c": "HUSS-UY 1",
-      "n": "Humanities & Social Sciences Elective",
-      "cr": 4,
-      "t": 6,
+      "c": "GEN-2",
+      "n": "General Education Course",
+      "cr": 9,
+      "t": 5,
       "s": "plan",
       "g": "huss",
       "gen": 1,
@@ -583,30 +660,12 @@
       "review_note": null
     },
     {
-      "c": "CE-UY 4863",
-      "n": "Environmental Engineering Capstone",
-      "cr": 3,
-      "t": 7,
+      "c": "ELEC-1",
+      "n": "Civil Engineering Elective",
+      "cr": 9,
+      "t": 6,
       "s": "plan",
-      "g": "major",
-      "tier": 4,
-      "req": [
-        "CE-UY 3243",
-        "CE-UY 3233"
-      ],
-      "anti": [],
-      "offering": "Fall",
-      "offering_source": "derived",
-      "needs_review": false,
-      "review_note": null
-    },
-    {
-      "c": "HUSS-UY 2",
-      "n": "Humanities & Social Sciences Elective",
-      "cr": 4,
-      "t": 7,
-      "s": "plan",
-      "g": "huss",
+      "g": "free",
       "gen": 1,
       "req": [],
       "anti": [],
@@ -616,9 +675,9 @@
       "review_note": null
     },
     {
-      "c": "FREE-UY 1",
-      "n": "Free Elective",
-      "cr": 3,
+      "c": "ELEC-2",
+      "n": "Civil Engineering Elective",
+      "cr": 9,
       "t": 7,
       "s": "plan",
       "g": "free",

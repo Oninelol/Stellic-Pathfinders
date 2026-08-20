@@ -101,9 +101,9 @@ def test_catalog_and_evaluate_stay_public():
     """Named explicitly: every read-only + evaluate endpoint with NO Authorization."""
     assert client.get("/healthz").status_code == 200
     assert client.get("/schools").status_code == 200
-    assert client.get("/programs/nyu-cs/coursemap").status_code == 200
-    assert client.get("/programs/nyu-cs/courses/CSCI-UA 102").status_code == 200
-    assert client.post("/programs/nyu-cs/evaluate", json={"edits": {}}).status_code == 200
+    assert client.get("/programs/cmu-cs/coursemap").status_code == 200
+    assert client.get("/programs/cmu-cs/courses/15-122").status_code == 200
+    assert client.post("/programs/cmu-cs/evaluate", json={"edits": {}}).status_code == 200
 
 
 # --------------------------------------------------------------------------- #
@@ -112,37 +112,37 @@ def test_catalog_and_evaluate_stay_public():
 
 def test_plan_roundtrip_saves_per_user():
     _, headers, _ = new_user()
-    r = client.post("/me/plans", json={"program_id": "nyu-cs", "name": "Main"}, headers=headers)
+    r = client.post("/me/plans", json={"program_id": "cmu-cs", "name": "Main"}, headers=headers)
     assert r.status_code == 201
     pid = r.json()["id"]
     client.put(f"/me/plans/{pid}/entries", headers=headers, json=[
-        {"course_code": "CSCI-UA 102", "term": 2, "status": "COMPLETE", "grade": "A-"},
-        {"course_code": "CSCI-UA 310", "term": 5},
+        {"course_code": "15-122", "term": 2, "status": "COMPLETE", "grade": "A-"},
+        {"course_code": "15-210", "term": 5},
     ])
     got = client.get(f"/me/plans/{pid}", headers=headers).json()
-    assert [e["course_code"] for e in got["entries"]] == ["CSCI-UA 102", "CSCI-UA 310"]
+    assert [e["course_code"] for e in got["entries"]] == ["15-122", "15-210"]
     assert got["is_primary"] is True  # first plan is primary
 
 
 def test_grades_roundtrip_with_basis():
     _, headers, _ = new_user()
-    pid = client.post("/me/plans", json={"program_id": "nyu-cs"}, headers=headers).json()["id"]
+    pid = client.post("/me/plans", json={"program_id": "cmu-cs"}, headers=headers).json()["id"]
     client.put(f"/me/plans/{pid}/entries", headers=headers, json=[
-        {"course_code": "CSCI-UA 102", "term": 2, "status": "COMPLETE",
+        {"course_code": "15-122", "term": 2, "status": "COMPLETE",
          "grade": "B+", "grading_basis": "LETTER"},
         {"course_code": "EXPOS-UA 1", "term": 0, "status": "COMPLETE",
          "grade": "P", "grading_basis": "PASS_FAIL"},
     ])
     entries = {e["course_code"]: e for e in
                client.get(f"/me/plans/{pid}", headers=headers).json()["entries"]}
-    assert entries["CSCI-UA 102"]["grade"] == "B+"
+    assert entries["15-122"]["grade"] == "B+"
     assert entries["EXPOS-UA 1"]["grading_basis"] == "PASS_FAIL"
 
 
 def test_another_users_plan_is_404_not_403():
     _, a_headers, _ = new_user()
     _, b_headers, _ = new_user()
-    pid = client.post("/me/plans", json={"program_id": "nyu-cs"}, headers=a_headers).json()["id"]
+    pid = client.post("/me/plans", json={"program_id": "cmu-cs"}, headers=a_headers).json()["id"]
     for call in (
         lambda: client.get(f"/me/plans/{pid}", headers=b_headers),
         lambda: client.patch(f"/me/plans/{pid}", json={"name": "x"}, headers=b_headers),
@@ -156,16 +156,16 @@ def test_another_users_plan_is_404_not_403():
 def test_plans_are_isolated_per_user():
     _, a, _ = new_user()
     _, b, _ = new_user()
-    client.post("/me/plans", json={"program_id": "nyu-cs", "name": "A plan"}, headers=a)
+    client.post("/me/plans", json={"program_id": "cmu-cs", "name": "A plan"}, headers=a)
     assert [p["name"] for p in client.get("/me/plans", headers=b).json()] == []
     assert [p["name"] for p in client.get("/me/plans", headers=a).json()] == ["A plan"]
 
 
 def test_delete_cascades_entries():
     _, headers, _ = new_user()
-    pid = client.post("/me/plans", json={"program_id": "nyu-cs"}, headers=headers).json()["id"]
+    pid = client.post("/me/plans", json={"program_id": "cmu-cs"}, headers=headers).json()["id"]
     client.put(f"/me/plans/{pid}/entries", headers=headers,
-               json=[{"course_code": "CSCI-UA 102", "term": 2}])
+               json=[{"course_code": "15-122", "term": 2}])
     assert client.delete(f"/me/plans/{pid}", headers=headers).status_code == 204
     from sqlalchemy import select
     from app.db import SessionLocal
@@ -177,7 +177,7 @@ def test_delete_cascades_entries():
 
 def test_setting_second_plan_primary_unsets_the_first():
     _, headers, _ = new_user()
-    p1 = client.post("/me/plans", json={"program_id": "nyu-cs"}, headers=headers).json()
+    p1 = client.post("/me/plans", json={"program_id": "cmu-cs"}, headers=headers).json()
     p2 = client.post("/me/plans", json={"program_id": "cmu-cs"}, headers=headers).json()
     assert p1["is_primary"] and not p2["is_primary"]
     client.patch(f"/me/plans/{p2['id']}", json={"is_primary": True}, headers=headers)
@@ -188,12 +188,12 @@ def test_setting_second_plan_primary_unsets_the_first():
 def test_unknown_program_id_rejected_with_known_list():
     _, headers, _ = new_user()
     r = client.post("/me/plans", json={"program_id": "nope"}, headers=headers)
-    assert r.status_code == 422 and "nyu-cs" in r.json()["detail"]["known_programs"]
+    assert r.status_code == 422 and "cmu-cs" in r.json()["detail"]["known_programs"]
 
 
 def test_unknown_course_saves_and_surfaces_in_unknown_codes():
     _, headers, _ = new_user()
-    pid = client.post("/me/plans", json={"program_id": "nyu-cs"}, headers=headers).json()["id"]
+    pid = client.post("/me/plans", json={"program_id": "cmu-cs"}, headers=headers).json()["id"]
     client.put(f"/me/plans/{pid}/entries", headers=headers,
                json=[{"course_code": "XFER 200", "term": 3}])
     ev = client.get(f"/me/plans/{pid}/evaluate", headers=headers).json()
@@ -203,25 +203,25 @@ def test_unknown_course_saves_and_surfaces_in_unknown_codes():
 def test_plan_evaluate_matches_stateless_evaluate():
     """Acceptance: the two evaluate paths return identical responses."""
     _, headers, _ = new_user()
-    pid = client.post("/me/plans", json={"program_id": "nyu-cs"}, headers=headers).json()["id"]
-    entries = [{"course_code": "CSCI-UA 102", "term": 6}]
+    pid = client.post("/me/plans", json={"program_id": "cmu-cs"}, headers=headers).json()["id"]
+    entries = [{"course_code": "15-122", "term": 6}]
     client.put(f"/me/plans/{pid}/entries", headers=headers, json=entries)
 
     from app import catalog
     from app.routes_user import entries_to_edits
     from app.models import PlanEntry
-    cat = catalog.get("nyu-cs")
-    edits = entries_to_edits(cat, [PlanEntry(course_code="CSCI-UA 102", term=6)])
+    cat = catalog.get("cmu-cs")
+    edits = entries_to_edits(cat, [PlanEntry(course_code="15-122", term=6)])
 
     server = client.get(f"/me/plans/{pid}/evaluate", headers=headers).json()
-    stateless = client.post("/programs/nyu-cs/evaluate", json={"edits": edits}).json()
+    stateless = client.post("/programs/cmu-cs/evaluate", json={"edits": edits}).json()
     assert server == stateless
 
 
 def test_plan_endpoints_require_auth():
     for call in (
         lambda: client.get("/me/plans"),
-        lambda: client.post("/me/plans", json={"program_id": "nyu-cs"}),
+        lambda: client.post("/me/plans", json={"program_id": "cmu-cs"}),
     ):
         assert call().status_code == 401
 
@@ -232,20 +232,20 @@ def test_plan_endpoints_require_auth():
 
 def test_signup_stores_program_and_creates_primary_plan():
     r = client.post("/auth/signup", json={
-        "email": "pat.chen@nyu.edu", "password": "compass2026pass",
-        "program_id": "nyu-ee", "remember": True})
+        "email": "pat.chen@cmu.edu", "password": "compass2026pass",
+        "program_id": "cmu-me", "remember": True})
     assert r.status_code == 201
     user = r.json()["user"]
-    assert user["program_id"] == "nyu-ee"
+    assert user["program_id"] == "cmu-me"
     assert user["initials"] == "PC"          # derived from the email local part
     token = r.json()["token"]
     plans = client.get("/me/plans", headers={"Authorization": f"Bearer {token}"}).json()
-    assert [(p["program_id"], p["is_primary"]) for p in plans] == [("nyu-ee", True)]
+    assert [(p["program_id"], p["is_primary"]) for p in plans] == [("cmu-me", True)]
 
 
 def test_signup_rejects_unknown_program():
     r = client.post("/auth/signup", json={
-        "email": "nobody@nyu.edu", "password": "compass2026pass",
+        "email": "nobody@cmu.edu", "password": "compass2026pass",
         "program_id": "not-a-program"})
     assert r.status_code == 422
     assert "known_programs" in str(r.json()["detail"])
@@ -254,7 +254,7 @@ def test_signup_rejects_unknown_program():
 def test_signup_without_program_still_works():
     # The field is optional: an account can be created and a program chosen later.
     r = client.post("/auth/signup", json={
-        "email": "later@nyu.edu", "password": "compass2026pass"})
+        "email": "later@cmu.edu", "password": "compass2026pass"})
     assert r.status_code == 201
     assert r.json()["user"]["program_id"] is None
     token = r.json()["token"]
@@ -277,8 +277,8 @@ def test_login_returns_program_and_initials():
 
 def test_signup_captures_first_and_last_name():
     r = client.post("/auth/signup", json={
-        "email": "ada.lovelace@nyu.edu", "password": "compass2026pass",
-        "first_name": "Ada", "last_name": "Lovelace", "program_id": "nyu-cbe"})
+        "email": "ada.lovelace@cmu.edu", "password": "compass2026pass",
+        "first_name": "Ada", "last_name": "Lovelace", "program_id": "cmu-cheme"})
     assert r.status_code == 201
     u = r.json()["user"]
     assert (u["first_name"], u["last_name"], u["full_name"]) == ("Ada", "Lovelace", "Ada Lovelace")
@@ -300,7 +300,7 @@ def test_me_returns_the_name_for_the_identity_block():
 
 def test_name_is_optional_and_initials_fall_back_to_email():
     r = client.post("/auth/signup", json={
-        "email": "solo@nyu.edu", "password": "compass2026pass"})
+        "email": "solo@cmu.edu", "password": "compass2026pass"})
     u = r.json()["user"]
     assert u["first_name"] == "" and u["last_name"] == "" and u["full_name"] == ""
     assert u["initials"] == "SO"       # from the email local part

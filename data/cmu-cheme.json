@@ -1,29 +1,29 @@
 {
-  "school": "NYU",
+  "school": "CMU",
   "program": {
-    "id": "nyu-cpe",
-    "name": "Computer Engineering, B.S.",
-    "descriptor": "COMPUTER ENG BS · TANDON",
+    "id": "cmu-cheme",
+    "name": "Chemical Engineering, B.S.",
+    "descriptor": "CHEMICAL ENG BS · CIT",
     "degree": "BS",
-    "catalog_year": "2026",
-    "unit_label": "credits",
-    "unit_abbr": "cr",
-    "total_units": 128,
-    "tab": "Computer Engineering",
+    "catalog_year": "2025",
+    "unit_label": "units",
+    "unit_abbr": "u",
+    "total_units": 391,
+    "tab": "Chemical Engineering",
     "tiers": [
       "FIRST YEAR",
-      "PROGRAMMING & MATH",
-      "CIRCUITS & LOGIC",
-      "ARCHITECTURE",
-      "DESIGN PROJECT"
+      "CHEMISTRY & MATH",
+      "TRANSPORT & THERMO",
+      "REACTION & SEPARATION",
+      "DESIGN & CONTROL"
     ],
     "grad": "Spring 2028",
     "year": "SOPHOMORE",
-    "key": "ECE-UY 2004",
-    "keyname": "Fundamentals of Electric Circuits",
-    "headline": "Register for ECE-UY 2004 — Fundamentals of Electronics I and Embedded Systems are both waiting on it.",
-    "blurb": "Fundamentals of Electric Circuits is the gate into the hardware sequence. Until it clears, Electronics I will not register, and the embedded systems work behind it slides a year.",
-    "snapshot": "44 of 128 credits are in the bank with 12 more in progress. The gap isn't effort, it's sequencing: Fundamentals of Electric Circuits never made it onto a schedule, and the courses above it are still waiting.",
+    "key": "06-323",
+    "keyname": "Heat and Mass Transfer",
+    "headline": "Register for 06-323 — Unit Operations and everything after it wait on this one.",
+    "blurb": "Heat and Mass Transfer is the gate into the separations sequence. Until it clears, Unit Operations will not register, and process design behind it slides a year.",
+    "snapshot": "109 of 391 units are in the bank with 33 more in progress. The gap isn't effort, it's sequencing: Heat and Mass Transfer never made it onto a schedule, and the courses above it are still waiting.",
     "needs_requirements": true
   },
   "terms": [
@@ -31,14 +31,14 @@
       "index": 0,
       "key": "F24",
       "label": "Fall 2024",
-      "tag": "FRESHMAN",
+      "tag": "FIRST YEAR",
       "status": "done"
     },
     {
       "index": 1,
       "key": "S25",
       "label": "Spring 2025",
-      "tag": "FRESHMAN",
+      "tag": "FIRST YEAR",
       "status": "done"
     },
     {
@@ -88,69 +88,68 @@
     {
       "group": "major",
       "name": "Major sequence",
-      "done": 5,
-      "in_progress": 1,
-      "total": 13,
-      "count": "5 of 13 courses",
+      "done": 3,
+      "in_progress": 2,
+      "total": 16,
+      "count": "3 of 16 courses",
       "missing": [
-        "ECE-UY 2004",
-        "CS-UY 2214",
-        "ECE-UY 3114",
-        "ECE-UY 4144",
-        "ECE-UY 4001"
+        "06-322",
+        "06-323",
+        "06-324",
+        "06-310",
+        "06-361"
       ]
     },
     {
       "group": "math",
       "name": "Mathematics",
       "done": 3,
-      "in_progress": 2,
-      "total": 6,
-      "count": "3 of 6 courses",
-      "missing": [
-        "MA-UY 2224"
-      ]
+      "in_progress": 0,
+      "total": 3,
+      "count": "3 of 3 courses",
+      "missing": []
     },
     {
       "group": "sci",
       "name": "Science",
-      "done": 2,
-      "in_progress": 0,
-      "total": 2,
-      "count": "2 of 2 courses",
-      "missing": []
+      "done": 3,
+      "in_progress": 1,
+      "total": 5,
+      "count": "3 of 5 courses",
+      "missing": [
+        "09-217"
+      ]
     },
     {
       "group": "huss",
       "name": "Humanities & social sciences",
       "done": 2,
       "in_progress": 0,
-      "total": 4,
-      "count": "2 of 4 courses",
+      "total": 3,
+      "count": "2 of 3 courses",
       "missing": [
-        "HUSS-UY 1",
-        "HUSS-UY 2"
+        "GEN-2"
       ]
     },
     {
       "group": "free",
       "name": "Free electives",
-      "done": 0,
+      "done": 1,
       "in_progress": 0,
-      "total": 2,
-      "count": "0 of 2 courses",
+      "total": 3,
+      "count": "1 of 3 courses",
       "missing": [
-        "FREE-UY 1",
-        "FREE-UY 2"
+        "ELEC-1",
+        "ELEC-2"
       ]
     }
   ],
   "requirements": [],
   "courses": [
     {
-      "c": "MA-UY 1024",
-      "n": "Calculus I for Engineers",
-      "cr": 4,
+      "c": "21-120",
+      "n": "Differential and Integral Calculus",
+      "cr": 10,
       "t": 0,
       "s": "done",
       "g": "math",
@@ -163,42 +162,12 @@
       "review_note": null
     },
     {
-      "c": "CS-UY 1114",
-      "n": "Intro to Programming & Problem Solving",
-      "cr": 4,
+      "c": "99-101",
+      "n": "Core@CMU",
+      "cr": 3,
       "t": 0,
       "s": "done",
-      "g": "major",
-      "tier": 0,
-      "req": [],
-      "anti": [],
-      "offering": "Summer · Fall · Spring",
-      "offering_source": "derived",
-      "needs_review": false,
-      "review_note": null
-    },
-    {
-      "c": "EG-UY 1004",
-      "n": "Introduction to Engineering and Design",
-      "cr": 4,
-      "t": 0,
-      "s": "done",
-      "g": "major",
-      "tier": 0,
-      "req": [],
-      "anti": [],
-      "offering": "Summer · Fall · Spring",
-      "offering_source": "derived",
-      "needs_review": false,
-      "review_note": null
-    },
-    {
-      "c": "EXPOS-UY 1",
-      "n": "Writing as Inquiry",
-      "cr": 4,
-      "t": 0,
-      "s": "done",
-      "g": "huss",
+      "g": "free",
       "gen": 1,
       "req": [],
       "anti": [],
@@ -208,64 +177,13 @@
       "review_note": null
     },
     {
-      "c": "MA-UY 1124",
-      "n": "Calculus II for Engineers",
-      "cr": 4,
-      "t": 1,
-      "s": "done",
-      "g": "math",
-      "tier": 1,
-      "req": [
-        "MA-UY 1024"
-      ],
-      "anti": [],
-      "offering": "Summer · Fall · Spring",
-      "offering_source": "derived",
-      "needs_review": false,
-      "review_note": null
-    },
-    {
-      "c": "PH-UY 1013",
-      "n": "Mechanics",
-      "cr": 3,
-      "t": 1,
-      "s": "done",
-      "g": "sci",
-      "tier": 1,
-      "req": [
-        "MA-UY 1024"
-      ],
-      "anti": [],
-      "offering": "Summer · Fall · Spring",
-      "offering_source": "derived",
-      "needs_review": false,
-      "review_note": null
-    },
-    {
-      "c": "CS-UY 1134",
-      "n": "Data Structures and Algorithms",
-      "cr": 4,
-      "t": 1,
+      "c": "06-100",
+      "n": "Introduction to Chemical Engineering",
+      "cr": 12,
+      "t": 0,
       "s": "done",
       "g": "major",
-      "tier": 1,
-      "req": [
-        "CS-UY 1114"
-      ],
-      "anti": [],
-      "offering": "Summer · Fall · Spring",
-      "offering_source": "derived",
-      "needs_review": false,
-      "review_note": null
-    },
-    {
-      "c": "ECE-UY 1002",
-      "n": "Intro to Electrical and Computer Engineering",
-      "cr": 2,
-      "t": 1,
-      "s": "done",
-      "g": "major",
-      "tier": 1,
+      "tier": 0,
       "req": [],
       "anti": [],
       "offering": "Summer · Fall · Spring",
@@ -274,66 +192,30 @@
       "review_note": null
     },
     {
-      "c": "MA-UY 2034",
-      "n": "Linear Algebra and Differential Equations",
-      "cr": 4,
-      "t": 2,
-      "s": "done",
-      "g": "math",
-      "tier": 2,
-      "req": [
-        "MA-UY 1124"
-      ],
-      "anti": [],
-      "offering": "Fall · Spring",
-      "offering_source": "derived",
-      "needs_review": false,
-      "review_note": null
-    },
-    {
-      "c": "PH-UY 2023",
-      "n": "Electricity, Magnetism, & Fluids",
-      "cr": 3,
-      "t": 2,
+      "c": "09-105",
+      "n": "Introduction to Modern Chemistry I",
+      "cr": 10,
+      "t": 0,
       "s": "done",
       "g": "sci",
-      "tier": 2,
-      "req": [
-        "PH-UY 1013"
-      ],
+      "tier": 0,
+      "req": [],
       "anti": [],
-      "offering": "Fall · Spring",
+      "offering": "Summer · Fall · Spring",
       "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
     {
-      "c": "CS-UY 2124",
-      "n": "Object Oriented Programming",
-      "cr": 4,
-      "t": 2,
+      "c": "21-122",
+      "n": "Integration and Approximation",
+      "cr": 10,
+      "t": 1,
       "s": "done",
-      "g": "major",
-      "tier": 2,
+      "g": "math",
+      "tier": 1,
       "req": [
-        "CS-UY 1134"
-      ],
-      "anti": [],
-      "offering": "Fall · Spring",
-      "offering_source": "derived",
-      "needs_review": false,
-      "review_note": null
-    },
-    {
-      "c": "EXPOS-UY 22",
-      "n": "Advanced Writing for Engineers",
-      "cr": 4,
-      "t": 2,
-      "s": "done",
-      "g": "huss",
-      "gen": 1,
-      "req": [
-        "EXPOS-UY 1"
+        "21-120"
       ],
       "anti": [],
       "offering": "Summer · Fall · Spring",
@@ -342,15 +224,32 @@
       "review_note": null
     },
     {
-      "c": "MA-UY 2314",
-      "n": "Discrete Mathematics",
-      "cr": 4,
-      "t": 3,
-      "s": "current",
+      "c": "33-141",
+      "n": "Physics I for Engineering Students",
+      "cr": 12,
+      "t": 1,
+      "s": "done",
+      "g": "sci",
+      "tier": 1,
+      "req": [
+        "21-120"
+      ],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "21-254",
+      "n": "Linear Algebra and Vector Calculus for Engineers",
+      "cr": 11,
+      "t": 2,
+      "s": "done",
       "g": "math",
       "tier": 2,
       "req": [
-        "MA-UY 1124"
+        "21-122"
       ],
       "anti": [],
       "offering": "Spring",
@@ -359,50 +258,16 @@
       "review_note": null
     },
     {
-      "c": "ECE-UY 2204",
-      "n": "Digital Logic and State Machine Design",
-      "cr": 4,
-      "t": 3,
-      "s": "current",
+      "c": "06-223",
+      "n": "Chemical Engineering Thermodynamics",
+      "cr": 12,
+      "t": 2,
+      "s": "done",
       "g": "major",
-      "tier": 2,
+      "tier": 1,
       "req": [
-        "ECE-UY 1002"
-      ],
-      "anti": [],
-      "offering": "Fall · Spring",
-      "offering_source": "derived",
-      "needs_review": false,
-      "review_note": null
-    },
-    {
-      "c": "MA-UY 2114",
-      "n": "Calculus III",
-      "cr": 4,
-      "t": 3,
-      "s": "current",
-      "g": "math",
-      "tier": 2,
-      "req": [
-        "MA-UY 1124"
-      ],
-      "anti": [],
-      "offering": "Fall · Spring",
-      "offering_source": "derived",
-      "needs_review": false,
-      "review_note": null
-    },
-    {
-      "c": "ECE-UY 2004",
-      "n": "Fundamentals of Electric Circuits",
-      "cr": 4,
-      "t": 4,
-      "s": "todo",
-      "g": "major",
-      "tier": 2,
-      "req": [
-        "PH-UY 2023",
-        "MA-UY 2034"
+        "06-100",
+        "21-122"
       ],
       "anti": [],
       "key": 1,
@@ -412,16 +277,15 @@
       "review_note": null
     },
     {
-      "c": "CS-UY 2214",
-      "n": "Computer Architecture and Organization",
-      "cr": 4,
-      "t": 4,
-      "s": "plan",
+      "c": "06-222",
+      "n": "Sophomore Chemical Engineering Seminar",
+      "cr": 1,
+      "t": 2,
+      "s": "done",
       "g": "major",
-      "tier": 3,
+      "tier": 1,
       "req": [
-        "CS-UY 2124",
-        "ECE-UY 2204"
+        "06-100"
       ],
       "anti": [],
       "offering": "Fall · Spring",
@@ -430,15 +294,67 @@
       "review_note": null
     },
     {
-      "c": "MA-UY 2224",
-      "n": "Probability and Statistics for Engineers",
-      "cr": 4,
-      "t": 4,
-      "s": "plan",
-      "g": "math",
-      "tier": 3,
+      "c": "09-106",
+      "n": "Modern Chemistry II",
+      "cr": 10,
+      "t": 2,
+      "s": "done",
+      "g": "sci",
+      "tier": 2,
       "req": [
-        "MA-UY 1124"
+        "09-105"
+      ],
+      "anti": [],
+      "offering": "Summer · Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "06-261",
+      "n": "Fluid Mechanics",
+      "cr": 9,
+      "t": 3,
+      "s": "current",
+      "g": "major",
+      "tier": 2,
+      "req": [
+        "06-100",
+        "21-122"
+      ],
+      "anti": [],
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "06-262",
+      "n": "Mathematical Methods of Chemical Engineering",
+      "cr": 12,
+      "t": 3,
+      "s": "current",
+      "g": "major",
+      "tier": 2,
+      "req": [
+        "21-254"
+      ],
+      "anti": [],
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "09-221",
+      "n": "Laboratory I: Introduction to Chemical Analysis",
+      "cr": 12,
+      "t": 3,
+      "s": "current",
+      "g": "sci",
+      "tier": 2,
+      "req": [
+        "09-106"
       ],
       "anti": [],
       "offering": "Spring",
@@ -447,29 +363,118 @@
       "review_note": null
     },
     {
-      "c": "ECE-UY 3114",
-      "n": "Fundamentals of Electronics I",
-      "cr": 4,
+      "c": "06-322",
+      "n": "Junior Chemical Engineering Seminar",
+      "cr": 2,
+      "t": 4,
+      "s": "plan",
+      "g": "major",
+      "tier": 3,
+      "req": [
+        "06-222"
+      ],
+      "anti": [],
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "06-323",
+      "n": "Heat and Mass Transfer",
+      "cr": 9,
+      "t": 4,
+      "s": "todo",
+      "g": "major",
+      "tier": 3,
+      "req": [
+        "06-223",
+        "06-261"
+      ],
+      "anti": [],
+      "key": 1,
+      "offering": "Spring",
+      "offering_source": "derived",
+      "needs_review": true,
+      "review_note": "Prerequisite inferred from the published sequence order, not a stated prerequisite."
+    },
+    {
+      "c": "06-361",
+      "n": "Unit Operations of Chemical Engineering",
+      "cr": 9,
       "t": 4,
       "s": "blocked",
       "g": "major",
       "ghost": 1,
-      "note": "DEFERRED — NEEDS ECE-UY 2004 FIRST",
+      "note": "DEFERRED — NEEDS 06-323 FIRST",
       "offering": "Fall · Spring",
       "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
     {
-      "c": "ECE-UY 3114",
-      "n": "Fundamentals of Electronics I",
-      "cr": 4,
+      "c": "06-324",
+      "n": "Computational Optimization and Machine Learning for Chemical Engineering",
+      "cr": 12,
+      "t": 4,
+      "s": "plan",
+      "g": "major",
+      "tier": 3,
+      "req": [
+        "06-262"
+      ],
+      "anti": [],
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "09-217",
+      "n": "Organic Chemistry I",
+      "cr": 9,
+      "t": 4,
+      "s": "plan",
+      "g": "sci",
+      "tier": 3,
+      "req": [
+        "09-106"
+      ],
+      "anti": [
+        "09-219"
+      ],
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "06-310",
+      "n": "Molecular Foundations of Chemical Engineering",
+      "cr": 9,
+      "t": 4,
+      "s": "plan",
+      "g": "major",
+      "tier": 3,
+      "req": [
+        "09-106"
+      ],
+      "anti": [],
+      "offering": "Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "06-361",
+      "n": "Unit Operations of Chemical Engineering",
+      "cr": 9,
       "t": 5,
       "s": "plan",
       "g": "major",
       "tier": 3,
       "req": [
-        "ECE-UY 2004"
+        "06-323"
       ],
       "anti": [],
       "offering": "Fall · Spring",
@@ -478,16 +483,15 @@
       "review_note": null
     },
     {
-      "c": "ECE-UY 4144",
-      "n": "Intro to Embedded Systems Design",
-      "cr": 4,
+      "c": "06-363",
+      "n": "Transport Process Laboratory",
+      "cr": 9,
       "t": 5,
       "s": "plan",
       "g": "major",
-      "tier": 4,
+      "tier": 3,
       "req": [
-        "ECE-UY 2204",
-        "CS-UY 2214"
+        "06-323"
       ],
       "anti": [],
       "offering": "Spring",
@@ -496,43 +500,147 @@
       "review_note": null
     },
     {
-      "c": "ECE-UY 4001",
-      "n": "ECE Professional Development & Presentation",
-      "cr": 1,
+      "c": "06-364",
+      "n": "Chemical Reaction Engineering",
+      "cr": 9,
       "t": 5,
       "s": "plan",
       "g": "major",
+      "tier": 3,
+      "req": [
+        "06-223",
+        "06-310"
+      ],
+      "anti": [],
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": true,
+      "review_note": "Prerequisite inferred from the published sequence order, not a stated prerequisite."
+    },
+    {
+      "c": "06-421",
+      "n": "Chemical Process Systems Design",
+      "cr": 12,
+      "t": 6,
+      "s": "plan",
+      "g": "major",
+      "tier": 4,
+      "req": [
+        "06-361",
+        "06-364"
+      ],
+      "anti": [],
+      "offering": "Fall",
+      "offering_source": "derived",
+      "needs_review": true,
+      "review_note": "Prerequisite inferred from the published sequence order, not a stated prerequisite."
+    },
+    {
+      "c": "06-423",
+      "n": "Unit Operations Laboratory",
+      "cr": 9,
+      "t": 6,
+      "s": "plan",
+      "g": "major",
+      "tier": 4,
+      "req": [
+        "06-363"
+      ],
+      "anti": [],
+      "offering": "Fall",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "06-463",
+      "n": "Chemical Product Design",
+      "cr": 9,
+      "t": 7,
+      "s": "plan",
+      "g": "major",
+      "tier": 4,
+      "req": [
+        "06-421"
+      ],
+      "anti": [],
+      "offering": "Fall",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "06-464",
+      "n": "Chemical Engineering Process Control",
+      "cr": 9,
+      "t": 7,
+      "s": "plan",
+      "g": "major",
+      "tier": 4,
+      "req": [
+        "06-421"
+      ],
+      "anti": [],
+      "offering": "Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "09-219",
+      "n": "Modern Organic Chemistry",
+      "cr": 10,
+      "t": -1,
+      "s": "alt",
+      "g": "sci",
+      "tier": 3,
+      "req": [
+        "09-106"
+      ],
+      "anti": [
+        "09-217"
+      ],
+      "alt": 1,
+      "offering": "Fall · Spring",
+      "offering_source": "derived",
+      "needs_review": false,
+      "review_note": null
+    },
+    {
+      "c": "76-101",
+      "n": "Interpretation and Argument",
+      "cr": 9,
+      "t": 0,
+      "s": "done",
+      "g": "huss",
       "gen": 1,
       "req": [],
       "anti": [],
-      "offering": "Spring",
+      "offering": "Summer · Fall · Spring",
       "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
     {
-      "c": "ECE-UY 4913",
-      "n": "Design Project I",
-      "cr": 3,
-      "t": 6,
-      "s": "plan",
-      "g": "major",
-      "tier": 4,
-      "req": [
-        "ECE-UY 4144",
-        "ECE-UY 3114"
-      ],
+      "c": "GEN-1",
+      "n": "General Education Course",
+      "cr": 9,
+      "t": 1,
+      "s": "done",
+      "g": "huss",
+      "gen": 1,
+      "req": [],
       "anti": [],
-      "offering": "Spring",
+      "offering": "Summer · Fall · Spring",
       "offering_source": "derived",
       "needs_review": false,
       "review_note": null
     },
     {
-      "c": "HUSS-UY 1",
-      "n": "Humanities & Social Sciences Elective",
-      "cr": 4,
-      "t": 6,
+      "c": "GEN-2",
+      "n": "General Education Course",
+      "cr": 9,
+      "t": 5,
       "s": "plan",
       "g": "huss",
       "gen": 1,
@@ -544,9 +652,9 @@
       "review_note": null
     },
     {
-      "c": "FREE-UY 1",
-      "n": "Free Elective",
-      "cr": 4,
+      "c": "ELEC-1",
+      "n": "Unrestricted Elective",
+      "cr": 9,
       "t": 6,
       "s": "plan",
       "g": "free",
@@ -559,41 +667,9 @@
       "review_note": null
     },
     {
-      "c": "ECE-UY 4923",
-      "n": "Design Project II",
-      "cr": 3,
-      "t": 7,
-      "s": "plan",
-      "g": "major",
-      "tier": 4,
-      "req": [
-        "ECE-UY 4913"
-      ],
-      "anti": [],
-      "offering": "Fall",
-      "offering_source": "derived",
-      "needs_review": false,
-      "review_note": null
-    },
-    {
-      "c": "HUSS-UY 2",
-      "n": "Humanities & Social Sciences Elective",
-      "cr": 4,
-      "t": 7,
-      "s": "plan",
-      "g": "huss",
-      "gen": 1,
-      "req": [],
-      "anti": [],
-      "offering": "Summer · Fall · Spring",
-      "offering_source": "derived",
-      "needs_review": false,
-      "review_note": null
-    },
-    {
-      "c": "FREE-UY 2",
-      "n": "Free Elective",
-      "cr": 4,
+      "c": "ELEC-2",
+      "n": "Unrestricted Elective",
+      "cr": 9,
       "t": 7,
       "s": "plan",
       "g": "free",

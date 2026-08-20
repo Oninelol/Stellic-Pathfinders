@@ -41,10 +41,9 @@ def test_empty_edits_reproduce_seed_derivation(pid):
 # are recorded here rather than papered over; the computed "blocked" is right and
 # the authored course placement is what is wrong. Fixing the tuples (moving the
 # dependent course one term later) is a data change, tracked in PROGRESS.md.
-KNOWN_SAME_TERM_DEFECTS = {
-    "nyu-me": [("ME-UY 2223", "ME-UY 2213")],    # Dynamics vs Statics, both term 4
-    "nyu-enve": [("CE-UY 2253", "CE-UY 2213")],  # Hydrology vs Fluid Mechanics, both term 4
-}
+# The two programs that carried a published same-term prerequisite were NYU's and
+# left with them. Kept as a table so a future defect is recorded, not papered over.
+KNOWN_SAME_TERM_DEFECTS: dict[str, list] = {}
 
 
 @pytest.mark.parametrize("pid", NINE)
@@ -53,43 +52,43 @@ def test_published_plan_blocked_matches_known_defects(pid):
     assert got == set(KNOWN_SAME_TERM_DEFECTS.get(pid, []))
 
 
-def test_seven_programs_are_clean():
+def test_programs_without_known_defects_are_clean():
     clean = [p for p in NINE if p not in KNOWN_SAME_TERM_DEFECTS]
-    assert len(clean) == 7
+    assert clean, "there should be programs to check"
     for pid in clean:
         assert ev(pid).json()["blocked"] == []
 
 
 def test_move_before_prereq_blocks_then_clears():
     # Move Data Structures to the last term: everything downstream is blocked.
-    d = ev("nyu-cs", {"moved": {"CSCI-UA 102": 7}}).json()
+    d = ev("cmu-cs", {"moved": {"15-122": 7}}).json()
     blocked = {b["code"] for b in d["blocked"]}
-    assert "CSCI-UA 201" in blocked and "CSCI-UA 310" in blocked
-    assert all(b["missing"] == ["CSCI-UA 102"] for b in d["blocked"])
+    assert "15-213" in blocked and "15-210" in blocked
+    assert all(b["missing"] == ["15-122"] for b in d["blocked"])
     # Moving it back clears them.
-    assert ev("nyu-cs", {"moved": {"CSCI-UA 102": 2}}).json()["blocked"] == []
+    assert ev("cmu-cs", {"moved": {"15-122": 1}}).json()["blocked"] == []
 
 
 def test_unknown_code_reported_not_rejected():
     """A transfer credit deserves an answer, not a 422."""
-    r = ev("nyu-cs", {"added": [{"c": "XFER 101", "n": "Transfer", "cr": 3,
+    r = ev("cmu-cs", {"added": [{"c": "XFER 101", "n": "Transfer", "cr": 3,
                                  "t": 5, "s": "plan", "g": "free"}]})
     assert r.status_code == 200
     assert r.json()["unknown_codes"] == ["XFER 101"]
 
 
 def test_out_of_range_term_422_names_range():
-    r = ev("nyu-cs", {"moved": {"CSCI-UA 102": 99}})
+    r = ev("cmu-cs", {"moved": {"15-122": 99}})
     assert r.status_code == 422
     assert "0..7" in r.json()["detail"]["error"]
 
 
 def test_status_derived_not_taken_from_seed():
     """A moved course reflects its new term, not the status baked into the seed."""
-    d = ev("nyu-cs", {"moved": {"CSCI-UA 2": 7}}).json()
+    d = ev("cmu-cs", {"moved": {"15-112": 7}}).json()
     # CSCI-UA 2 is 'done' at t0 in the seed; at t7 it must count as planned.
     assert d["totals"]["done"] < client.get(
-        "/programs/nyu-cs/coursemap").json()["meta"]["done_cr"]
+        "/programs/cmu-cs/coursemap").json()["meta"]["done_cr"]
 
 
 def test_conflicts_surface_for_scheduled_anti_pair():
@@ -100,16 +99,16 @@ def test_conflicts_surface_for_scheduled_anti_pair():
 
 
 def test_evaluate_is_stateless_repeatable():
-    a = ev("nyu-cs", {"moved": {"CSCI-UA 102": 6}}).json()
-    b = ev("nyu-cs", {"moved": {"CSCI-UA 102": 6}}).json()
+    a = ev("cmu-cs", {"moved": {"15-122": 6}}).json()
+    b = ev("cmu-cs", {"moved": {"15-122": 6}}).json()
     assert a == b
-    assert ev("nyu-cs").json()["blocked"] == []   # no residue from the edited call
+    assert ev("cmu-cs").json()["blocked"] == []   # no residue from the edited call
 
 
 def test_client_and_server_agree_on_apply_edits():
     """The endpoint applies edits with the same pure function the client mirrors."""
-    cat = catalog.get("nyu-cs")
-    edits = {"moved": {"CSCI-UA 102": 6}, "added": [], "removed": []}
+    cat = catalog.get("cmu-cs")
+    edits = {"moved": {"15-122": 6}, "added": [], "removed": []}
     rows = plan.apply_edits(cat.graph_courses(), edits)
-    moved = [r for r in rows if r["c"] == "CSCI-UA 102" and not r.get("ghost")][0]
+    moved = [r for r in rows if r["c"] == "15-122" and not r.get("ghost")][0]
     assert moved["t"] == 6

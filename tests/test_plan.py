@@ -116,12 +116,12 @@ def test_added_row_is_appended_verbatim():
 def test_apply_edits_on_real_catalog_runs_through_graph():
     from app import catalog, graph
     catalog.load_all.cache_clear()
-    cat = catalog.get("nyu-cs")
+    cat = catalog.get("cmu-cs")
     base = cat.graph_courses()
     # move the real Basic Algorithms one term later
-    edited = plan.apply_edits(base, {"moved": {"CSCI-UA 310": 6}})
+    edited = plan.apply_edits(base, {"moved": {"15-210": 6}})
     assert len(edited) == len(base)
-    moved = [r for r in edited if r["c"] == "CSCI-UA 310" and not r.get("ghost")][0]
+    moved = [r for r in edited if r["c"] == "15-210" and not r.get("ghost")][0]
     assert moved["t"] == 6
     # the edited plan is still a valid graph input
     graph.key_course(edited)

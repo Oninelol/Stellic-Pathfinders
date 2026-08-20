@@ -33,312 +33,21 @@ if str(ROOT) not in sys.path:
 from app import graph  # noqa: E402  (scripts may import app.graph; graph imports no app)
 
 # ---------------------------------------------------------------- term tables
-NYU_TERMS = [
-    ('F24', 'Fall 2024', 'FRESHMAN', 'done'), ('S25', 'Spring 2025', 'FRESHMAN', 'done'),
+CMU_TERMS = [
+    ('F24', 'Fall 2024', 'FIRST YEAR', 'done'), ('S25', 'Spring 2025', 'FIRST YEAR', 'done'),
     ('F25', 'Fall 2025', 'SOPHOMORE', 'done'), ('S26', 'Spring 2026', 'IN PROGRESS', 'current'),
     ('F26', 'Fall 2026', 'JUNIOR · DRAFT', 'plan'), ('S27', 'Spring 2027', 'JUNIOR · DRAFT', 'plan'),
     ('F27', 'Fall 2027', 'SENIOR · DRAFT', 'plan'), ('S28', 'Spring 2028', 'SENIOR · DRAFT', 'plan'),
 ]
-CMU_TERMS = [(k, l, ('FIRST YEAR' if t in ('FRESHMAN',) else t), s) for k, l, t, s in NYU_TERMS]
 
 GROUP_LABEL = {
     'major': 'Major sequence', 'math': 'Mathematics', 'sci': 'Science',
     'huss': 'Humanities & social sciences', 'free': 'Free electives',
 }
 
-# Shared NYU Tandon first-year spine (identical across the engineering majors).
-def tandon_core(prog_intro):
-    """(code,title,cr) rows every Tandon engineering major shares, plus its intro course."""
-    return [
-        ('MA-UY 1024', 'Calculus I for Engineers', 4, 0, 'math', 0, [], [], None),
-        ('EG-UY 1004', 'Introduction to Engineering and Design', 4, 0, 'major', 0, [], [], None),
-        ('EXPOS-UA 1', 'Writing as Inquiry', 4, 0, 'huss', None, [], [], None),
-        ('MA-UY 1124', 'Calculus II for Engineers', 4, 1, 'math', 1, ['MA-UY 1024'], [], None),
-        ('PH-UY 1013', 'Mechanics', 3, 1, 'sci', 1, ['MA-UY 1024'], [], None),
-        ('EXPOS-UA 22', 'Advanced Writing for Engineers', 4, 1, 'huss', None, ['EXPOS-UA 1'], [], None),
-        prog_intro,
-    ]
-
 # ============================================================ PROGRAM TABLES
 PROGRAMS = {}
 
-# ---------------------------------------------------------------- NYU CS (BA)
-PROGRAMS['nyu-cs'] = dict(
-    school='NYU', program='CS BA · COURANT', tab='Computer Science',
-    unit='credits', abbr='cr', total=128, grad='Spring 2028', year='SOPHOMORE',
-    terms=NYU_TERMS, tiers=['PREREQUISITE', 'INTRO SEQUENCE', 'DATA STRUCTURES & MATH',
-                            'SYSTEMS & ALGORITHMS', '400-LEVEL ELECTIVES'],
-    key='MATH-UA 120', keyname='Discrete Mathematics',
-    headline="Register for MATH-UA 120 — Basic Algorithms and Theory of Computation are both waiting on it.",
-    blurb="Discrete Mathematics is the one prerequisite of Basic Algorithms you never scheduled. Until it clears, CSCI-UA 310 will not register, and the 400-level electives stacked behind it all slide a year.",
-    requirements=[
-        {'id': 'cs-required', 'name': 'Required computer science', 'min_courses': 6,
-         'match': {'explicit': ['CSCI-UA 2', 'CSCI-UA 101', 'CSCI-UA 102', 'CSCI-UA 201', 'CSCI-UA 202', 'CSCI-UA 310']}},
-        {'id': 'math-required', 'name': 'Required mathematics', 'min_courses': 2,
-         'match': {'explicit': ['MATH-UA 120', 'MATH-UA 121']}},
-        {'id': 'cs-electives', 'name': '400-level CS electives', 'min_courses': 5,
-         'match': {'any_of': ['CSCI-UA 453', 'CSCI-UA 479', 'CSCI-UA 473', 'CSCI-UA 467', 'CSCI-UA 421', 'CSCI-UA 480']}},
-        {'id': 'college-core', 'name': 'College Core Curriculum', 'min_courses': 6,
-         'match': {'any_of': ['EXPOS-UA 1', 'FYSEM-UA 1', 'CORE-UA 401', 'CORE-UA 550', 'CORE-UA 710', 'CORE-UA 201', 'CORE-UA 301', 'CORE-UA 610']}},
-        {'id': 'language', 'name': 'Foreign language', 'min_courses': 4,
-         'match': {'any_of': ['FREN-UA 1', 'FREN-UA 2', 'FREN-UA 11']}},
-    ],
-    courses=[
-        ('CSCI-UA 2', 'Intro to Computer Programming', 4, 0, 'major', 0, [], [], None),
-        ('MATH-UA 121', 'Calculus I', 4, 0, 'math', 0, [], ['MATH-UA 131'], None),
-        ('EXPOS-UA 1', 'Writing as Inquiry', 4, 0, 'huss', None, [], [], None),
-        ('FYSEM-UA 1', 'First-Year Seminar', 4, 0, 'huss', None, [], [], None),
-        ('CSCI-UA 101', 'Intro to Computer Science', 4, 1, 'major', 1, ['CSCI-UA 2'], [], None),
-        ('CORE-UA 401', 'Texts and Ideas', 4, 1, 'huss', None, [], [], None),
-        ('CORE-UA 550', 'Cultures and Contexts', 4, 1, 'huss', None, [], [], None),
-        ('FREN-UA 1', 'Elementary French I', 4, 1, 'huss', None, [], [], None),
-        ('CSCI-UA 102', 'Data Structures', 4, 2, 'major', 2, ['CSCI-UA 101'], [], None),
-        ('CORE-UA 201', 'Physical Science', 4, 2, 'sci', None, [], [], None),
-        ('FREN-UA 2', 'Elementary French II', 4, 2, 'huss', None, ['FREN-UA 1'], [], None),
-        ('CORE-UA 710', 'Expressive Culture', 4, 2, 'huss', None, [], [], None),
-        ('CSCI-UA 201', 'Computer Systems Organization', 4, 3, 'major', 3, ['CSCI-UA 102'], [], None),
-        ('CORE-UA 301', 'Life Science', 4, 3, 'sci', None, [], [], None),
-        ('FREN-UA 11', 'Intermediate French I', 4, 3, 'huss', None, ['FREN-UA 2'], [], None),
-        ('CORE-UA 610', 'Societies and the Social Sciences', 4, 3, 'huss', None, [], [], None),
-        ('MATH-UA 120', 'Discrete Mathematics', 4, 4, 'math', 1, [], [], 'key'),
-        ('CSCI-UA 202', 'Operating Systems', 4, 4, 'major', 4, ['CSCI-UA 201'], [], None),
-        ('MATH-UA 140', 'Linear Algebra', 4, 4, 'math', 2, ['MATH-UA 121'], [], None),
-        ('CSCI-UA 310', 'Basic Algorithms', 4, 4, 'major', None, [], [], 'ghost'),
-        ('CSCI-UA 310', 'Basic Algorithms', 4, 5, 'major', 3, ['CSCI-UA 102', 'MATH-UA 120', 'MATH-UA 121'], [], None),
-        ('CSCI-UA 453', 'Theory of Computation', 4, 5, 'major', 4, ['CSCI-UA 102', 'MATH-UA 120'], [], None),
-        ('CSCI-UA 479', 'Data Management and Analysis', 4, 5, 'major', 4, ['CSCI-UA 102'], [], None),
-        ('CSCI-UA 473', 'Fundamentals of Machine Learning', 4, 6, 'major', 4, ['CSCI-UA 310', 'MATH-UA 140'], [], None),
-        ('CSCI-UA 467', 'Applied Internet Technology', 4, 6, 'major', 4, ['CSCI-UA 201'], [], None),
-        ('ELEC-UA 1', 'Free Elective', 4, 6, 'free', None, [], [], None),
-        ('CSCI-UA 421', 'Numerical Computing', 4, 7, 'major', 4, ['CSCI-UA 102', 'MATH-UA 140'], [], None),
-        ('CSCI-UA 480', 'Special Topics: Computer Vision', 4, 7, 'major', 4, ['CSCI-UA 310'], [], None),
-        ('ELEC-UA 2', 'Free Elective', 4, 7, 'free', None, [], [], None),
-        ('MATH-UA 131', 'Mathematics for Economics I', 4, -1, 'math', 0, [], ['MATH-UA 121'], 'alt'),
-    ])
-
-# ------------------------------------------------- NYU Tandon: Mechanical (BS)
-PROGRAMS['nyu-me'] = dict(
-    school='NYU', program='MECHANICAL ENG BS · TANDON', tab='Mechanical Engineering',
-    unit='credits', abbr='cr', total=131, grad='Spring 2028', year='SOPHOMORE',
-    terms=NYU_TERMS, tiers=['FIRST YEAR', 'MATH & PHYSICS', 'ENGINEERING SCIENCE',
-                            'MECHANICS & THERMAL', 'DESIGN & CAPSTONE'],
-    key='ME-UY 2213', keyname='Statics',
-    headline="Register for ME-UY 2213 — Mechanics of Materials and Machine Design are both waiting on it.",
-    blurb="Statics is the gate into the mechanics sequence. Until it clears, Mechanics of Materials will not register, and Machine Design and the Structures Practicum behind it slide with it.",
-    courses=tandon_core(('ME-UY 1012', 'Introduction to Mechanical Engineering', 2, 1, 'major', 1, [], [], None)) + [
-        ('CM-UY 1003', 'General Chemistry for Engineers', 3, 0, 'sci', None, [], [], None),
-        ('CS-UY 1113', 'Problem Solving and Programming I', 3, 1, 'major', 1, [], [], None),
-        ('MA-UY 2034', 'Linear Algebra and Differential Equations', 4, 2, 'math', 2, ['MA-UY 1124'], [], None),
-        ('PH-UY 2023', 'Electricity, Magnetism, & Fluids', 3, 2, 'sci', 2, ['PH-UY 1013'], [], None),
-        ('HUSS-UY 1', 'Humanities & Social Sciences Elective', 4, 2, 'huss', None, [], [], None),
-        ('MA-UY 2114', 'Calculus III: Multi-Dimensional Calculus', 4, 3, 'math', 2, ['MA-UY 1124'], [], None),
-        ('ME-UY 2123', 'Engineering Design Methods', 3, 3, 'major', 2, ['EG-UY 1004'], [], None),
-        ('ME-UY 2813', 'Introduction to Materials Science', 3, 3, 'major', 2, ['CM-UY 1003'], [], None),
-        ('HUSS-UY 2', 'Humanities & Social Sciences Elective', 4, 3, 'huss', None, [], [], None),
-        ('ME-UY 2213', 'Statics', 3, 4, 'major', 2, ['PH-UY 1013', 'MA-UY 1124'], [], 'key'),
-        ('ME-UY 2223', 'Dynamics', 3, 4, 'major', 3, ['ME-UY 2213'], [], None),
-        ('ME-UY 3333', 'Thermodynamics', 3, 4, 'major', 3, ['PH-UY 1013', 'MA-UY 2034'], [], None),
-        ('ME-UY 3213', 'Mechanics of Materials', 3, 4, 'major', None, [], [], 'ghost'),
-        ('ME-UY 3213', 'Mechanics of Materials', 3, 5, 'major', 3, ['ME-UY 2213'], [], None),
-        ('ME-UY 3313', 'Fluid Mechanics', 3, 5, 'major', 3, ['ME-UY 2213', 'MA-UY 2114'], [], None),
-        ('ME-UY 3513', 'Measurement Systems', 3, 5, 'major', 3, ['PH-UY 2023'], [], None),
-        ('ME-UY 3811', 'Materials Science Laboratory', 1, 5, 'major', None, ['ME-UY 2813'], [], None),
-        ('ME-UY 3233', 'Machine Design', 3, 6, 'major', 4, ['ME-UY 3213'], [], None),
-        ('ME-UY 3413', 'Automatic Control', 3, 6, 'major', 4, ['ME-UY 2223', 'MA-UY 2034'], [], None),
-        ('ME-UY 4313', 'Heat Transfer', 3, 6, 'major', 4, ['ME-UY 3313', 'ME-UY 3333'], [], None),
-        ('ME-UY 4103', 'Senior Design I', 3, 6, 'major', 4, ['ME-UY 2123', 'ME-UY 3213'], [], None),
-        ('ME-UY 4214', 'Finite Element Modeling, Design and Analysis', 4, 7, 'major', 4, ['ME-UY 3213'], [], None),
-        ('ME-UY 4113', 'Senior Design II', 3, 7, 'major', 4, ['ME-UY 4103'], [], None),
-        ('HUSS-UY 3', 'Humanities & Social Sciences Elective', 4, 7, 'huss', None, [], [], None),
-        ('FREE-UY 1', 'Free Elective', 3, 7, 'free', None, [], [], None),
-    ])
-
-# ----------------------------------------------------- NYU Tandon: Civil (BS)
-PROGRAMS['nyu-ce'] = dict(
-    school='NYU', program='CIVIL ENG BS · TANDON', tab='Civil Engineering',
-    unit='credits', abbr='cr', total=129, grad='Spring 2028', year='SOPHOMORE',
-    terms=NYU_TERMS, tiers=['FIRST YEAR', 'MATH & PHYSICS', 'STRUCTURAL SCIENCE',
-                            'CIVIL SYSTEMS', 'CAPSTONE & ELECTIVES'],
-    key='CE-UY 2112', keyname='Structural Statics',
-    headline="Register for CE-UY 2112 — Strength of Materials and Analysis of Determinate Structures are both waiting on it.",
-    blurb="Structural Statics is the gate into the structures sequence. Until it clears, Strength of Materials will not register, and Structural Engineering behind it slides a year.",
-    courses=tandon_core(('CE-UY 1002', 'Intro to Civil and Environmental Engineering', 2, 1, 'major', 1, [], [], None)) + [
-        ('CM-UY 1003', 'General Chemistry for Engineers', 3, 0, 'sci', None, [], [], None),
-        ('CS-UY 1113', 'Problem Solving and Programming I', 3, 1, 'major', 1, [], [], None),
-        ('MA-UY 2034', 'Linear Algebra and Differential Equations', 4, 2, 'math', 2, ['MA-UY 1124'], [], None),
-        ('PH-UY 2023', 'Electricity, Magnetism, & Fluids', 3, 2, 'sci', 2, ['PH-UY 1013'], [], None),
-        ('CE-UY 2533', 'Construction Project Management', 3, 2, 'major', 2, [], [], None),
-        ('HUSS-UY 1', 'Humanities & Social Sciences Elective', 4, 2, 'huss', None, [], [], None),
-        ('MA-UY 2224', 'Probability and Statistics for Engineers', 4, 3, 'math', 2, ['MA-UY 1124'], [], None),
-        ('CE-UY 2213', 'Fluid Mechanics and Hydraulics', 3, 3, 'major', 3, ['PH-UY 1013'], [], None),
-        ('CE-UY 2343', 'Transportation Engineering', 3, 3, 'major', 3, [], [], None),
-        ('HUSS-UY 2', 'Humanities & Social Sciences Elective', 4, 3, 'huss', None, [], [], None),
-        ('CE-UY 2112', 'Structural Statics', 2, 4, 'major', 2, ['PH-UY 1013', 'MA-UY 1124'], [], 'key'),
-        ('CE-UY 3223', 'Fundamentals of Environmental Engineering', 3, 4, 'major', 3, ['CM-UY 1003'], [], None),
-        ('CE-UY 3013', 'Computing in Civil Engineering', 3, 4, 'major', 3, ['CS-UY 1113'], [], None),
-        ('CE-UY 2143', 'Analysis of Determinate Structures', 3, 4, 'major', None, [], [], 'ghost'),
-        ('CE-UY 2122', 'Strength of Materials', 2, 5, 'major', 3, ['CE-UY 2112'], [], None),
-        ('CE-UY 2143', 'Analysis of Determinate Structures', 3, 5, 'major', 3, ['CE-UY 2112'], [], None),
-        ('CE-UY 3243', 'Water Resources Engineering', 3, 5, 'major', 3, ['CE-UY 2213'], [], None),
-        ('CE-UY 3183', 'Structural Engineering', 3, 6, 'major', 4, ['CE-UY 2143', 'CE-UY 2122'], [], None),
-        ('CE-UY 3153', 'Geotechnical Engineering', 3, 6, 'major', 4, ['CE-UY 2122'], [], None),
-        ('CE-UY 3163', 'Materials for Built Environment', 3, 6, 'major', 4, ['CE-UY 2122'], [], None),
-        ('CE-UY 4092', 'Leadership, Business, Policy & Ethics', 2, 7, 'major', 4, [], [], None),
-        ('CE-UY 4803', 'Civil Engineering Capstone', 3, 7, 'major', 4, ['CE-UY 3183', 'CE-UY 3153'], [], None),
-        ('HUSS-UY 3', 'Humanities & Social Sciences Elective', 4, 7, 'huss', None, [], [], None),
-        ('FREE-UY 1', 'Free Elective', 3, 7, 'free', None, [], [], None),
-    ])
-
-# -------------------------------------------------- NYU Tandon: Computer (BS)
-PROGRAMS['nyu-cpe'] = dict(
-    school='NYU', program='COMPUTER ENG BS · TANDON', tab='Computer Engineering',
-    unit='credits', abbr='cr', total=128, grad='Spring 2028', year='SOPHOMORE',
-    terms=NYU_TERMS, tiers=['FIRST YEAR', 'PROGRAMMING & MATH', 'CIRCUITS & LOGIC',
-                            'ARCHITECTURE', 'DESIGN PROJECT'],
-    key='ECE-UY 2004', keyname='Fundamentals of Electric Circuits',
-    headline="Register for ECE-UY 2004 — Fundamentals of Electronics I and Embedded Systems are both waiting on it.",
-    blurb="Fundamentals of Electric Circuits is the gate into the hardware sequence. Until it clears, Electronics I will not register, and the embedded systems work behind it slides a year.",
-    courses=[
-        ('MA-UY 1024', 'Calculus I for Engineers', 4, 0, 'math', 0, [], [], None),
-        ('CS-UY 1114', 'Intro to Programming & Problem Solving', 4, 0, 'major', 0, [], [], None),
-        ('EG-UY 1004', 'Introduction to Engineering and Design', 4, 0, 'major', 0, [], [], None),
-        ('EXPOS-UY 1', 'Writing as Inquiry', 4, 0, 'huss', None, [], [], None),
-        ('MA-UY 1124', 'Calculus II for Engineers', 4, 1, 'math', 1, ['MA-UY 1024'], [], None),
-        ('PH-UY 1013', 'Mechanics', 3, 1, 'sci', 1, ['MA-UY 1024'], [], None),
-        ('CS-UY 1134', 'Data Structures and Algorithms', 4, 1, 'major', 1, ['CS-UY 1114'], [], None),
-        ('ECE-UY 1002', 'Intro to Electrical and Computer Engineering', 2, 1, 'major', 1, [], [], None),
-        ('MA-UY 2034', 'Linear Algebra and Differential Equations', 4, 2, 'math', 2, ['MA-UY 1124'], [], None),
-        ('PH-UY 2023', 'Electricity, Magnetism, & Fluids', 3, 2, 'sci', 2, ['PH-UY 1013'], [], None),
-        ('CS-UY 2124', 'Object Oriented Programming', 4, 2, 'major', 2, ['CS-UY 1134'], [], None),
-        ('EXPOS-UY 22', 'Advanced Writing for Engineers', 4, 2, 'huss', None, ['EXPOS-UY 1'], [], None),
-        ('MA-UY 2314', 'Discrete Mathematics', 4, 3, 'math', 2, ['MA-UY 1124'], [], None),
-        ('ECE-UY 2204', 'Digital Logic and State Machine Design', 4, 3, 'major', 2, ['ECE-UY 1002'], [], None),
-        ('MA-UY 2114', 'Calculus III', 4, 3, 'math', 2, ['MA-UY 1124'], [], None),
-        ('ECE-UY 2004', 'Fundamentals of Electric Circuits', 4, 4, 'major', 2, ['PH-UY 2023', 'MA-UY 2034'], [], 'key'),
-        ('CS-UY 2214', 'Computer Architecture and Organization', 4, 4, 'major', 3, ['CS-UY 2124', 'ECE-UY 2204'], [], None),
-        ('MA-UY 2224', 'Probability and Statistics for Engineers', 4, 4, 'math', 3, ['MA-UY 1124'], [], None),
-        ('ECE-UY 3114', 'Fundamentals of Electronics I', 4, 4, 'major', None, [], [], 'ghost'),
-        ('ECE-UY 3114', 'Fundamentals of Electronics I', 4, 5, 'major', 3, ['ECE-UY 2004'], [], None),
-        ('ECE-UY 4144', 'Intro to Embedded Systems Design', 4, 5, 'major', 4, ['ECE-UY 2204', 'CS-UY 2214'], [], None),
-        ('ECE-UY 4001', 'ECE Professional Development & Presentation', 1, 5, 'major', None, [], [], None),
-        ('ECE-UY 4913', 'Design Project I', 3, 6, 'major', 4, ['ECE-UY 4144', 'ECE-UY 3114'], [], None),
-        ('HUSS-UY 1', 'Humanities & Social Sciences Elective', 4, 6, 'huss', None, [], [], None),
-        ('FREE-UY 1', 'Free Elective', 4, 6, 'free', None, [], [], None),
-        ('ECE-UY 4923', 'Design Project II', 3, 7, 'major', 4, ['ECE-UY 4913'], [], None),
-        ('HUSS-UY 2', 'Humanities & Social Sciences Elective', 4, 7, 'huss', None, [], [], None),
-        ('FREE-UY 2', 'Free Elective', 4, 7, 'free', None, [], [], None),
-    ])
-
-# ------------------------------------------------ NYU Tandon: Electrical (BS)
-PROGRAMS['nyu-ee'] = dict(
-    school='NYU', program='ELECTRICAL ENG BS · TANDON', tab='Electrical Engineering',
-    unit='credits', abbr='cr', total=128, grad='Spring 2028', year='SOPHOMORE',
-    terms=NYU_TERMS, tiers=['FIRST YEAR', 'MATH & PHYSICS', 'CIRCUITS & LOGIC',
-                            'SIGNALS & FIELDS', 'DESIGN PROJECT'],
-    key='ECE-UY 2004', keyname='Fundamentals of Electric Circuits',
-    headline="Register for ECE-UY 2004 — Fundamentals of Electronics I and Signals and Systems are both waiting on it.",
-    blurb="Fundamentals of Electric Circuits is the gate into the whole electrical sequence. Until it clears, Electronics I will not register, and Signals and Systems behind it slides a year.",
-    courses=[
-        ('MA-UY 1024', 'Calculus I for Engineers', 4, 0, 'math', 0, [], [], None),
-        ('CS-UY 1114', 'Intro to Programming & Problem Solving', 4, 0, 'major', 0, [], [], None),
-        ('EG-UY 1004', 'Introduction to Engineering and Design', 4, 0, 'major', 0, [], [], None),
-        ('EXPOS-UY 1', 'Writing as Inquiry', 4, 0, 'huss', None, [], [], None),
-        ('MA-UY 1124', 'Calculus II for Engineers', 4, 1, 'math', 1, ['MA-UY 1024'], [], None),
-        ('PH-UY 1013', 'Mechanics', 3, 1, 'sci', 1, ['MA-UY 1024'], [], None),
-        ('ECE-UY 1002', 'Intro to Electrical and Computer Engineering', 2, 1, 'major', 1, [], [], None),
-        ('EXPOS-UY 22', 'Advanced Writing for Engineers', 4, 1, 'huss', None, ['EXPOS-UY 1'], [], None),
-        ('PH-UY 2023', 'Electricity, Magnetism, & Fluids', 3, 2, 'sci', 2, ['PH-UY 1013'], [], None),
-        ('ECE-UY 2204', 'Digital Logic and State Machine Design', 4, 2, 'major', 2, ['ECE-UY 1002'], [], None),
-        ('MA-UY 1044', 'Linear Algebra', 4, 2, 'math', 2, ['MA-UY 1124'], [], None),
-        ('HUSS-UY 1', 'Humanities & Social Sciences Elective', 4, 2, 'huss', None, [], [], None),
-        ('MA-UY 2114', 'Calculus III: Multi-Dimensional Calculus', 4, 3, 'math', 2, ['MA-UY 1124'], [], None),
-        ('CS-UY 2163', 'Introduction to Programming in C', 3, 3, 'major', 2, ['CS-UY 1114'], [], None),
-        ('ECE-UY 2233', 'Introduction to Probability', 3, 3, 'math', 3, ['MA-UY 1124'], [], None),
-        ('HUSS-UY 2', 'Humanities & Social Sciences Elective', 4, 3, 'huss', None, [], [], None),
-        ('ECE-UY 2004', 'Fundamentals of Electric Circuits', 4, 4, 'major', 2, ['PH-UY 2023', 'MA-UY 1044'], [], 'key'),
-        ('MA-UY 4204', 'Ordinary Differential Equations', 4, 4, 'math', 3, ['MA-UY 2114'], [], None),
-        ('ECE-UY 4001', 'ECE Professional Development & Presentation', 1, 4, 'major', None, [], [], None),
-        ('ECE-UY 3114', 'Fundamentals of Electronics I', 4, 4, 'major', None, [], [], 'ghost'),
-        ('ECE-UY 3114', 'Fundamentals of Electronics I', 4, 5, 'major', 3, ['ECE-UY 2004'], [], None),
-        ('ECE-UY 3054', 'Signals and Systems', 4, 5, 'major', 3, ['ECE-UY 2004', 'MA-UY 4204'], [], None),
-        ('ECE-UY 3604', 'Electromagnetic Waves', 4, 6, 'major', 4, ['PH-UY 2023', 'MA-UY 2114'], [], None),
-        ('ECE-UY 4913', 'Design Project I', 3, 6, 'major', 4, ['ECE-UY 3114', 'ECE-UY 3054'], [], None),
-        ('HUSS-UY 3', 'Humanities & Social Sciences Elective', 4, 6, 'huss', None, [], [], None),
-        ('ECE-UY 4923', 'Design Project II', 3, 7, 'major', 4, ['ECE-UY 4913'], [], None),
-        ('HUSS-UY 4', 'Humanities & Social Sciences Elective', 4, 7, 'huss', None, [], [], None),
-        ('FREE-UY 1', 'Free Elective', 4, 7, 'free', None, [], [], None),
-    ])
-
-# --------------------------------------- NYU Tandon: Chemical & Biomolecular
-PROGRAMS['nyu-cbe'] = dict(
-    school='NYU', program='CHEMICAL ENG BS · TANDON', tab='Chemical & Biomolecular Eng',
-    unit='credits', abbr='cr', total=128, grad='Spring 2028', year='SOPHOMORE',
-    terms=NYU_TERMS, tiers=['FIRST YEAR', 'CHEMISTRY & MATH', 'PROCESS ANALYSIS',
-                            'TRANSPORT & KINETICS', 'DESIGN & LABORATORY'],
-    key='CBE-UY 2124', keyname='Analysis of Chemical and Biomolecular Processes',
-    headline="Register for CBE-UY 2124 — Thermodynamics and Heat and Mass Transport are both waiting on it.",
-    blurb="Analysis of Chemical and Biomolecular Processes is the gate into the core sequence. Until it clears, Thermodynamics will not register, and Separations and Kinetics behind it slide a year.",
-    courses=tandon_core(('CBE-UY 1002', 'Introduction to CBE', 2, 1, 'major', 1, [], [], None)) + [
-        ('CM-UY 1003', 'General Chemistry for Engineers', 3, 0, 'sci', 0, [], [], None),
-        ('BMS-UY 1003', 'Introduction to Cell and Molecular Biology', 3, 1, 'sci', 1, [], [], None),
-        ('CM-UY 2213', 'Organic Chemistry I', 3, 2, 'sci', 2, ['CM-UY 1003'], [], None),
-        ('MA-UY 2034', 'Linear Algebra and Differential Equations', 4, 2, 'math', 2, ['MA-UY 1124'], [], None),
-        ('PH-UY 2023', 'Electricity, Magnetism, & Fluids', 3, 2, 'sci', 2, ['PH-UY 1013'], [], None),
-        ('CM-UY 2223', 'Organic Chemistry II', 3, 3, 'sci', 3, ['CM-UY 2213'], [], None),
-        ('CM-UY 3714', 'Physical Chemistry I', 4, 3, 'sci', 3, ['CM-UY 1003', 'MA-UY 1124'], [], None),
-        ('MA-UY 2114', 'Calculus III', 4, 3, 'math', 2, ['MA-UY 1124'], [], None),
-        ('CBE-UY 2233', 'Chemical Engineering Computation', 3, 3, 'major', 2, ['MA-UY 2034'], [], None),
-        ('CBE-UY 2124', 'Analysis of Chemical and Biomolecular Processes', 4, 4, 'major', 2, ['CM-UY 1003', 'MA-UY 1124'], [], 'key'),
-        ('CBE-UY 3173', 'Polymeric Materials', 3, 4, 'major', 3, ['CM-UY 2213'], [], None),
-        ('HUSS-UY 1', 'Humanities & Social Sciences Elective', 4, 4, 'huss', None, [], [], None),
-        ('CBE-UY 3153', 'Thermodynamics', 3, 4, 'major', None, [], [], 'ghost'),
-        ('CBE-UY 3153', 'Thermodynamics', 3, 5, 'major', 3, ['CBE-UY 2124'], [], None),
-        ('CBE-UY 3313', 'Heat and Mass Transport', 3, 5, 'major', 3, ['CBE-UY 2124', 'MA-UY 2114'], [], None),
-        ('CBE-UY 3323', 'Fluid Mechanics', 3, 5, 'major', 3, ['CBE-UY 2124'], [], None),
-        ('CBE-UY 3233', 'Separations', 3, 6, 'major', 4, ['CBE-UY 3153', 'CBE-UY 3313'], [], None),
-        ('CBE-UY 3223', 'Kinetics and Reactor Design', 3, 6, 'major', 4, ['CBE-UY 3153'], [], None),
-        ('CBE-UY 4143', 'Process Dynamics and Control', 3, 6, 'major', 4, ['CBE-UY 3313'], [], None),
-        ('CBE-UY 4113', 'Engineering Laboratory I', 3, 7, 'major', 4, ['CBE-UY 3313'], [], None),
-        ('CBE-UY 4163', 'Process Design I', 3, 7, 'major', 4, ['CBE-UY 3233', 'CBE-UY 3223'], [], None),
-        ('HUSS-UY 2', 'Humanities & Social Sciences Elective', 4, 7, 'huss', None, [], [], None),
-    ])
-
-# ---------------------------------------------- NYU Tandon: Environmental (BS)
-PROGRAMS['nyu-enve'] = dict(
-    school='NYU', program='ENVIRONMENTAL ENG BS · TANDON', tab='Environmental Engineering',
-    unit='credits', abbr='cr', total=129, grad='Spring 2028', year='SOPHOMORE',
-    terms=NYU_TERMS, tiers=['FIRST YEAR', 'MATH & SCIENCE', 'ENVIRONMENTAL CORE',
-                            'WATER & TREATMENT', 'CAPSTONE & ELECTIVES'],
-    key='CE-UY 2213', keyname='Fluid Mechanics and Hydraulics',
-    headline="Register for CE-UY 2213 — Water Resources Engineering and Hydrology are both waiting on it.",
-    blurb="Fluid Mechanics and Hydraulics is the gate into the water sequence. Until it clears, Water Resources Engineering will not register, and the treatment courses behind it slide a year.",
-    courses=tandon_core(('CE-UY 1002', 'Intro to Civil and Environmental Engineering', 2, 1, 'major', 1, [], [], None)) + [
-        ('CM-UY 1003', 'General Chemistry for Engineers', 3, 0, 'sci', 0, [], [], None),
-        ('CS-UY 1113', 'Problem Solving and Programming I', 3, 1, 'major', 1, [], [], None),
-        ('MA-UY 2034', 'Linear Algebra and Differential Equations', 4, 2, 'math', 2, ['MA-UY 1124'], [], None),
-        ('PH-UY 2023', 'Electricity, Magnetism, & Fluids', 3, 2, 'sci', 2, ['PH-UY 1013'], [], None),
-        ('BMS-UY 1003', 'Introduction to Cell and Molecular Biology', 3, 2, 'sci', 2, [], [], None),
-        ('URB-UY 2334', 'Environmental Studies', 4, 2, 'huss', None, [], [], None),
-        ('MA-UY 2224', 'Probability and Statistics for Engineers', 4, 3, 'math', 2, ['MA-UY 1124'], [], None),
-        ('CE-UY 2112', 'Structural Statics', 2, 3, 'major', 2, ['PH-UY 1013'], [], None),
-        ('CE-UY 3223', 'Fundamentals of Environmental Engineering', 3, 3, 'major', 3, ['CM-UY 1003'], [], None),
-        ('URB-UY 3834', 'Environmental Policy', 4, 3, 'huss', None, ['URB-UY 2334'], [], None),
-        ('CE-UY 2213', 'Fluid Mechanics and Hydraulics', 3, 4, 'major', 2, ['PH-UY 1013', 'MA-UY 1124'], [], 'key'),
-        ('CE-UY 2253', 'Hydrology', 3, 4, 'major', 3, ['CE-UY 2213'], [], None),
-        ('CE-UY 3013', 'Computing in Civil Engineering', 3, 4, 'major', 3, ['CS-UY 1113'], [], None),
-        ('CE-UY 3243', 'Water Resources Engineering', 3, 4, 'major', None, [], [], 'ghost'),
-        ('CE-UY 3243', 'Water Resources Engineering', 3, 5, 'major', 3, ['CE-UY 2213'], [], None),
-        ('CE-UY 3263', 'Environmental Chemistry', 3, 5, 'major', 3, ['CE-UY 3223'], [], None),
-        ('CE-UY 3233', 'Water and Wastewater Treatment', 3, 5, 'major', 4, ['CE-UY 3223'], [], None),
-        ('CE-UY 3273', 'Air Pollution Control', 3, 6, 'major', 4, ['CE-UY 3223'], [], None),
-        ('CE-UY 4092', 'Leadership, Business, Policy & Ethics', 2, 6, 'major', None, [], [], None),
-        ('HUSS-UY 1', 'Humanities & Social Sciences Elective', 4, 6, 'huss', None, [], [], None),
-        ('CE-UY 4863', 'Environmental Engineering Capstone', 3, 7, 'major', 4, ['CE-UY 3243', 'CE-UY 3233'], [], None),
-        ('HUSS-UY 2', 'Humanities & Social Sciences Elective', 4, 7, 'huss', None, [], [], None),
-        ('FREE-UY 1', 'Free Elective', 3, 7, 'free', None, [], [], None),
-    ])
-
-# ---------------------------------------------------------------- CMU CS (BS)
 PROGRAMS['cmu-cs'] = dict(
     school='CMU', program='CS BS · SCS', tab='Computer Science',
     unit='units', abbr='u', total=360, grad='Spring 2028', year='SOPHOMORE',
@@ -436,12 +145,129 @@ PROGRAMS['cmu-me'] = dict(
     ])
 
 
+# ------------------------------------------------------- CMU Civil Engineering
+# Source: CMU Civil & Environmental Engineering, "Civil Engineering B.S. Course
+# Sequence" (cee.engineering.cmu.edu). Course numbers, titles and unit counts are
+# transcribed from that published sequence; term placement is the sequence's own.
+# Prerequisites are NOT published there — the ones below are inferred from
+# sequence order and carried as needs_review (see REVIEW_NOTES).
+PROGRAMS['cmu-ce'] = dict(
+    school='CMU', program='CIVIL ENG BS · CIT', tab='Civil Engineering',
+    unit='units', abbr='u', total=384, grad='Spring 2028', year='SOPHOMORE',
+    terms=CMU_TERMS, tiers=['FIRST YEAR', 'MECHANICS & MATH', 'SYSTEMS & COMPUTING',
+                            'ENVIRONMENT & FLUIDS', 'DESIGN & MANAGEMENT'],
+    key='12-355', keyname='Fluid Mechanics',
+    headline="Register for 12-355 — the Fluid Mechanics Lab cannot run before it.",
+    blurb="Fluid Mechanics gates its own lab. The draft has the lab in the same term, which will not register; the lab has to move a term later.",
+    courses=[
+        ('12-100', 'Exploring CEE: Infrastructure and Environment in a Changing World', 12, 0, 'major', 0, [], [], None),
+        ('21-120', 'Differential and Integral Calculus', 10, 0, 'math', 0, [], [], None),
+        ('33-141', 'Physics I for Engineering Students', 12, 0, 'sci', 0, [], [], None),
+        ('99-101', 'Core@CMU', 3, 0, 'free', None, [], [], None),
+        ('21-122', 'Integration and Approximation', 10, 1, 'math', 1, ['21-120'], [], None),
+        ('33-142', 'Physics II for Engineering and Physics Students', 12, 1, 'sci', 1, ['33-141'], [], None),
+        ('09-101', 'Introduction to Experimental Chemistry', 3, 1, 'sci', 1, [], [], None),
+        ('12-200', 'CEE Challenges: Design in a Changing World', 9, 2, 'major', 1, ['12-100'], [], None),
+        ('12-212', 'Statics', 9, 2, 'major', 1, ['21-120', '33-141'], [], 'key'),
+        ('12-233', 'CEE Infrastructure Systems in Action', 2, 2, 'major', 1, [], [], None),
+        ('21-259', 'Calculus in Three Dimensions', 9, 2, 'math', 2, ['21-122'], ['21-254'], None),
+        ('15-110', 'Principles of Computing', 10, 2, 'major', 1, [], [], None),
+        ('12-231', 'Solid Mechanics', 9, 3, 'major', 2, ['12-212'], [], None),
+        ('12-234', 'Sensing and Data Acquisition for Engineering Systems', 4, 3, 'major', 2, ['12-233'], [], None),
+        ('12-271', 'Computation and Data Science for Civil & Environmental Engineering', 9, 3, 'major', 2, ['15-110'], [], None),
+        ('21-260', 'Differential Equations', 9, 3, 'math', 2, ['21-122'], [], None),
+        ('09-105', 'Introduction to Modern Chemistry I', 9, 3, 'sci', 2, ['09-101'], [], None),
+        ('12-301', 'CEE Projects: Integrating the Built, Natural and Information Environments', 9, 4, 'major', 3, ['12-200'], [], None),
+        ('12-351', 'Environmental Engineering', 9, 4, 'major', 3, ['09-105'], [], None),
+        ('12-355', 'Fluid Mechanics', 9, 4, 'major', 3, ['12-212', '21-260'], [], 'key'),
+        # seeded student's mis-sequencing: the lab drafted alongside its own
+        # prerequisite. The published sequence puts both in Junior Fall.
+        ('12-356', 'Fluid Mechanics Lab', 2, 4, 'major', None, [], [], 'ghost'),
+        ('12-356', 'Fluid Mechanics Lab', 2, 5, 'major', 3, ['12-355'], [], None),
+        ('36-220', 'Engineering Statistics and Quality Control', 9, 4, 'math', 3, ['21-122'], [], None),
+        ('12-335', 'Soil Mechanics', 9, 5, 'major', 3, ['12-231'], [], None),
+        ('27-357', 'Introduction to Materials Selection', 6, 5, 'sci', 3, [], [], None),
+        ('12-371', 'Advanced Computing and Problem Solving in Civil and Environmental Engineering', 9, 5, 'major', 3, ['12-271'], [], None),
+        ('12-333', 'Experimental & Sensing Systems Design and Computation for Infrastructure Systems', 4, 5, 'major', 3, ['12-234'], [], None),
+        ('12-401', 'CEE Design: Imagine, Build, Test', 12, 6, 'major', 4, ['12-301', '12-335'], [], None),
+        ('12-411', 'Project Management for Engineering and Construction', 9, 6, 'major', 4, ['12-301'], [], None),
+        ('GEN-1', 'General Education Course', 9, 1, 'huss', None, [], [], None),
+        ('GEN-2', 'General Education Course', 9, 5, 'huss', None, [], [], None),
+        ('ELEC-1', 'Civil Engineering Elective', 9, 6, 'free', None, [], [], None),
+        ('ELEC-2', 'Civil Engineering Elective', 9, 7, 'free', None, [], [], None),
+    ])
+
+# ---------------------------------------------------- CMU Chemical Engineering
+# Source: CMU Chemical Engineering, "Curriculum" — sequence for the graduating
+# class of 2028 and beyond (cheme.engineering.cmu.edu). Numbers, titles and units
+# are transcribed from that page; its per-semester unit totals sum to 391, which
+# is the published minimum for the degree. Prerequisites are inferred from
+# sequence order, as above.
+PROGRAMS['cmu-cheme'] = dict(
+    school='CMU', program='CHEMICAL ENG BS · CIT', tab='Chemical Engineering',
+    unit='units', abbr='u', total=391, grad='Spring 2028', year='SOPHOMORE',
+    terms=CMU_TERMS, tiers=['FIRST YEAR', 'CHEMISTRY & MATH', 'TRANSPORT & THERMO',
+                            'REACTION & SEPARATION', 'DESIGN & CONTROL'],
+    key='06-323', keyname='Heat and Mass Transfer',
+    headline="Register for 06-323 — Unit Operations and everything after it wait on this one.",
+    blurb="Heat and Mass Transfer is the gate into the separations sequence. Until it clears, Unit Operations will not register, and process design behind it slides a year.",
+    courses=[
+        ('21-120', 'Differential and Integral Calculus', 10, 0, 'math', 0, [], [], None),
+        ('99-101', 'Core@CMU', 3, 0, 'free', None, [], [], None),
+        ('06-100', 'Introduction to Chemical Engineering', 12, 0, 'major', 0, [], [], None),
+        ('09-105', 'Introduction to Modern Chemistry I', 10, 0, 'sci', 0, [], [], None),
+        ('21-122', 'Integration and Approximation', 10, 1, 'math', 1, ['21-120'], [], None),
+        ('33-141', 'Physics I for Engineering Students', 12, 1, 'sci', 1, ['21-120'], [], None),
+        ('21-254', 'Linear Algebra and Vector Calculus for Engineers', 11, 2, 'math', 2, ['21-122'], [], None),
+        ('06-223', 'Chemical Engineering Thermodynamics', 12, 2, 'major', 1, ['06-100', '21-122'], [], 'key'),
+        ('06-222', 'Sophomore Chemical Engineering Seminar', 1, 2, 'major', 1, ['06-100'], [], None),
+        ('09-106', 'Modern Chemistry II', 10, 2, 'sci', 2, ['09-105'], [], None),
+        ('06-261', 'Fluid Mechanics', 9, 3, 'major', 2, ['06-100', '21-122'], [], None),
+        ('06-262', 'Mathematical Methods of Chemical Engineering', 12, 3, 'major', 2, ['21-254'], [], None),
+        ('09-221', 'Laboratory I: Introduction to Chemical Analysis', 12, 3, 'sci', 2, ['09-106'], [], None),
+        ('06-322', 'Junior Chemical Engineering Seminar', 2, 4, 'major', 3, ['06-222'], [], None),
+        ('06-323', 'Heat and Mass Transfer', 9, 4, 'major', 3, ['06-223', '06-261'], [], 'key'),
+        # seeded student's mis-sequencing, not the published sequence, which
+        # places Unit Operations in Third Year Spring.
+        ('06-361', 'Unit Operations of Chemical Engineering', 9, 4, 'major', None, [], [], 'ghost'),
+        ('06-324', 'Computational Optimization and Machine Learning for Chemical Engineering', 12, 4, 'major', 3, ['06-262'], [], None),
+        ('09-217', 'Organic Chemistry I', 9, 4, 'sci', 3, ['09-106'], ['09-219'], None),
+        ('06-310', 'Molecular Foundations of Chemical Engineering', 9, 4, 'major', 3, ['09-106'], [], None),
+        ('06-361', 'Unit Operations of Chemical Engineering', 9, 5, 'major', 3, ['06-323'], [], None),
+        ('06-363', 'Transport Process Laboratory', 9, 5, 'major', 3, ['06-323'], [], None),
+        ('06-364', 'Chemical Reaction Engineering', 9, 5, 'major', 3, ['06-223', '06-310'], [], None),
+        ('06-421', 'Chemical Process Systems Design', 12, 6, 'major', 4, ['06-361', '06-364'], [], None),
+        ('06-423', 'Unit Operations Laboratory', 9, 6, 'major', 4, ['06-363'], [], None),
+        ('06-463', 'Chemical Product Design', 9, 7, 'major', 4, ['06-421'], [], None),
+        ('06-464', 'Chemical Engineering Process Control', 9, 7, 'major', 4, ['06-421'], [], None),
+        ('09-219', 'Modern Organic Chemistry', 10, -1, 'sci', 3, ['09-106'], ['09-217'], 'alt'),
+        ('76-101', 'Interpretation and Argument', 9, 0, 'huss', None, [], [], None),
+        ('GEN-1', 'General Education Course', 9, 1, 'huss', None, [], [], None),
+        ('GEN-2', 'General Education Course', 9, 5, 'huss', None, [], [], None),
+        ('ELEC-1', 'Unrestricted Elective', 9, 6, 'free', None, [], [], None),
+        ('ELEC-2', 'Unrestricted Elective', 9, 7, 'free', None, [], [], None),
+    ])
+
 # --------------------------------------------------------------------------- #
 # Inferred-prerequisite notes (sidecar so the tuple tables stay 9-wide).
 # These are prerequisites collapsed from CMU's published OR-lists or inferred from
 # sample-sequence order; the seeds carry them as needs_review + review_note.
 # --------------------------------------------------------------------------- #
 REVIEW_NOTES = {
+    # Civil and Chemical publish a sample sequence with numbers, titles and units,
+    # but no prerequisite lists — these are read off the sequence order and must
+    # be confirmed against the department's own prerequisite tables.
+    'cmu-ce': {
+        '12-231': 'Prerequisite inferred from the published sequence order, not a stated prerequisite.',
+        '12-355': 'Prerequisite inferred from the published sequence order, not a stated prerequisite.',
+        '12-335': 'Prerequisite inferred from the published sequence order, not a stated prerequisite.',
+        '12-401': 'Prerequisite inferred from the published sequence order, not a stated prerequisite.',
+    },
+    'cmu-cheme': {
+        '06-323': 'Prerequisite inferred from the published sequence order, not a stated prerequisite.',
+        '06-364': 'Prerequisite inferred from the published sequence order, not a stated prerequisite.',
+        '06-421': 'Prerequisite inferred from the published sequence order, not a stated prerequisite.',
+    },
     'cmu-cs': {
         '10-315': 'Prerequisites inferred from sample-sequence order; program page printed none.',
         '15-259': "Prereq collapsed from CMU's OR-list (21-127 / 15-251 / 21-128 / 15-151) to the "

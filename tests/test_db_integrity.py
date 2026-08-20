@@ -71,22 +71,22 @@ def test_a_plan_cannot_exist_without_a_user():
     with pytest.raises(IntegrityError):
         with engine.begin() as c:
             c.execute(text("insert into plans (user_id, program_id, name) "
-                           "values (999999, 'nyu-cs', 'orphan')"))
+                           "values (999999, 'cmu-cs', 'orphan')"))
 
 
 def test_an_entry_cannot_exist_without_a_plan():
     with pytest.raises(IntegrityError):
         with engine.begin() as c:
             c.execute(text("insert into plan_entries (plan_id, course_code, term) "
-                           "values (999999, 'CSCI-UA 102', 1)"))
+                           "values (999999, '15-122', 1)"))
 
 
 def test_deleting_a_user_cascades_to_their_plans_and_entries():
     with SessionLocal() as db:
         u = _new_user(db, "cascade@example.edu")
-        p = Plan(user_id=u.id, program_id="nyu-cs", name="p")
+        p = Plan(user_id=u.id, program_id="cmu-cs", name="p")
         db.add(p); db.commit(); db.refresh(p)
-        db.add(PlanEntry(plan_id=p.id, course_code="CSCI-UA 102", term=1)); db.commit()
+        db.add(PlanEntry(plan_id=p.id, course_code="15-122", term=1)); db.commit()
         uid, pid = u.id, p.id
 
     # delete the account row directly: the cascade must be the database's doing,
@@ -103,11 +103,11 @@ def test_deleting_a_user_cascades_to_their_plans_and_entries():
 def test_a_course_appears_at_most_once_per_plan():
     with SessionLocal() as db:
         u = _new_user(db, "uniq@example.edu")
-        p = Plan(user_id=u.id, program_id="nyu-cs", name="p")
+        p = Plan(user_id=u.id, program_id="cmu-cs", name="p")
         db.add(p); db.commit(); db.refresh(p)
-        db.add(PlanEntry(plan_id=p.id, course_code="CSCI-UA 102", term=1)); db.commit()
+        db.add(PlanEntry(plan_id=p.id, course_code="15-122", term=1)); db.commit()
         with pytest.raises(IntegrityError):
-            db.add(PlanEntry(plan_id=p.id, course_code="CSCI-UA 102", term=3))
+            db.add(PlanEntry(plan_id=p.id, course_code="15-122", term=3))
             db.commit()
         db.rollback()
 
