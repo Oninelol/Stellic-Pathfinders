@@ -1,0 +1,63 @@
+# Publish the planner to GitHub Pages.
+#
+# Pages serves static files only, so the API does not come along — the build
+# bakes its URL into the page as window.COMPASS_API_BASE. That makes the Pages
+# site a different origin from the API, so the API must list this origin in
+# FRONTEND_ORIGIN or every request from it fails CORS.
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:        # lets you re-publish without a commit
+
+# Pages deployment needs to mint an OIDC token; nothing here writes to the repo.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never let two publishes race; keep the newest, and let a running one finish.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build the static site
+        env:
+          # Where the API actually lives. Set a repository variable of the same
+          # name to point Pages at a different backend without editing this file.
+          API_BASE_URL: ${{ vars.API_BASE_URL || 'https://stellic-pathfinders-theta.vercel.app/api' }}
+        run: python3 scripts/build_static.py
+
+      - name: Verify the build produced a usable page
+        run: |
+          test -f dist/index.html || { echo "dist/index.html missing"; exit 1; }
+          grep -q "COMPASS_API_BASE" dist/index.html \
+            || { echo "API base was not injected — the page would call its own origin"; exit 1; }
+          # Jekyll would otherwise ignore files it does not understand.
+          touch dist/.nojekyll
+          ls -la dist
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

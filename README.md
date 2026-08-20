@@ -51,3 +51,21 @@ the frontend's origin. Set `FRONTEND_ORIGIN` on the API host — it accepts a
 comma-separated list, and the apex and `www` are different origins to a browser:
 
     FRONTEND_ORIGIN=https://flightplans.cc,https://www.flightplans.cc
+
+## Publishing to GitHub Pages
+
+`.github/workflows/pages.yml` publishes the planner on every push to `main`, at
+`https://<owner>.github.io/<repo>/`. Two things need doing once:
+
+1. **Settings → Pages → Source: GitHub Actions.** Without this the workflow runs
+   and the deploy step fails — Pages will not accept an artifact until a source
+   is chosen.
+2. **Allow the Pages origin on the API.** Pages serves static files only, so the
+   API stays where it is and the page calls it cross-origin. Add the Pages URL
+   to `FRONTEND_ORIGIN` on the API host, alongside any other frontends:
+
+       FRONTEND_ORIGIN=https://oninelol.github.io,https://flightplans.cc
+
+To point Pages at a different backend, set a repository variable `API_BASE_URL`
+(Settings → Secrets and variables → Actions → Variables) rather than editing the
+workflow. Re-publish without a commit from the Actions tab via "Run workflow".
