@@ -377,3 +377,55 @@ def test_settings_endpoints_require_auth():
     assert client.patch("/me/profile", json={"grad_year": 2030}).status_code == 401
     assert client.patch("/me/password", json={"current_password": "a",
                                               "new_password": "b"}).status_code == 401
+
+
+# --------------------------------------------------------------------------- #
+# pigeon onboarding answers
+# --------------------------------------------------------------------------- #
+
+def test_pigeon_starts_unanswered_and_round_trips():
+    _, h, _ = new_user()
+    assert client.get("/me", headers=h).json()["pigeon"] is None
+
+    answers = {"fields": ["Technology & Engineering"], "specifics": ["machine learning"],
+               "goals": ["Apply to 3 internships", "Raise my GPA", "Build my resume"],
+               "intl": True}
+    r = client.patch("/me/profile", json={"pigeon": answers}, headers=h)
+    assert r.status_code == 200, r.text
+    assert r.json()["pigeon"] == answers
+    assert client.get("/me", headers=h).json()["pigeon"] == answers
+
+
+def test_pigeon_empty_object_resets_to_unanswered():
+    _, h, _ = new_user()
+    client.patch("/me/profile", json={"pigeon": {"goals": ["a"]}}, headers=h)
+    r = client.patch("/me/profile", json={"pigeon": {}}, headers=h)
+    assert r.json()["pigeon"] is None
+
+
+def test_pigeon_answers_are_per_user():
+    _, ha, _ = new_user()
+    _, hb, _ = new_user()
+    client.patch("/me/profile", json={"pigeon": {"goals": ["alice only"]}}, headers=ha)
+    # B never answered, and must not see A's answers.
+    assert client.get("/me", headers=hb).json()["pigeon"] is None
+    assert client.get("/me", headers=ha).json()["pigeon"] == {"goals": ["alice only"]}
+
+
+def test_pigeon_rejects_oversized_answers():
+    _, h, _ = new_user()
+    r = client.patch("/me/profile", json={"pigeon": {"goals": ["x" * 25000]}}, headers=h)
+    assert r.status_code == 413
+
+
+def test_pigeon_survives_corrupt_stored_json():
+    """A bad row reads as unanswered instead of 500-ing every /me for that user."""
+    from sqlalchemy import select
+    from app.db import SessionLocal
+    from app.models import User
+    u, h, _ = new_user()
+    db = SessionLocal()
+    row = db.scalar(select(User).where(User.email == u["email"]))
+    row.pigeon = "{not json"
+    db.commit()
+    assert client.get("/me", headers=h).json()["pigeon"] is None

@@ -10,6 +10,8 @@ anonymous: the catalog is not user data and evaluation is stateless.
 
 from __future__ import annotations
 
+import json
+
 from typing import Optional
 
 from fastapi import APIRouter, Body, Depends, HTTPException, Response
@@ -55,6 +57,8 @@ class UserOut(BaseModel):
     full_name: str = ""
     avatar: str | None = None
     grad_year: int | None = None
+    # Onboarding answers, or None when the student has not answered yet.
+    pigeon: dict | None = None
 
 
 class TokenOut(BaseModel):
@@ -102,7 +106,20 @@ def _user_out(u: User) -> dict:
             "program_id": u.program_id, "initials": _initials(u),
             "first_name": first, "last_name": last,
             "full_name": " ".join(p for p in (first, last) if p),
-            "avatar": u.avatar, "grad_year": u.grad_year}
+            "avatar": u.avatar, "grad_year": u.grad_year,
+            "pigeon": _pigeon_out(u)}
+
+
+def _pigeon_out(u: User) -> dict | None:
+    """The stored answers, or None. A row that somehow holds bad JSON reads as
+    unanswered rather than breaking every /me response for that student."""
+    if not u.pigeon:
+        return None
+    try:
+        val = json.loads(u.pigeon)
+    except ValueError:
+        return None
+    return val if isinstance(val, dict) else None
 
 
 def _initials(u: User) -> str:
@@ -204,6 +221,8 @@ class ProfileIn(BaseModel):
     program_id: str | None = None
     grad_year: int | None = None
     avatar: str | None = None       # data: URL, or "" to clear the picture
+    # Onboarding answers. {} clears them, which sends the student back to the quiz.
+    pigeon: dict | None = None
 
 
 class PasswordIn(BaseModel):
@@ -214,6 +233,7 @@ class PasswordIn(BaseModel):
 # A profile picture is stored inline as a data: URL. Cap it so the row (and every
 # /me response) stays small; the client downscales before upload.
 AVATAR_MAX_BYTES = 300_000
+PIGEON_MAX_BYTES = 20_000
 GRAD_YEAR_RANGE = (1950, 2100)
 
 
@@ -244,6 +264,16 @@ def update_profile(body: ProfileIn, user: User = Depends(auth.current_user),
                     "error": "avatar_too_large",
                     "message": "That image is too large — please pick one under ~200 KB."})
             user.avatar = av
+    if body.pigeon is not None:
+        if body.pigeon == {}:
+            user.pigeon = None           # explicit reset -> the pigeon asks again
+        else:
+            blob = json.dumps(body.pigeon, ensure_ascii=False)
+            if len(blob) > PIGEON_MAX_BYTES:
+                raise HTTPException(status_code=413, detail={
+                    "error": "pigeon_too_large",
+                    "message": "Those answers are too long to save."})
+            user.pigeon = blob
     if body.first_name is not None:
         user.first_name = body.first_name.strip() or None
     if body.last_name is not None:
