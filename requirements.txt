@@ -8,6 +8,8 @@ email-validator==2.3.0
 SQLAlchemy==2.0.52
 alembic==1.19.1
 PyJWT==2.12.1
+# Postgres driver — required for any deployment that must keep its data
+psycopg[binary]==3.2.3
 
 # Tests
 pytest==8.3.4

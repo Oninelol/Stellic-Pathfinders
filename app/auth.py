@@ -32,7 +32,8 @@ from sqlalchemy.orm import Session
 from app.db import get_db
 from app.models import User
 
-SECRET_KEY = os.environ.get("SECRET_KEY", "dev-only-insecure-key-change-me-in-production-please")
+DEV_SECRET_KEY = "dev-only-insecure-key-change-me-in-production-please"
+SECRET_KEY = os.environ.get("SECRET_KEY") or DEV_SECRET_KEY
 ALGORITHM = "HS256"
 SESSION_HOURS = 12          # a normal login
 REMEMBER_DAYS = 90          # "keep me signed in"
