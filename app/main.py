@@ -48,12 +48,17 @@ def _deployment_warnings() -> list[str]:
 
 app = FastAPI(title="Compass Planner API", version="1.0.0", lifespan=lifespan)
 
-# CORS: local dev origins only. Phase 6 sets the deployed frontend origin from env.
-_extra_origin = os.environ.get("FRONTEND_ORIGIN", "").strip()
+# CORS: localhost is always allowed for development. FRONTEND_ORIGIN adds the
+# deployed frontend when it is served from a DIFFERENT origin than this API —
+# the apex and the www host are separate origins to a browser, so it takes a
+# comma-separated list rather than a single value.
+_frontend_origins = [o.strip().rstrip("/")
+                     for o in os.environ.get("FRONTEND_ORIGIN", "").split(",")
+                     if o.strip()]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[_extra_origin] if _extra_origin else [],
+    allow_origins=_frontend_origins,
     allow_origin_regex=r"https?://(localhost|127\.0\.0\.1)(:\d+)?",
     allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE"],
     allow_headers=["*"],

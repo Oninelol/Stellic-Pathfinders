@@ -10,7 +10,7 @@ PY  ?= python3
 API_PORT ?= 8000
 WEB_PORT ?= 8793
 
-.PHONY: setup run api web test check seeds stop clean
+.PHONY: setup run api web test check seeds stop clean static
 
 setup:
 	$(PY) -m pip install -r requirements.txt
@@ -40,6 +40,9 @@ check:
 seeds:
 	$(PY) scripts/emit_seeds.py
 	$(PY) scripts/validate_catalog.py
+
+static:
+	$(PY) scripts/build_static.py
 
 stop:
 	@pkill -f "uvicorn app.main" 2>/dev/null || true

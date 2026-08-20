@@ -1,0 +1,15 @@
+# Cloudflare Workers static-asset deployment.
+#
+# There is no Worker script: this project's API is FastAPI on Python, which
+# Python Workers cannot run (Pyodide has no PostgreSQL driver — a Worker is
+# expected to reach a database over HTTP, not psycopg). So Cloudflare serves the
+# frontend and the API stays where it can run; scripts/build_static.py bakes the
+# API's URL into the page.
+#
+# `wrangler deploy` uploads ./dist, which the build command produces.
+name = "flightplans"
+compatibility_date = "2026-08-20"
+
+[assets]
+directory = "./dist"
+not_found_handling = "404-page"
