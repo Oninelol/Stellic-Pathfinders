@@ -1,0 +1,401 @@
+/* ---------------------------------------------------------------------------
+   International Student Visa — Figma 421:276 "Desktop - 16".
+
+   The frame is a 1440×1944 two-column board: a full-width header card, a wide
+   left column (738px) and a narrow right rail (394px). Both columns are
+   converted to fr proportions here so the page fills whatever content area the
+   canonical 217px sidebar leaves it.
+
+   Everything that already exists in base.css is reused — .panel, .btn, .check,
+   .divider, .eyebrow, .link, .mascot and the --accent / --panel / --green /
+   --amber / --font-hand tokens. Only two inks are page-local: the frame draws
+   its body copy a good deal lighter than --ink / --ink-2 do, and dropping to
+   the darker global inks would make the whole board read heavier than drawn.
+   --------------------------------------------------------------------------- */
+
+.page-visa {
+  --vs-ink:    #4d4038;   /* row titles + values   (frame; --ink is darker)   */
+  --vs-ink-2:  #73665c;   /* sub-lines + eyebrows  (between --ink-2/--ink-3)  */
+  --vs-track:  #ebe0d4;   /* progress-bar trough                              */
+  --vs-box:    #bfb2a6;   /* unticked checkbox outline                        */
+  --vs-quote:  #8c8073;   /* the planner-warning card's outline               */
+
+  --vs-pad:    50px;      /* left-column card padding                          */
+  --vs-pad-r:  28px;      /* right-rail card padding                           */
+}
+
+/* --- shell ----------------------------------------------------------------- */
+
+/* The frame sets every text box at roughly 1.2× its size; base.css's 1.45 body
+   leading would stretch the whole board by ~300px, so the board takes the
+   frame's leading and the sidebar keeps the site's. */
+.vs-board { display: flex; flex-direction: column; gap: 24px; line-height: 1.25; }
+
+.vs-cols {
+  display: grid;
+  grid-template-columns: minmax(0, 738fr) minmax(0, 394fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.vs-col { display: flex; flex-direction: column; min-width: 0; }
+.vs-col--main { gap: 30px; }   /* frame: 30px between the wide cards          */
+.vs-col--rail { gap: 8px; }    /* frame: the rail cards sit almost flush      */
+
+/* Cards. .panel supplies the surface; the frame draws them borderless at 18px. */
+.vs-card {
+  border-color: transparent;
+  border-radius: 18px;
+  padding: 24px var(--vs-pad) 30px;
+  min-width: 0;
+}
+.vs-card--rail { padding: 22px var(--vs-pad-r) 26px; }
+.vs-card--accent { background: var(--accent-soft); }
+
+/* --- shared type ----------------------------------------------------------- */
+
+.page-visa .eyebrow { color: var(--vs-ink-2); letter-spacing: 1px; }
+.eyebrow--xs { font-size: 10px; }
+
+.vs-title {
+  font-family: var(--font-hand);
+  font-weight: 400;
+  color: var(--accent);
+  font-size: 30px;
+  line-height: 1.05;
+}
+.vs-title--sm { font-size: 28px; }
+
+.vs-lede { margin-top: 13px; font-size: 13px; color: var(--vs-ink-2); }
+.vs-note { font-size: 12px; color: var(--vs-ink-2); }
+
+.vs-row-title { font-size: 15px; font-weight: 500; color: var(--vs-ink); }
+.vs-row-sub   { margin-top: 4px; font-size: 12.5px; color: var(--vs-ink-2); }
+
+.page-visa .divider { background: #ede5db; }
+
+/* --- header card ----------------------------------------------------------- */
+
+.vs-hero {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  min-height: 152px;
+  padding: 12px 56px 12px 31px;
+}
+.vs-hero__avatar {
+  flex: 0 0 128px;
+  width: 128px; height: 128px;
+  border-radius: 50%;
+  background: var(--placeholder);
+  box-shadow: 0 0 0 3px #fff;
+}
+.vs-hero__id { min-width: 0; }
+.vs-hero__name {
+  font-family: var(--font-hand);
+  font-weight: 400;
+  font-size: 40px;
+  line-height: 1.05;
+  color: var(--vs-ink);
+}
+.vs-hero__meta { margin-top: 6px; font-size: 13px; color: var(--vs-ink-2); }
+/* The frame's 44px title only fits on one line once the content area is wide
+   enough for it beside the avatar and the name block (~1428px of window). Below
+   that it scales with the space actually left over, so it never wraps under the
+   name; flex-wrap above is the last-resort net if a wider hand font is installed. */
+.vs-hero__title {
+  margin-left: auto;
+  font-family: var(--font-hand);
+  font-weight: 400;
+  font-size: clamp(24px, calc((100vw - 830px) / 13.6), 44px);
+  line-height: 1.05;
+  color: var(--accent);
+  text-align: right;
+}
+
+/* --- My Visa Status -------------------------------------------------------- */
+
+.vs-status {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 30px;
+}
+.vs-status__head { display: flex; align-items: center; gap: 8px; }
+.vs-status__value { margin-top: 9px; font-size: 14px; color: var(--vs-ink); }
+
+.vs-dot {
+  flex: 0 0 10px;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--green);
+}
+.vs-dot--amber  { background: var(--amber); }
+.vs-dot--accent { background: var(--accent); }
+
+/* work timeline */
+
+.vs-timeline { margin-top: 26px; }
+.vs-timeline__track {
+  position: relative;
+  height: 6px;
+  margin: 24px 0 0;
+  border-radius: 3px;
+  background: var(--vs-track);
+}
+.vs-timeline__fill {
+  position: absolute; left: 0; top: 0; bottom: 0;
+  border-radius: 3px;
+  background: var(--green);
+}
+.vs-mark {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 0 2px #fff;
+}
+.vs-mark--amber  { background: var(--amber); }
+.vs-mark--accent { background: var(--accent); }
+.vs-mark__label {
+  position: absolute;
+  left: 50%; top: 22px;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  text-align: center;
+}
+.vs-mark__when {
+  display: block;
+  font-size: 10px; font-weight: 600; letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--vs-ink-2);
+}
+.vs-mark__what { display: block; font-size: 11px; color: var(--vs-ink); }
+
+/* the milestone labels are out of flow, so the caption clears them by hand */
+.vs-timeline__foot { margin-top: 58px; font-size: 12px; color: var(--vs-ink-2); }
+
+/* The last two milestones sit only 14.3% of the track apart (frame: 787 and
+   881 of 656), so once the track drops under ~540px their captions would touch.
+   Below that the caption is allowed to wrap onto a second line instead — which
+   makes the label block taller, so the caption drops further too. */
+@media (max-width: 1400px) {
+  /* an explicit width, not max-width: the label's containing block is the 12px
+     dot, so a shrink-to-fit box would collapse to the longest word */
+  .vs-mark__label { white-space: normal; width: 80px; }
+  .vs-timeline__foot { margin-top: 82px; }
+}
+
+/* --- Visa Roadmap ---------------------------------------------------------- */
+
+.vs-bar {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--vs-track);
+  overflow: hidden;
+}
+.vs-bar__fill { height: 100%; border-radius: 3px; background: var(--green); }
+
+.vs-roadmap__bar { margin-top: 12px; }
+
+.vs-lessons { margin-top: 16px; }
+
+.vs-lesson {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 9px 0;
+}
+.vs-lesson > span { display: block; min-width: 0; }
+.vs-lesson__title { display: block; font-size: 15px; font-weight: 500; color: var(--vs-ink); }
+.vs-lesson__sub   { display: block; margin-top: 4px; font-size: 12.5px; color: var(--vs-ink-2); }
+.vs-lesson.is-done .vs-lesson__title { color: var(--vs-ink-2); }
+
+/* the frame's 22px ticked box — .check keeps the shared focus + persistence */
+.vs-check {
+  width: 22px; height: 22px; flex: 0 0 22px;
+  margin: 0;
+  border-radius: 6px;
+  border: 1.5px solid var(--vs-box);
+  background: #fff;
+}
+.vs-check:checked { background: var(--green); border-color: var(--green); }
+.vs-check:checked::after {
+  left: 7.5px; top: 3px;
+  width: 5px; height: 10px;
+  border-width: 0 2px 2px 0;
+}
+
+.vs-continue { display: inline-block; margin-top: 30px; font-size: 14px; font-weight: 500; }
+
+/* a lesson pointed at from the right rail */
+.vs-lesson.is-flagged {
+  background: var(--accent-soft);
+  border-radius: 10px;
+  box-shadow: 0 0 0 6px var(--accent-soft);
+}
+
+/* --- My Documents / Know the Rules ----------------------------------------- */
+
+.vs-rows { margin-top: 18px; }
+
+.vs-doc {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 9px 0;
+}
+
+.vs-rule { padding: 9px 0; }
+.vs-rule__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+.vs-rule__q { font-size: 14.5px; font-weight: 500; color: var(--vs-ink); }
+.vs-rule__a { margin-top: 3px; font-size: 12px; color: var(--vs-ink-2); }
+
+.vs-pill {
+  flex: 0 0 auto;
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 24px; padding: 0 12px;
+  border-radius: 12px;
+  background: var(--green); color: #fff;
+  font-size: 10.5px; font-weight: 600; letter-spacing: .2px;
+  white-space: nowrap;
+}
+.vs-pill--amber  { background: var(--amber); }
+.vs-pill--accent { background: var(--accent); }
+.vs-pill--sm { height: 22px; border-radius: 11px; }
+/* the frame floats the verdict pill over the question's line box rather than
+   letting it set the row height, so it is pulled back to the text's leading */
+.vs-rule__head .vs-pill { margin: -2px 0; }
+
+/* --- right rail: Office of International Education ------------------------- */
+
+.vs-oie__where {
+  font-size: 11px; font-weight: 600; letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.vs-oie__name {
+  margin-top: 9px;
+  font-family: var(--font-hand);
+  font-weight: 400;
+  font-size: 26px;
+  line-height: 1.06;
+  color: var(--accent);
+}
+.vs-oie__mail { margin-top: 14px; font-size: 14px; font-weight: 500; color: var(--vs-ink); }
+.vs-oie__line { margin-top: 5px; font-size: 13px; color: var(--vs-ink-2); }
+.vs-oie__qs { margin-top: 22px; }
+
+.vs-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.vs-chip {
+  display: inline-flex; align-items: center;
+  height: 28px; padding: 0 12px;
+  border-radius: 14px;
+  background: #fff;
+  font-size: 12px; font-weight: 500; color: var(--vs-ink);
+  cursor: pointer;
+  transition: background .15s ease, color .15s ease;
+  user-select: none;
+}
+.vs-chip:hover { background: var(--accent-tint); }
+.vs-chip:has(:checked) { background: var(--accent); color: #fff; }
+.vs-chip:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.vs-send {
+  margin-top: 19px;
+  width: 200px; max-width: 100%;
+  height: 34px;
+  border-radius: 8px;
+  font-size: 14px; font-weight: 500;
+}
+
+/* --- right rail: What I can do right now ----------------------------------- */
+
+.vs-do { margin-top: 24px; display: grid; gap: 27px; }
+.vs-do__item { display: grid; grid-template-columns: 10px minmax(0, 1fr); gap: 10px; }
+.vs-do__item .vs-dot { margin-top: 6px; }
+.vs-do__title { font-size: 14.5px; font-weight: 500; color: var(--vs-ink); }
+.vs-do__sub { margin-top: 2px; font-size: 12px; color: var(--vs-ink-2); }
+
+.vs-remind { margin-top: 22px; }
+.vs-remind__list { margin-top: 12px; display: grid; gap: 16px; }
+.vs-remind__item { display: grid; grid-template-columns: 70px minmax(0, 1fr); gap: 10px; }
+.vs-remind__when {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 20px;
+  border-radius: 10px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 10.5px; font-weight: 600;
+}
+.vs-remind__what { font-size: 12px; color: var(--vs-ink); }
+
+/* on the tinted cards the pills need the paler surface to stay legible */
+.vs-card--accent .vs-remind__when { background: #fff; }
+
+/* --- right rail: Getting your SSN ------------------------------------------ */
+
+.vs-steps { margin-top: 20px; display: grid; gap: 20px; }
+.vs-step { display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 12px; }
+.vs-step__n {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: var(--accent); color: #fff;
+  font-size: 12px; font-weight: 600;
+}
+.vs-step__title { font-size: 14px; font-weight: 500; color: var(--vs-ink); }
+.vs-step__sub { margin-top: 3px; font-size: 11.5px; color: var(--vs-ink-2); }
+
+/* --- right rail: Pigeon checks your plan ----------------------------------- */
+
+.vs-warn {
+  margin-top: 14px;
+  padding: 16px 20px 18px;
+  border: 1.5px solid var(--vs-quote);
+  border-radius: 14px;
+  background: #fff;
+}
+.vs-warn__title { font-size: 14.5px; font-weight: 500; color: var(--vs-ink); }
+.vs-warn__p { margin-top: 6px; font-size: 12px; color: var(--vs-ink-2); }
+.vs-warn__p--strong { color: var(--vs-ink); }
+.vs-warn__actions { display: flex; align-items: center; gap: 16px; margin-top: 16px; }
+.vs-warn__btn {
+  width: 130px; height: 28px;
+  border-radius: 14px;
+  font-size: 12px; font-weight: 500;
+}
+.vs-warn__link { font-size: 12px; font-weight: 500; }
+
+.vs-cpt { margin-top: 22px; }
+.vs-cpt .vs-bar { height: 8px; border-radius: 4px; background: #fff; margin-top: 8px; }
+.vs-cpt .vs-bar__fill { border-radius: 4px; background: var(--amber); }
+.vs-cpt__note { margin-top: 22px; font-size: 11.5px; color: var(--vs-ink-2); }
+
+/* --- fluidity -------------------------------------------------------------- */
+
+/* Below ~1240px the 394px rail stops being readable and the work timeline runs
+   out of room for its captions, so the board folds into one column. */
+@media (max-width: 1240px) {
+  .vs-cols { grid-template-columns: minmax(0, 1fr); }
+  .vs-col--rail { gap: 24px; }
+}
+
+@media (max-width: 860px) {
+  .page-visa { --vs-pad: 26px; --vs-pad-r: 22px; }
+  .vs-hero { padding: 20px 26px; }
+  .vs-status { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vs-chip { transition: none; }
+}

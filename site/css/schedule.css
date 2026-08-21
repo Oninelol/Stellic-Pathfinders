@@ -1,0 +1,78 @@
+/* Week schedule — shared by Home (388:1275) and Profile (388:964).
+   Both frames draw the same component at two scales; the per-page sizes come
+   from the custom properties below. */
+
+.schedule {
+  /* The five course chips share the width of the block (was a fixed 180px /
+     194px per chip in the frames); --course-h / --course-gap / --week-h stay
+     per-page so Home and Profile keep their two scales. */
+  --course-h: 80px;
+  --course-gap: 22px;
+  --week-h: 298px;
+  --block-inset: 3px;
+
+  background: var(--sunken);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 14px 0 49px;   /* room for the day labels under the grid */
+}
+
+.courses {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--course-gap);
+  padding: 0 14px;
+}
+.course {
+  min-height: var(--course-h);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 13px 15px 0;
+}
+.course__code { font-size: 10.5px; }
+.course__name { font-size: 10.5px; }
+.course__credits { font-size: 10px; color: var(--ink-2); margin-top: 18px; }
+
+.course--cs   { background: var(--c-cs); }
+.course--math { background: #dde2d5; }
+.course--phys { background: #eee0ba; }
+.course--engl { background: #f2d3d8; }
+.course--psy  { background: #e6d0c4; }
+
+.week {
+  position: relative;
+  margin: 20px 26px 0 42px;   /* leaves room for the hour gutter */
+  height: var(--week-h);
+}
+.week__rows { position: absolute; inset: 0; }
+.week__row { position: absolute; left: 0; right: 0; border-top: 1px solid var(--border); }
+.week__hour {
+  position: absolute;
+  right: calc(100% + 10px);
+  transform: translateY(-50%);
+  font-size: 11px;
+  color: var(--scroll-thumb);
+  white-space: nowrap;
+}
+.week__cols { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(7, 1fr); }
+.week__col { border-left: 1px solid var(--border); }
+.week__col:last-child { border-right: 1px solid var(--border); }
+.week__days {
+  position: absolute; top: calc(100% + 18px); left: 0; right: 0;
+  display: grid; grid-template-columns: repeat(7, 1fr);
+  font-size: 13px; color: var(--scroll-thumb);
+}
+.week__days span { padding-left: 14px; }
+
+.block {
+  position: absolute;
+  border-radius: 5px;
+  font-size: 9.5px; font-weight: 600;
+  display: grid; place-items: center;
+  width: calc(100% / 7 - var(--block-inset) * 2);
+}
+.block--cs   { background: var(--c-cs);  color: #8c4535; }
+.block--engl { background: #f2d3d8;      color: #994d66; font-size: 10.5px; }
+.block--phys { background: #eee0ba;      color: #8c6b26; }
+.block--math { background: #dde2d5;      color: #5a7355; font-size: 10.5px; }
+.block--psy  { background: #e6d0c4;      color: #805238; }

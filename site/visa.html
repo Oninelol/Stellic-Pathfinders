@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Visa · Stellic Pathfinders</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Inter:wght@400;500;600;700&family=Patrick+Hand&family=Playfair+Display:wght@500;600;700&family=Playpen+Sans:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/visa.css">
+</head>
+<body class="page-visa">
+
+<div class="app">
+
+  <!-- Canonical sidebar — identical on every page (Figma Home frame 388:1275) -->
+  <aside class="sidebar">
+    <div class="sidebar__mark--box" role="presentation"></div>
+    <p class="sidebar__title">Name of Site</p>
+    <nav class="sidebar__nav">
+      <a class="sidebar__link" href="index.html">Home</a>
+      <a class="sidebar__link" href="planner.html">Planner</a>
+      <a class="sidebar__link" href="plan.html">Goals</a>
+      <a class="sidebar__link" href="career.html">Career</a>
+      <a class="sidebar__link" href="contacts.html">Contacts</a>
+      <a class="sidebar__link is-active" href="visa.html" aria-current="page">Visa</a>
+    </nav>
+    <div class="sidebar__foot">
+      <a class="sidebar__avatar" href="profile.html" aria-label="Your profile">
+        <img src="assets/pigeon-avatar.png" alt="">
+      </a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="vs-board">
+
+      <!-- ================= header card (421:399) ================= -->
+      <section class="panel vs-card vs-hero">
+        <div class="vs-hero__avatar" role="presentation"></div>
+        <div class="vs-hero__id">
+          <h1 class="vs-hero__name">Oliver Gan</h1>
+          <p class="vs-hero__meta">F-1 · Class of 2029 · Computer Science</p>
+        </div>
+        <p class="vs-hero__title">INTERNATIONAL STUDENT VISA</p>
+      </section>
+
+      <div class="vs-cols">
+
+        <!-- ============== left column ============== -->
+        <div class="vs-col vs-col--main">
+
+          <!-- My Visa Status (421:289) -->
+          <section class="panel vs-card">
+            <h2 class="vs-title">My Visa Status</h2>
+            <p class="vs-lede">F-1 · CIP 11.0701 (STEM eligible)</p>
+
+            <div class="vs-status">
+              <div>
+                <div class="vs-status__head">
+                  <span class="vs-dot"></span>
+                  <span class="eyebrow">I-20 status</span>
+                </div>
+                <p class="vs-status__value">Active — valid through May 2027</p>
+              </div>
+              <div>
+                <div class="vs-status__head">
+                  <span class="vs-dot vs-dot--accent"></span>
+                  <span class="eyebrow">CPT / OPT</span>
+                </div>
+                <p class="vs-status__value">Not yet authorized</p>
+              </div>
+              <div>
+                <div class="vs-status__head">
+                  <span class="vs-dot"></span>
+                  <span class="eyebrow">On-campus work</span>
+                </div>
+                <p class="vs-status__value">Eligible — up to 20 hrs/week</p>
+              </div>
+            </div>
+
+            <div class="vs-timeline">
+              <p class="eyebrow">Your work timeline</p>
+              <div class="vs-timeline__track">
+                <div class="vs-timeline__fill" style="width:19.8%"></div>
+
+                <div class="vs-mark" style="left:0.15%">
+                  <span class="vs-mark__label">
+                    <span class="vs-mark__when">Now</span>
+                    <span class="vs-mark__what">Sophomore</span>
+                  </span>
+                </div>
+                <div class="vs-mark vs-mark--amber" style="left:25.2%">
+                  <span class="vs-mark__label">
+                    <span class="vs-mark__when">Summer ’27</span>
+                    <span class="vs-mark__what">CPT eligible</span>
+                  </span>
+                </div>
+                <div class="vs-mark vs-mark--accent" style="left:50.2%">
+                  <span class="vs-mark__label">
+                    <span class="vs-mark__when">Feb ’29</span>
+                    <span class="vs-mark__what">Apply for OPT</span>
+                  </span>
+                </div>
+                <div class="vs-mark vs-mark--accent" style="left:75.2%">
+                  <span class="vs-mark__label">
+                    <span class="vs-mark__when">May ’29</span>
+                    <span class="vs-mark__what">OPT starts</span>
+                  </span>
+                </div>
+                <div class="vs-mark vs-mark--amber" style="left:89.5%">
+                  <span class="vs-mark__label">
+                    <span class="vs-mark__when">2030</span>
+                    <span class="vs-mark__what">+24 mo STEM OPT</span>
+                  </span>
+                </div>
+              </div>
+              <p class="vs-timeline__foot">Built from your course plan — full-time semesters counted automatically.</p>
+            </div>
+          </section>
+
+          <!-- Visa Roadmap — mini course (421:339) -->
+          <section class="panel vs-card">
+            <h2 class="vs-title">Visa Roadmap — mini course</h2>
+            <p class="vs-lede" id="roadmapLede">10-minute lessons, in plain language. 2 of 7 done.</p>
+
+            <div class="vs-bar vs-roadmap__bar">
+              <div class="vs-bar__fill" id="roadmapBar" style="width:28.6%"></div>
+            </div>
+
+            <div class="vs-lessons" id="lessons">
+              <label class="vs-lesson" data-check-row>
+                <input type="checkbox" class="check vs-check" data-check="visa-lesson-1">
+                <span>
+                  <span class="vs-lesson__title">Work rules basics</span>
+                  <span class="vs-lesson__sub">On-campus 20 hrs max · what counts as “work”</span>
+                </span>
+              </label>
+              <hr class="divider">
+              <label class="vs-lesson" data-check-row>
+                <input type="checkbox" class="check vs-check" data-check="visa-lesson-2">
+                <span>
+                  <span class="vs-lesson__title">CPT — internships during school</span>
+                  <span class="vs-lesson__sub">DSO approval first · 12 mo full-time kills OPT</span>
+                </span>
+              </label>
+              <hr class="divider">
+              <label class="vs-lesson" data-check-row>
+                <input type="checkbox" class="check vs-check" data-check="visa-lesson-3">
+                <span>
+                  <span class="vs-lesson__title">OPT — your first job after graduation</span>
+                  <span class="vs-lesson__sub">12 months · apply 90 days before graduating</span>
+                </span>
+              </label>
+              <hr class="divider">
+              <label class="vs-lesson" data-check-row>
+                <input type="checkbox" class="check vs-check" data-check="visa-lesson-4">
+                <span>
+                  <span class="vs-lesson__title">STEM OPT — 24 extra months</span>
+                  <span class="vs-lesson__sub">E-Verify employer + Form I-983</span>
+                </span>
+              </label>
+              <hr class="divider">
+              <label class="vs-lesson" data-check-row>
+                <input type="checkbox" class="check vs-check" data-check="visa-lesson-5">
+                <span>
+                  <span class="vs-lesson__title">Getting your SSN</span>
+                  <span class="vs-lesson__sub">Need a job offer first · SS-5 + I-20 + offer letter</span>
+                </span>
+              </label>
+              <hr class="divider">
+              <label class="vs-lesson" data-check-row>
+                <input type="checkbox" class="check vs-check" data-check="visa-lesson-6">
+                <span>
+                  <span class="vs-lesson__title">Taxes without the panic</span>
+                  <span class="vs-lesson__sub">Form 8843 every year · 1040-NR by April 15</span>
+                </span>
+              </label>
+              <hr class="divider">
+              <label class="vs-lesson" id="lessonTimeOff" data-check-row>
+                <input type="checkbox" class="check vs-check" data-check="visa-lesson-7">
+                <span>
+                  <span class="vs-lesson__title">Want time off? Read this first</span>
+                  <span class="vs-lesson__sub">Gap semesters aren’t allowed on F-1 — a full-time CPT semester is the legal version</span>
+                </span>
+              </label>
+            </div>
+
+            <a class="link vs-continue" href="#lessons" id="roadmapContinue">Continue: OPT — your first job after graduation →</a>
+          </section>
+
+          <!-- My Documents (429:61) -->
+          <section class="panel vs-card">
+            <h2 class="vs-title">My Documents</h2>
+            <p class="vs-lede">Pigeon watches the expiry dates so you don’t have to.</p>
+
+            <div class="vs-rows">
+              <div class="vs-doc">
+                <div>
+                  <p class="vs-row-title">I-20</p>
+                  <p class="vs-row-sub">Valid through May 2027</p>
+                </div>
+                <span class="vs-pill">OK</span>
+              </div>
+              <hr class="divider">
+              <div class="vs-doc">
+                <div>
+                  <p class="vs-row-title">Passport</p>
+                  <p class="vs-row-sub">Expires Dec 2026 — renew 6 months early</p>
+                </div>
+                <span class="vs-pill vs-pill--amber">RENEW SOON</span>
+              </div>
+              <hr class="divider">
+              <div class="vs-doc">
+                <div>
+                  <p class="vs-row-title">F-1 visa stamp</p>
+                  <p class="vs-row-sub">Valid through Aug 2027</p>
+                </div>
+                <span class="vs-pill">OK</span>
+              </div>
+              <hr class="divider">
+              <div class="vs-doc">
+                <div>
+                  <p class="vs-row-title">Travel signature</p>
+                  <p class="vs-row-sub">Needed before winter break travel</p>
+                </div>
+                <span class="vs-pill vs-pill--accent">GET SIGNED</span>
+              </div>
+            </div>
+          </section>
+
+          <!-- Know the Rules (431:72) -->
+          <section class="panel vs-card">
+            <h2 class="vs-title">Know the Rules</h2>
+            <p class="vs-lede">The 2am questions — answered before you have to google them.</p>
+
+            <div class="vs-rows">
+              <div class="vs-rule">
+                <div class="vs-rule__head">
+                  <p class="vs-rule__q">Take a gap semester for an internship?</p>
+                  <span class="vs-pill vs-pill--sm vs-pill--amber">NO — BUT</span>
+                </div>
+                <p class="vs-rule__a">Do a full-time CPT semester instead: enrolled + working full-time</p>
+              </div>
+              <hr class="divider">
+              <div class="vs-rule">
+                <div class="vs-rule__head">
+                  <p class="vs-rule__q">Take the summer off?</p>
+                  <span class="vs-pill vs-pill--sm">YES</span>
+                </div>
+                <p class="vs-rule__a">Summer is your annual vacation — travel, rest, no rules</p>
+              </div>
+              <hr class="divider">
+              <div class="vs-rule">
+                <div class="vs-rule__head">
+                  <p class="vs-rule__q">Drop below full-time credits?</p>
+                  <span class="vs-pill vs-pill--sm vs-pill--accent">NO</span>
+                </div>
+                <p class="vs-rule__a">Only with OIE approval: medical, academic, or final semester</p>
+              </div>
+              <hr class="divider">
+              <div class="vs-rule">
+                <div class="vs-rule__head">
+                  <p class="vs-rule__q">Freelance, tutor, or do paid gigs online?</p>
+                  <span class="vs-pill vs-pill--sm vs-pill--accent">NO</span>
+                </div>
+                <p class="vs-rule__a">Any off-campus income without CPT/OPT breaks your status</p>
+              </div>
+              <hr class="divider">
+              <div class="vs-rule">
+                <div class="vs-rule__head">
+                  <p class="vs-rule__q">Do an unpaid internship?</p>
+                  <span class="vs-pill vs-pill--sm vs-pill--amber">CAREFUL</span>
+                </div>
+                <p class="vs-rule__a">Often still counts as work — check with OIE before saying yes</p>
+              </div>
+            </div>
+          </section>
+
+        </div>
+
+        <!-- ============== right rail ============== -->
+        <div class="vs-col vs-col--rail">
+
+          <!-- Office of International Education (421:320) -->
+          <section class="panel vs-card vs-card--rail vs-card--accent">
+            <p class="vs-oie__where">@ Carnegie Mellon University</p>
+            <h2 class="vs-oie__name">Office of International Education</h2>
+            <p class="vs-oie__mail">oie@andrew.cmu.edu</p>
+            <p class="vs-oie__line">(412) 268-5231 · Warner Hall 3rd Floor</p>
+            <p class="vs-oie__line">Walk-ins: Tue &amp; Thu, 1:00–3:00 PM</p>
+
+            <div class="vs-oie__qs">
+              <p class="eyebrow eyebrow--xs">Quick questions</p>
+              <div class="vs-chips" id="quickQuestions">
+                <label class="vs-chip">
+                  <input type="checkbox" class="visually-hidden" data-check="visa-q-cpt">CPT approval
+                </label>
+                <label class="vs-chip">
+                  <input type="checkbox" class="visually-hidden" data-check="visa-q-opt">OPT timing
+                </label>
+                <label class="vs-chip">
+                  <input type="checkbox" class="visually-hidden" data-check="visa-q-ssn">SSN letter
+                </label>
+                <label class="vs-chip">
+                  <input type="checkbox" class="visually-hidden" data-check="visa-q-tax">Tax forms
+                </label>
+                <label class="vs-chip">
+                  <input type="checkbox" class="visually-hidden" data-check="visa-q-sig">Travel signature
+                </label>
+              </div>
+            </div>
+
+            <a class="btn vs-send" id="sendQuestion" href="mailto:oie@andrew.cmu.edu">Send a question →</a>
+          </section>
+
+          <!-- What I can do right now (421:370) -->
+          <section class="panel vs-card vs-card--rail">
+            <h2 class="vs-title vs-title--sm">What I can do right now</h2>
+
+            <div class="vs-do">
+              <div class="vs-do__item">
+                <span class="vs-dot"></span>
+                <div>
+                  <p class="vs-do__title">On-campus jobs</p>
+                  <p class="vs-do__sub">Up to 20 hrs/week — 14 open on Handshake</p>
+                </div>
+              </div>
+              <div class="vs-do__item">
+                <span class="vs-dot"></span>
+                <div>
+                  <p class="vs-do__title">Research for credit</p>
+                  <p class="vs-do__sub">Counts as curricular — ask your advisor</p>
+                </div>
+              </div>
+              <div class="vs-do__item">
+                <span class="vs-dot vs-dot--amber"></span>
+                <div>
+                  <p class="vs-do__title">Summer internship (CPT)</p>
+                  <p class="vs-do__sub">Eligible after this year — DSO approval first</p>
+                </div>
+              </div>
+              <div class="vs-do__item">
+                <span class="vs-dot vs-dot--accent"></span>
+                <div>
+                  <p class="vs-do__title">Off-campus part-time</p>
+                  <p class="vs-do__sub">Not allowed on F-1 — this one’s a hard no</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="vs-remind">
+              <hr class="divider">
+              <p class="eyebrow eyebrow--xs" style="margin-top:14px">Pigeon will remind you</p>
+              <div class="vs-remind__list">
+                <div class="vs-remind__item">
+                  <span class="vs-remind__when">Mar 1</span>
+                  <p class="vs-remind__what">Tax season — file Form 8843 (everyone does, even with no income)</p>
+                </div>
+                <div class="vs-remind__item">
+                  <span class="vs-remind__when">Feb ’29</span>
+                  <p class="vs-remind__what">OPT window opens — 90 days before graduation</p>
+                </div>
+                <div class="vs-remind__item">
+                  <span class="vs-remind__when">Job offer</span>
+                  <p class="vs-remind__what">Time to apply for your SSN — I’ll list the documents</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Getting your SSN (429:92) -->
+          <section class="panel vs-card vs-card--rail vs-card--accent">
+            <h2 class="vs-title vs-title--sm">Getting your SSN</h2>
+            <p class="vs-lede" style="margin-top:10px;font-size:12.5px">Unlocks when you get your first job offer.</p>
+
+            <div class="vs-steps">
+              <div class="vs-step">
+                <span class="vs-step__n">1</span>
+                <div>
+                  <p class="vs-step__title">Get a job or job offer</p>
+                  <p class="vs-step__sub">No job = no SSN. On-campus counts!</p>
+                </div>
+              </div>
+              <div class="vs-step">
+                <span class="vs-step__n">2</span>
+                <div>
+                  <p class="vs-step__title">Request your support letter</p>
+                  <p class="vs-step__sub">One click — asks OIE for the letter</p>
+                </div>
+              </div>
+              <div class="vs-step">
+                <span class="vs-step__n">3</span>
+                <div>
+                  <p class="vs-step__title">Visit the Social Security office</p>
+                  <p class="vs-step__sub">SS-5 + passport + I-20 + I-94 + offer letter</p>
+                </div>
+              </div>
+              <div class="vs-step">
+                <span class="vs-step__n">4</span>
+                <div>
+                  <p class="vs-step__title">Start working while you wait</p>
+                  <p class="vs-step__sub">Give the number to payroll when it arrives</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Pigeon checks your plan (431:99) -->
+          <section class="panel vs-card vs-card--rail vs-card--accent">
+            <h2 class="vs-title vs-title--sm">Pigeon checks your plan</h2>
+            <p class="eyebrow eyebrow--xs" style="margin-top:14px">Planner warning — live example</p>
+
+            <div class="vs-warn">
+              <p class="vs-warn__title">Whoa — a gap semester?</p>
+              <p class="vs-warn__p">F-1 students must stay enrolled full-time in fall &amp; spring. Skipping = losing your visa status.</p>
+              <p class="vs-warn__p vs-warn__p--strong">Try instead: a full-time CPT semester — you stay enrolled AND work full-time at your internship.</p>
+              <div class="vs-warn__actions">
+                <button class="btn vs-warn__btn" id="showMeHow" type="button">Show me how</button>
+                <a class="link vs-warn__link" href="mailto:oie@andrew.cmu.edu?subject=Gap%20semester%20question">Ask OIE →</a>
+              </div>
+            </div>
+
+            <div class="vs-cpt">
+              <p class="eyebrow eyebrow--xs">Full-time CPT used</p>
+              <div class="vs-bar"><div class="vs-bar__fill" style="width:33.4%"></div></div>
+              <p class="vs-cpt__note">4 of 12 months — at 12 you lose OPT. Pigeon won’t let you get close.</p>
+            </div>
+          </section>
+
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="mascot">
+  <div class="mascot__bubble">Your travel signature expires before winter break. Ask OIE to sign the I-20 first.</div>
+  <img src="assets/pigeon.png" alt="">
+</div>
+
+<script type="module" src="js/app.js"></script>
+<script type="module" src="js/visa.js"></script>
+</body>
+</html>

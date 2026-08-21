@@ -1,0 +1,195 @@
+/* Profile — Figma 388:964 */
+
+.page-profile .main { padding: 20px 29px 40px 37px; }
+
+/* --- row 1: identity + goals ---------------------------------------------- */
+
+/* Frame 388:964 drew 791px + 392px inside a 1440px frame; the same proportion
+   as 2.02fr / 1fr, so the row now fills whatever the content area is. */
+.pf-row1 {
+  display: grid;
+  grid-template-columns: minmax(440px, 2.02fr) minmax(300px, 1fr);
+  gap: 21px;
+  align-items: start;
+}
+
+.pf-header {
+  background: var(--panel);
+  border-radius: 20px;
+  box-shadow: var(--sh-2);
+  min-height: 373px;
+  padding: 17px 25px 32px;
+  position: relative;
+}
+.pf-header__top { display: flex; align-items: flex-start; gap: 30px; }
+.pf-header__top > div { min-width: 0; }
+.pf-header__avatar { width: 128px; height: 128px; border-radius: 50%; background: var(--placeholder); flex: 0 0 128px; }
+.pf-header__name { font-family: var(--font-hand); font-size: 45px; font-weight: 400; line-height: 1.05; margin-top: 10px; }
+.pf-header__meta { font-size: 16px; color: var(--ink-2); margin-top: 18px; }
+.pf-header__cta { margin-left: auto; margin-top: 20px; }
+
+.pf-header__body { display: flex; flex-wrap: wrap; gap: 20px; margin-top: 0; }
+.pf-ident { flex: 0 0 128px; font-size: 16px; color: var(--ink-2); }
+.pf-ident p + p { margin-top: 12px; }
+
+.pf-stats {
+  flex: 1 1 260px;
+  min-width: 0;
+  min-height: 196px;
+  background: #f1ede4;
+  border-radius: 20px;
+  padding: 12px 26px;
+}
+.pf-stat + .pf-stat { margin-top: 14px; }
+.pf-stat__head { display: flex; align-items: baseline; gap: 16px; }
+.pf-stat__num { font-family: var(--font-serif); font-weight: 700; font-size: 44px; line-height: 1; }
+.pf-stat__label { font-size: 15px; font-weight: 600; letter-spacing: 1.2px; color: var(--ink-3); }
+.pf-stat__sub { font-size: 14px; color: var(--ink-2); margin-top: -2px; }
+.pf-bar { height: 7.45px; border-radius: 4px; background: var(--scroll-track); margin-top: 10px; overflow: hidden; }
+.pf-bar__fill { height: 100%; border-radius: 4px; background: var(--green); }
+
+.pf-goals {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: var(--sh-2);
+  min-height: 372px;
+  padding: 22px 28px;
+}
+.pf-goals__title { font-family: var(--font-hand); font-size: 36px; font-weight: 400; }
+
+/* --- row 2: advisors ------------------------------------------------------- */
+
+/* 500px + 500px + 146px: the two cards share the space, the "+" card keeps its
+   narrow drawn width. */
+.pf-row2 {
+  display: grid;
+  grid-template-columns: minmax(300px, 1fr) minmax(300px, 1fr) 146px;
+  gap: 29px 23px;
+  margin-top: 23px;
+  align-items: start;
+}
+
+.advisor {
+  background: var(--panel);
+  border-radius: 20px;
+  box-shadow: var(--sh-2);
+  min-height: 217px;
+  padding: 16px 17px;
+  display: flex;
+  gap: 20px;
+}
+.advisor__left { flex: 1 1 260px; min-width: 0; }
+.advisor__avatar { width: 74px; height: 72px; border-radius: 50%; background: var(--placeholder); margin-top: 14px; }
+.advisor__name { font-family: var(--font-serif); font-size: 21px; margin-top: 15px; max-width: 220px; line-height: 1.2; }
+.advisor__fields { flex: 1 1 190px; min-width: 0; }
+.advisor__label { font-size: 10px; font-weight: 600; letter-spacing: .6px; color: var(--ink-3); }
+.advisor__value { font-size: 14px; margin: 2px 0 14px; }
+.advisor__value:last-child { margin-bottom: 0; }
+
+.advisor-add {
+  background: var(--panel);
+  border-radius: 20px;
+  box-shadow: var(--sh-2);
+  height: 217px;
+  display: grid;
+  place-items: center;
+  font-size: 34px;
+  font-weight: 300;
+  color: var(--accent-line);
+  transition: color .15s ease, background .15s ease;
+  width: 100%;
+}
+.advisor-add:hover { color: var(--accent); background: var(--panel-alt); }
+
+/* --- row 3: saved listings + experiences ----------------------------------- */
+
+/* 445px + 728px -> the same 1 : 1.636 split, fluid. */
+.pf-row3 {
+  display: grid;
+  grid-template-columns: minmax(320px, 1fr) minmax(0, 1.636fr);
+  gap: 31px;
+  margin-top: 22px;
+  align-items: start;
+}
+
+.pf-saved {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  min-height: 440px;
+  padding: 22px 24px;
+}
+.pf-saved__item { padding-bottom: 12px; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
+.pf-saved__item:last-child { border-bottom: 0; }
+.pf-saved__title { font-size: 15px; font-weight: 500; }
+.pf-saved__sub { font-size: 13px; color: var(--ink-2); margin-top: 2px; }
+
+.pf-exp {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: var(--sh-2);
+  min-height: 444px;
+  padding: 24px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.357fr) minmax(0, 1fr);   /* 357 : 263 */
+  gap: 24px 60px;
+  align-content: start;
+}
+.pf-exp__eyebrow { grid-column: 1 / -1; }
+.pf-exp__list { align-self: start; }
+.pf-exp__item { padding-bottom: 16px; border-bottom: 1px solid var(--border); margin-bottom: 26px; }
+.pf-exp__role { font-family: var(--font-serif); font-size: 19px; }
+.pf-exp__meta { font-size: 14px; color: var(--ink-2); margin-top: 6px; }
+.pf-exp__add { display: inline-block; font-size: 14px; font-weight: 500; color: var(--accent); }
+.pf-exp__left { display: flex; flex-direction: column; height: 100%; }
+.pf-exp__right { display: flex; flex-direction: column; height: 100%; }
+
+.skills { display: flex; flex-wrap: wrap; gap: 9px; align-content: flex-start; }
+.skill {
+  background: #d9d9d9;
+  border-radius: 4px;
+  height: 33px;
+  padding: 0 10px;
+  display: inline-flex;
+  align-items: center;
+  font-size: 14px;
+  color: var(--ink-2);
+}
+.skills__add { align-self: flex-end; margin-top: auto; font-size: 14px; font-weight: 500; color: var(--accent); }
+
+/* --- row 4: schedule ------------------------------------------------------- */
+
+.pf-schedule-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  margin-top: 23px;
+  padding: 0;
+}
+/* The week grid is fluid (css/schedule.css); only the vertical rhythm is
+   per-page, so no --course-w override here. */
+.page-profile .schedule {
+  --course-h: 94px;
+  --course-gap: 24px;
+  --week-h: 349px;
+  background: transparent;
+  border: 0;
+  padding: 16px 0 54px;
+}
+.page-profile .courses { padding: 0 23px; }
+.page-profile .week { margin: 24px 19px 0 53px; }
+
+/* --- narrow: the rows stack instead of squeezing --------------------------- */
+
+@media (max-width: 1100px) {
+  .pf-row1,
+  .pf-row2,
+  .pf-row3 { grid-template-columns: minmax(0, 1fr); }
+
+  /* the "+" card keeps its drawn width instead of stretching across the row */
+  .pf-row2 .advisor-add { width: 146px; }
+
+  .pf-exp { gap: 24px 32px; }
+}

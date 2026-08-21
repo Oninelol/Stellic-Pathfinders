@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brain Dump · Stellic Pathfinders</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Inter:wght@400;500;600;700&family=Patrick+Hand&family=Playfair+Display:wght@500;600;700&family=Playpen+Sans:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/plan.css">
+<link rel="stylesheet" href="css/goals.css">
+</head>
+<body class="page-goals">
+
+<div class="app">
+
+  <!-- Canonical sidebar — identical on every page (Figma Home frame 388:1275) -->
+  <aside class="sidebar">
+    <div class="sidebar__mark--box" role="presentation"></div>
+    <p class="sidebar__title">Name of Site</p>
+    <nav class="sidebar__nav">
+      <a class="sidebar__link" href="index.html">Home</a>
+      <a class="sidebar__link" href="planner.html">Planner</a>
+      <a class="sidebar__link is-active" href="plan.html" aria-current="page">Goals</a>
+      <a class="sidebar__link" href="career.html">Career</a>
+      <a class="sidebar__link" href="contacts.html">Contacts</a>
+      <a class="sidebar__link" href="visa.html">Visa</a>
+    </nav>
+    <div class="sidebar__foot">
+      <a class="sidebar__avatar" href="profile.html" aria-label="Your profile">
+        <img src="assets/pigeon-avatar.png" alt="">
+      </a>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <!-- Same whiteboard shell as plan.html: .wb-stage is board space, the chrome
+         after it is pinned to the screen. -->
+    <div class="wb-canvas" id="wbCanvas">
+      <div class="wb-stage" id="wbStage">
+
+    <div class="gboard" id="board">
+
+      <header class="gb-header">
+        <h2>Goals</h2>
+        <h2>Brain Dump</h2>
+        <div class="gb-header__end">
+          <h2>Habits/ Calendar....</h2>
+          <a class="gb-header__link" href="plan.html">← career plan board</a>
+        </div>
+      </header>
+
+      <div class="gb-grid">
+
+        <div class="gb-col gb-col--goals">
+          <section class="gcard gcard--1">
+            <div class="gcard__head">
+              <input class="gcheck" type="checkbox" data-check="g-card1">
+              <span class="gcard__title" contenteditable="true" data-placeholder="New goal"></span>
+              <button class="gcard__add" aria-label="Add a step">+</button>
+            </div>
+          </section>
+
+          <section class="gcard gcard--2">
+            <div class="gcard__head">
+              <input class="gcheck" type="checkbox" data-check="g-card2">
+              <span class="gcard__title" contenteditable="true"></span>
+              <button class="gcard__add" aria-label="Add a step">+</button>
+            </div>
+          </section>
+
+          <section class="gcard gcard--3">
+            <div class="gcard__head">
+              <input class="gcheck" type="checkbox" data-check="g-card3">
+              <span class="gcard__title">GPA 4.0</span>
+              <button class="gcard__add" aria-label="Add a step">+</button>
+            </div>
+            <ul class="gcard__list">
+              <li class="is-done">Ace calc midterms</li>
+              <li>Get an A on english essay</li>
+            </ul>
+            <p class="gcard__status">In Progress</p>
+          </section>
+
+          <section class="gcard gcard--4">
+            <div class="gcard__head">
+              <input class="gcheck" type="checkbox" data-check="g-card4">
+              <span class="gcard__title" contenteditable="true"></span>
+              <button class="gcard__add" aria-label="Add a step">+</button>
+            </div>
+          </section>
+        </div>
+
+        <div class="gb-col gb-col--dump">
+          <section class="gb-cal">
+            <p class="cal__month">September</p>
+            <div class="cal__grid" id="calGrid"></div>
+          </section>
+
+          <div class="gb-bubble"></div>
+        </div>
+
+        <div class="gb-col gb-col--habits">
+          <section class="gb-habits">
+            <p class="gb-habits__title">Habits</p>
+            <label class="gb-habits__row"><input class="gcheck" type="checkbox" data-check="g-habit1"></label>
+            <label class="gb-habits__row"><input class="gcheck" type="checkbox" data-check="g-habit2"></label>
+            <label class="gb-habits__row"><input class="gcheck" type="checkbox" data-check="g-habit3"></label>
+            <label class="gb-habits__row"><input class="gcheck" type="checkbox" data-check="g-habit4"></label>
+          </section>
+        </div>
+
+      </div>
+
+    </div><!-- /.gboard -->
+
+        <svg class="wb-ink" id="wbInk" viewBox="-4000 -4000 12000 12000" aria-hidden="true"></svg>
+        <div class="wb-panels" id="wbPanels"></div>
+
+      </div><!-- /.wb-stage -->
+    </div><!-- /.wb-canvas -->
+
+    <div class="wb-chrome">
+      <div class="gb-tools">
+        <button data-tool="add" aria-label="Add a note"><img src="assets/tool-plus.svg" alt=""></button>
+        <button data-tool="draw" aria-label="Draw"><img src="assets/tool-pencil.svg" alt=""></button>
+        <button data-tool="erase" aria-label="Erase"><img src="assets/tool-eraser.svg" alt=""></button>
+      </div>
+      <div class="wb-zoom" id="wbZoom">
+        <button class="wb-zoom__step" data-zoom="in" aria-label="Zoom in">+</button>
+        <button class="wb-zoom__level" data-zoom="home" aria-label="Reset the view">100%</button>
+        <button class="wb-zoom__step" data-zoom="out" aria-label="Zoom out">−</button>
+      </div>
+    </div>
+
+    <div class="gb-mascot">
+      <img class="pigeon" src="assets/pigeon.png" alt="">
+      <img class="planet" src="assets/planet-lg.png" alt="">
+    </div>
+
+  </main>
+</div>
+
+<script type="module" src="js/app.js"></script>
+<script type="module" src="js/goals.js"></script>
+</body>
+</html>

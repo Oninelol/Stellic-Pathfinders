@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Career · Stellic Pathfinders</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Inter:wght@400;500;600;700&family=Patrick+Hand&family=Playfair+Display:wght@500;600;700&family=Playpen+Sans:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/duck.css">
+<link rel="stylesheet" href="css/career.css">
+</head>
+<body class="career-page">
+
+<div class="app">
+
+  <!-- Canonical sidebar — identical on every page (Figma Home frame 388:1275) -->
+  <aside class="sidebar">
+    <div class="sidebar__mark--box" role="presentation"></div>
+    <p class="sidebar__title">Name of Site</p>
+    <nav class="sidebar__nav">
+      <a class="sidebar__link" href="index.html">Home</a>
+      <a class="sidebar__link" href="planner.html">Planner</a>
+      <a class="sidebar__link" href="plan.html">Goals</a>
+      <a class="sidebar__link is-active" href="career.html" aria-current="page">Career</a>
+      <a class="sidebar__link" href="contacts.html">Contacts</a>
+      <a class="sidebar__link" href="visa.html">Visa</a>
+    </nav>
+    <div class="sidebar__foot">
+      <a class="sidebar__avatar" href="profile.html" aria-label="Your profile">
+        <img src="assets/pigeon-avatar.png" alt="">
+      </a>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <section class="career-top">
+      <div class="profile-card">
+        <div class="profile-card__avatar">
+          <div class="duck">
+        <img src="assets/duck/v120.svg" alt="" style="left:73.30px;top:42.39px;width:25.98px;height:7.04px">
+        <img src="assets/duck/v121.svg" alt="" style="left:70.84px;top:49.43px;width:27.04px;height:5.73px">
+        <img src="assets/duck/v122.svg" alt="" style="left:18.75px;top:38.00px;width:57.01px;height:35.74px">
+        <img src="assets/duck/v124.svg" alt="" style="left:38.28px;top:74.58px;width:2.08px;height:14.74px">
+        <img src="assets/duck/v125.svg" alt="" style="left:40.86px;top:84.63px;width:2.58px;height:3.83px">
+        <img src="assets/duck/v126.svg" alt="" style="left:41.82px;top:83.96px;width:4.59px;height:1.24px">
+        <img src="assets/duck/v127.svg" alt="" style="left:50.05px;top:71.04px;width:2.87px;height:10.81px">
+        <img src="assets/duck/v128.svg" alt="" style="left:51.11px;top:81.85px;width:1.82px;height:3.45px">
+        <img src="assets/duck/v129.svg" alt="" style="left:53.40px;top:81.47px;width:1.44px;height:5.26px">
+        <img src="assets/duck/v130.svg" alt="" style="left:54.93px;top:81.76px;width:2.20px;height:1.28px">
+        <img src="assets/duck/v131.svg" alt="" style="left:60.87px;top:45.38px;width:1.00px;height:1.00px">
+        <img src="assets/duck/v132.svg" alt="" style="left:84.41px;top:66.57px;width:27.98px;height:19.94px">
+        <img src="assets/duck/v133.svg" alt="" style="left:94.16px;top:71.22px;width:1.00px;height:1.00px">
+        <img src="assets/duck/v134.svg" alt="" style="left:86.14px;top:72.60px;width:4.33px;height:1.00px">
+        <img src="assets/duck/v135.svg" alt="" style="left:94.79px;top:87.49px;width:1.00px;height:5.37px">
+        <img src="assets/duck/v136.svg" alt="" style="left:90.81px;top:92.85px;width:3.98px;height:2.60px">
+        <img src="assets/duck/v137.svg" alt="" style="left:93.92px;top:93.20px;width:1.00px;height:3.12px">
+        <img src="assets/duck/v138.svg" alt="" style="left:94.79px;top:93.20px;width:1.56px;height:2.42px">
+        <img src="assets/duck/v139.svg" alt="" style="left:103.62px;top:87.14px;width:1.00px;height:5.88px">
+        <img src="assets/duck/v140.svg" alt="" style="left:101.71px;top:93.02px;width:1.90px;height:2.60px">
+        <img src="assets/duck/v141.svg" alt="" style="left:103.79px;top:94.58px;width:1.00px;height:3.46px">
+        <img src="assets/duck/v142.svg" alt="" style="left:103.79px;top:93.20px;width:1.90px;height:2.08px">
+          </div>
+        </div>
+        <div>
+          <h1 class="profile-card__name">Student Name</h1>
+          <p class="profile-card__meta"><span>Class of 2029</span><span>Credits - 42.0</span></p>
+        </div>
+        <a class="btn profile-card__cta" href="resume.html">Resume →</a>
+      </div>
+
+      <!-- The rail keeps a fixed slot in the row; the panel itself fills that slot
+           and drops down over the page when expanded, so opening the whole list
+           never reflows the grid below it. -->
+      <div class="saved-rail-slot">
+        <div class="saved-rail" id="savedRail">
+          <div class="saved-rail__head">
+            <p class="eyebrow">SAVED LISTS</p>
+            <button class="saved-rail__toggle" id="savedExpand" type="button"
+                    aria-controls="savedList" aria-expanded="false"
+                    aria-label="Show the whole saved list">
+              <img class="icon-expand" src="assets/arrow-down-24.svg" alt="">
+              <img class="icon-collapse" src="assets/minimize.svg" alt="">
+            </button>
+          </div>
+          <div class="saved-rail__list" id="savedList">
+            <div class="saved-rail__item" data-tone="peach">
+              <p class="saved-rail__title">Product Design Intern</p>
+              <p class="saved-rail__sub">Fielding Studio · Remote</p>
+            </div>
+            <div class="saved-rail__item" data-tone="sage">
+              <p class="saved-rail__title">Research Assistant, Bio Lab</p>
+              <p class="saved-rail__sub">Dept. of Biology · On-campus</p>
+            </div>
+            <div class="saved-rail__item" data-tone="peach">
+              <p class="saved-rail__title">Junior Data Analyst</p>
+              <p class="saved-rail__sub">Northwind Data · Hybrid</p>
+            </div>
+            <div class="saved-rail__item" data-tone="sage">
+              <p class="saved-rail__title">Lab Assistant, Chemistry</p>
+              <p class="saved-rail__sub">Dept. of Chemistry · On-campus</p>
+            </div>
+            <div class="saved-rail__item" data-tone="peach">
+              <p class="saved-rail__title">Product Design Intern</p>
+              <p class="saved-rail__sub">Meridian Studio · Remote</p>
+            </div>
+            <div class="saved-rail__item" data-tone="sage">
+              <p class="saved-rail__title">Teaching Assistant, CS 210</p>
+              <p class="saved-rail__sub">Courant · On-campus</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="career-tools">
+      <button class="expand-toggle" id="expandToggle" type="button"
+              aria-controls="jobs" aria-pressed="false" aria-expanded="false"
+              aria-label="Expand the listings grid">
+        <img class="icon-expand" src="assets/expand.svg" alt="">
+        <img class="icon-collapse" src="assets/minimize.svg" alt="">
+      </button>
+      <div class="filters" id="filters">
+        <button class="filter" data-cat="internship">INTERNSHIP</button>
+        <button class="filter" data-cat="research">RESEARCH</button>
+        <button class="filter" data-cat="oncampus">ON-CAMPUS</button>
+      </div>
+    </div>
+
+    <div class="career-body" id="careerBody">
+
+      <div class="jobs scroll" id="jobs">
+        <!-- 16 listings; the first 8 show in the compact grid, all 16 when expanded -->
+        <article class="job" data-cat="internship">
+          <div class="job__body">
+            <div class="job__top">
+              <span class="tag tag--internship">INTERNSHIP</span>
+              <div class="job__actions">
+                <span class="job__warn" title="Visa restrictions apply">!</span>
+                <button class="bookmark" data-bookmark="job-1" aria-label="Save listing"><img src="assets/bookmark.svg" alt=""></button>
+              </div>
+            </div>
+            <h3 class="job__title">Job Title</h3>
+            <p class="job__company">Company Name</p>
+            <p class="job__loc"><img src="assets/location-dot.svg" alt="">Location</p>
+          </div>
+        </article>
+
+        <article class="job" data-cat="research">
+          <div class="job__body">
+            <div class="job__top">
+              <span class="tag tag--research">RESEARCH</span>
+              <div class="job__actions">
+                <span class="job__warn" title="Visa restrictions apply">!</span>
+                <button class="bookmark" data-bookmark="job-2" aria-label="Save listing"><img src="assets/bookmark.svg" alt=""></button>
+              </div>
+            </div>
+            <h3 class="job__title">Job Title</h3>
+            <p class="job__company">Company Name</p>
+            <p class="job__loc"><img src="assets/location-dot.svg" alt="">Location</p>
+          </div>
+        </article>
+
+        <article class="job" data-cat="internship">
+          <div class="job__body">
+            <div class="job__top">
+              <span class="tag tag--internship">INTERNSHIP</span>
+              <div class="job__actions">
+                <button class="bookmark" data-bookmark="job-3" aria-label="Save listing"><img src="assets/bookmark.svg" alt=""></button>
+              </div>
+            </div>
+            <h3 class="job__title">Job Title</h3>
+            <p class="job__company">Company Name</p>
+            <p class="job__loc"><img src="assets/location-dot.svg" alt="">Location</p>
+          </div>
+        </article>
+
+        <article class="job" data-cat="oncampus">
+          <div class="job__body">
+            <div class="job__top">
+              <span class="tag tag--oncampus">ON-CAMPUS</span>
+              <div class="job__actions">
+                <button class="bookmark" data-bookmark="job-4" aria-label="Save listing"><img src="assets/bookmark.svg" alt=""></button>
+              </div>
+            </div>
+            <h3 class="job__title">Job Title</h3>
+            <p class="job__company">Company Name</p>
+            <p class="job__loc"><img src="assets/location-dot.svg" alt="">Location</p>
+          </div>
+        </article>
+
+        <article class="job" data-cat="internship">
+          <div class="job__body">
+            <div class="job__top">
+              <span class="tag tag--internship">INTERNSHIP</span>
+              <div class="job__actions">
+                <button class="bookmark" data-bookmark="job-5" aria-label="Save listing"><img src="assets/bookmark.svg" alt=""></button>
+              </div>
+            </div>
+            <h3 class="job__title">Job Title</h3>
+            <p class="job__company">Company Name</p>
+            <p class="job__loc"><img src="assets/location-dot.svg" alt="">Location</p>
+          </div>
+        </article>
+
+        <article class="job" data-cat="internship">
+          <div class="job__body">
+            <div class="job__top">
+              <span class="tag tag--internship">INTERNSHIP</span>
+              <div class="job__actions">
+                <button class="bookmark" data-bookmark="job-6" aria-label="Save listing"><img src="assets/bookmark.svg" alt=""></button>
+              </div>
+            </div>
+            <h3 class="job__title">Job Title</h3>
+            <p class="job__company">Company Name</p>
+            <p class="job__loc"><img src="assets/location-dot.svg" alt="">Location</p>
+          </div>
+        </article>
+
+        <article class="job" data-cat="internship">
+          <div class="job__body">
+            <div class="job__top">
+              <span class="tag tag--internship">INTERNSHIP</span>
+              <div class="job__actions">
+                <button class="bookmark" data-bookmark="job-7" aria-label="Save listing"><img src="assets/bookmark.svg" alt=""></button>
+              </div>
+            </div>
+            <h3 class="job__title">Job Title</h3>
+            <p class="job__company">Company Name</p>
+            <p class="job__loc"><img src="assets/location-dot.svg" alt="">Location</p>
+          </div>
+        </article>
+
+        <article class="job" data-cat="internship">
+          <div class="job__body">
+            <div class="job__top">
+              <span class="tag tag--internship">INTERNSHIP</span>
+              <div class="job__actions">
+                <button class="bookmark" data-bookmark="job-8" aria-label="Save listing"><img src="assets/bookmark.svg" alt=""></button>
+              </div>
+            </div>
+            <h3 class="job__title">Job Title</h3>
+            <p class="job__company">Company Name</p>
+            <p class="job__loc"><img src="assets/location-dot.svg" alt="">Location</p>
+          </div>
+        </article>
+
+        <article class="job" data-cat="internship">
+          <div class="job__body">
+            <div class="job__top">
+              <span class="tag tag--internship">INTERNSHIP</span>
+              <div class="job__actions">
+                <span class="job__warn" title="Visa restrictions apply">!</span>
+                <button class="bookmark" data-bookmark="job-9" aria-label="Save listing"><img src="assets/bookmark.svg" alt=""></button>
+              </div>
+            </div>
+            <h3 class="job__title">Job Title</h3>
+            <p class="job__company">Company Name</p>
+            <p class="job__loc"><img src="assets/location-dot.svg" alt="">Location</p>
+          </div>
+        </article>
+
+        <article class="job" data-cat="research">
+          <div class="job__body">
+            <div class="job__top">
+              <span class="tag tag--research">RESEARCH</span>
+              <div class="job__actions">
+                <span class="job__warn" title="Visa restrictions apply">!</span>
+                <button class="bookmark" data-bookmark="job-10" aria-label="Save listing"><img src="assets/bookmark.svg" alt=""></button>
+              </div>
+            </div>
+            <h3 class="job__title">Job Title</h3>
+            <p class="job__company">Company Name</p>
+            <p class="job__loc"><img src="assets/location-dot.svg" alt="">Location</p>
+          </div>
+        </article>
+
+        <article class="job" data-cat="internship">
+          <div class="job__body">
+            <div class="job__top">
+              <span class="tag tag--internship">INTERNSHIP</span>
+              <div class="job__actions">
+                <button class="bookmark" data-bookmark="job-11" aria-label="Save listing"><img src="assets/bookmark.svg" alt=""></button>
+              </div>
+            </div>
+            <h3 class="job__title">Job Title</h3>
+            <p class="job__company">Company Name</p>
+            <p class="job__loc"><img src="assets/location-dot.svg" alt="">Location</p>
+          </div>
+        </article>
+
+        <article class="job" data-cat="oncampus">
+          <div class="job__body">
+            <div class="job__top">
+              <span class="tag tag--oncampus">ON-CAMPUS</span>
+              <div class="job__actions">
+                <button class="bookmark" data-bookmark="job-12" aria-label="Save listing"><img src="assets/bookmark.svg" alt=""></button>
+              </div>
+            </div>
+            <h3 class="job__title">Job Title</h3>
+            <p class="job__company">Company Name</p>
+            <p class="job__loc"><img src="assets/location-dot.svg" alt="">Location</p>
+          </div>
+        </article>
+
+        <article class="job" data-cat="internship">
+          <div class="job__body">
+            <div class="job__top">
+              <span class="tag tag--internship">INTERNSHIP</span>
+              <div class="job__actions">
+                <button class="bookmark" data-bookmark="job-13" aria-label="Save listing"><img src="assets/bookmark.svg" alt=""></button>
+              </div>
+            </div>
+            <h3 class="job__title">Job Title</h3>
+            <p class="job__company">Company Name</p>
+            <p class="job__loc"><img src="assets/location-dot.svg" alt="">Location</p>
+          </div>
+        </article>
+
+        <article class="job" data-cat="internship">
+          <div class="job__body">
+            <div class="job__top">
+              <span class="tag tag--internship">INTERNSHIP</span>
+              <div class="job__actions">
+                <button class="bookmark" data-bookmark="job-14" aria-label="Save listing"><img src="assets/bookmark.svg" alt=""></button>
+              </div>
+            </div>
+            <h3 class="job__title">Job Title</h3>
+            <p class="job__company">Company Name</p>
+            <p class="job__loc"><img src="assets/location-dot.svg" alt="">Location</p>
+          </div>
+        </article>
+
+        <article class="job" data-cat="internship">
+          <div class="job__body">
+            <div class="job__top">
+              <span class="tag tag--internship">INTERNSHIP</span>
+              <div class="job__actions">
+                <button class="bookmark" data-bookmark="job-15" aria-label="Save listing"><img src="assets/bookmark.svg" alt=""></button>
+              </div>
+            </div>
+            <h3 class="job__title">Job Title</h3>
+            <p class="job__company">Company Name</p>
+            <p class="job__loc"><img src="assets/location-dot.svg" alt="">Location</p>
+          </div>
+        </article>
+
+        <article class="job" data-cat="internship">
+          <div class="job__body">
+            <div class="job__top">
+              <span class="tag tag--internship">INTERNSHIP</span>
+              <div class="job__actions">
+                <button class="bookmark" data-bookmark="job-16" aria-label="Save listing"><img src="assets/bookmark.svg" alt=""></button>
+              </div>
+            </div>
+            <h3 class="job__title">Job Title</h3>
+            <p class="job__company">Company Name</p>
+            <p class="job__loc"><img src="assets/location-dot.svg" alt="">Location</p>
+          </div>
+        </article>
+      </div>
+
+      <section class="startups" id="startups">
+        <div class="startups__head">
+          <h2 class="startups__title">STUDENT ALUM START-UPS</h2>
+          <button class="icon-btn startups__back" id="startupsBack" type="button"
+                  aria-controls="startupsWide" aria-expanded="false"
+                  aria-label="Open the full start-up directory">
+            <img src="assets/arrow-up.svg" alt="">
+          </button>
+        </div>
+
+        <div class="startups__body">
+        <div class="startups__list scroll" id="startupsList">
+          <article class="startup" tabindex="0" data-startup="nimbus"
+                   data-detail="Nimbus Notes turns every lecture into a clean set of notes and a study guide, generated while the class is still fresh. Built by two CS juniors after a semester of unreadable handwriting.&#10;&#10;Currently hiring two students: one front-end engineer and one content lead. Both roles are remote, paid, and around ten hours a week.">
+            <div class="startup__row">
+              <div class="startup__logo"></div>
+              <div style="flex:1 1 auto;min-width:0">
+                <h3 class="startup__name">Nimbus Notes</h3>
+                <p class="startup__meta">EdTech · Pre-seed · 2 open roles</p>
+              </div>
+              <button class="bookmark" data-bookmark="startup-nimbus" aria-label="Save start-up"><img src="assets/bookmark.svg" alt=""></button>
+            </div>
+            <p class="startup__blurb">AI-powered lecture notes and study guides for college courses.</p>
+            <div class="startup__foot">
+              <span class="icon-discord" role="img" aria-label="Discord" style="position:relative;display:block;flex:0 0 32px;width:32px;height:32px;overflow:hidden"><img class="icon-discord__body" src="assets/discord-a.svg" alt="" style="position:absolute;top:16.67%;right:8.22%;bottom:18.75%;left:8.34%;width:auto;height:auto"><img class="icon-discord__eyes" src="assets/discord-b.svg" alt="" style="position:absolute;top:43.75%;right:31.25%;bottom:43.75%;left:31.25%;width:auto;height:auto"></span>
+              <img src="assets/instagram.svg" alt="Instagram">
+              <a class="startup__mail" href="mailto:hello@nimbusnotes.example" aria-label="Email Nimbus Notes"><img src="assets/mail.svg" alt=""></a>
+              <button class="btn btn--sm">Message →</button>
+            </div>
+          </article>
+
+          <article class="startup" tabindex="0" data-startup="fernweg"
+                   data-detail="Fernweg is a trip-planning app built by students, for students — group itineraries, shared budgets, and real-time collaboration for spring break and study-abroad trips.&#10;&#10;The team is four people across two campuses. They are looking for a designer, an iOS engineer, and two campus ambassadors for the spring semester.">
+            <div class="startup__row">
+              <div class="startup__logo"></div>
+              <div style="flex:1 1 auto;min-width:0">
+                <h3 class="startup__name">Fernweg</h3>
+                <p class="startup__meta">Travel Tech · Seed · 4 open roles</p>
+              </div>
+              <button class="bookmark" data-bookmark="startup-fernweg" aria-label="Save start-up"><img src="assets/bookmark.svg" alt=""></button>
+            </div>
+            <p class="startup__blurb">Group trip planning for spring break and study abroad.</p>
+            <div class="startup__foot">
+              <span class="icon-discord" role="img" aria-label="Discord" style="position:relative;display:block;flex:0 0 32px;width:32px;height:32px;overflow:hidden"><img class="icon-discord__body" src="assets/discord-a.svg" alt="" style="position:absolute;top:16.67%;right:8.22%;bottom:18.75%;left:8.34%;width:auto;height:auto"><img class="icon-discord__eyes" src="assets/discord-b.svg" alt="" style="position:absolute;top:43.75%;right:31.25%;bottom:43.75%;left:31.25%;width:auto;height:auto"></span>
+              <img src="assets/instagram.svg" alt="Instagram">
+              <a class="startup__mail" href="mailto:hello@fernweg.example" aria-label="Email Fernweg"><img src="assets/mail.svg" alt=""></a>
+              <button class="btn btn--sm">Message →</button>
+            </div>
+          </article>
+
+          <article class="startup" tabindex="0" data-startup="loopline"
+                   data-detail="Loopline settles up the group chat. Split rent, groceries, and club dues without three apps and a spreadsheet.&#10;&#10;One open role: a part-time backend engineer who has opinions about ledgers.">
+            <div class="startup__row">
+              <div class="startup__logo"></div>
+              <div style="flex:1 1 auto;min-width:0">
+                <h3 class="startup__name">Loopline</h3>
+                <p class="startup__meta">Fintech · Pre-seed · 1 open role</p>
+              </div>
+              <button class="bookmark" data-bookmark="startup-loopline" aria-label="Save start-up"><img src="assets/bookmark.svg" alt=""></button>
+            </div>
+            <p class="startup__blurb">Peer-to-peer expense splitting for roommates and clubs.</p>
+            <div class="startup__foot">
+              <span class="icon-discord" role="img" aria-label="Discord" style="position:relative;display:block;flex:0 0 32px;width:32px;height:32px;overflow:hidden"><img class="icon-discord__body" src="assets/discord-a.svg" alt="" style="position:absolute;top:16.67%;right:8.22%;bottom:18.75%;left:8.34%;width:auto;height:auto"><img class="icon-discord__eyes" src="assets/discord-b.svg" alt="" style="position:absolute;top:43.75%;right:31.25%;bottom:43.75%;left:31.25%;width:auto;height:auto"></span>
+              <img src="assets/instagram.svg" alt="Instagram">
+              <a class="startup__mail" href="mailto:hello@loopline.example" aria-label="Email Loopline"><img src="assets/mail.svg" alt=""></a>
+              <button class="btn btn--sm">Message →</button>
+            </div>
+          </article>
+
+          <article class="startup" tabindex="0" data-startup="verdant"
+                   data-detail="Verdant Labs weighs what dining halls throw away and turns it into a number the kitchen can act on. Three pilot campuses so far.&#10;&#10;Three open roles: data, hardware, and one operations lead who does not mind a loading dock.">
+            <div class="startup__row">
+              <div class="startup__logo"></div>
+              <div style="flex:1 1 auto;min-width:0">
+                <h3 class="startup__name">Verdant Labs</h3>
+                <p class="startup__meta">Sustainability · Seed · 3 open roles</p>
+              </div>
+              <button class="bookmark" data-bookmark="startup-verdant" aria-label="Save start-up"><img src="assets/bookmark.svg" alt=""></button>
+            </div>
+            <p class="startup__blurb">Campus composting and waste-tracking tools for dining halls.</p>
+            <div class="startup__foot">
+              <span class="icon-discord" role="img" aria-label="Discord" style="position:relative;display:block;flex:0 0 32px;width:32px;height:32px;overflow:hidden"><img class="icon-discord__body" src="assets/discord-a.svg" alt="" style="position:absolute;top:16.67%;right:8.22%;bottom:18.75%;left:8.34%;width:auto;height:auto"><img class="icon-discord__eyes" src="assets/discord-b.svg" alt="" style="position:absolute;top:43.75%;right:31.25%;bottom:43.75%;left:31.25%;width:auto;height:auto"></span>
+              <img src="assets/instagram.svg" alt="Instagram">
+              <a class="startup__mail" href="mailto:hello@verdantlabs.example" aria-label="Email Verdant Labs"><img src="assets/mail.svg" alt=""></a>
+              <button class="btn btn--sm">Message →</button>
+            </div>
+          </article>
+        </div>
+
+        <!-- The swipe-over directory view. Placeholder copy until the real
+             start-up records are wired up. -->
+        <div class="startups__wide scroll" id="startupsWide">
+          <p class="eyebrow">Placeholder — start-up directory</p>
+
+          <h3 class="startups__wide-title">Start-up Name</h3>
+          <p class="startups__wide-meta">Category · Stage · 4 open roles · Founded 20XX · 4 people</p>
+
+          <p class="startups__wide-blurb">Placeholder blurb. One or two sentences on what the
+            team is building, who it is for, and why they started it — the same copy the
+            compact card shows, with room to breathe.</p>
+          <p class="startups__wide-blurb">Placeholder blurb. A second paragraph for traction,
+            funding, or whatever the directory record turns out to carry.</p>
+
+          <p class="eyebrow startups__wide-label">Open roles — placeholder</p>
+          <ul class="startups__roles">
+            <li class="startups__role">
+              <span class="tag tag--internship">INTERNSHIP</span>
+              <span class="startups__role-name">Role Title</span>
+              <span class="startups__role-meta">Remote · 10 hrs / week · Paid</span>
+            </li>
+            <li class="startups__role">
+              <span class="tag tag--research">RESEARCH</span>
+              <span class="startups__role-name">Role Title</span>
+              <span class="startups__role-meta">Hybrid · 8 hrs / week · Paid</span>
+            </li>
+            <li class="startups__role">
+              <span class="tag tag--oncampus">ON-CAMPUS</span>
+              <span class="startups__role-name">Role Title</span>
+              <span class="startups__role-meta">On-campus · 6 hrs / week · Credit</span>
+            </li>
+            <li class="startups__role">
+              <span class="tag tag--internship">INTERNSHIP</span>
+              <span class="startups__role-name">Role Title</span>
+              <span class="startups__role-meta">Remote · 12 hrs / week · Paid</span>
+            </li>
+          </ul>
+
+          <p class="eyebrow startups__wide-label">Contact — placeholder</p>
+          <div class="startups__wide-foot">
+            <span class="icon-discord" role="img" aria-label="Discord" style="position:relative;display:block;flex:0 0 32px;width:32px;height:32px;overflow:hidden"><img class="icon-discord__body" src="assets/discord-a.svg" alt="" style="position:absolute;top:16.67%;right:8.22%;bottom:18.75%;left:8.34%;width:auto;height:auto"><img class="icon-discord__eyes" src="assets/discord-b.svg" alt="" style="position:absolute;top:43.75%;right:31.25%;bottom:43.75%;left:31.25%;width:auto;height:auto"></span>
+            <img src="assets/instagram.svg" alt="Instagram">
+            <a class="startup__mail" href="mailto:hello@example.com" aria-label="Email this start-up"><img src="assets/mail.svg" alt=""></a>
+            <button class="btn btn--sm" type="button">Message →</button>
+          </div>
+        </div>
+        </div>
+      </section>
+
+      <section class="startup-detail scroll" id="startupDetail">
+        <h2 class="startup-detail__title" id="startupDetailTitle">Fernweg</h2>
+        <div class="startup-detail__body" id="startupDetailBody"></div>
+      </section>
+    </div>
+
+    <aside class="visa" data-dismiss-target>
+      <div>
+        <p class="visa__title">Visa</p>
+        <p class="visa__text">TextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextText</p>
+      </div>
+      <div class="visa__actions">
+        <a href="visa.html">More info on work and visa →</a>
+        <button type="button" data-dismiss="visa-banner">Don’t show again</button>
+      </div>
+    </aside>
+
+  </main>
+</div>
+
+<script type="module" src="js/app.js"></script>
+<script type="module" src="js/career.js"></script>
+</body>
+</html>
